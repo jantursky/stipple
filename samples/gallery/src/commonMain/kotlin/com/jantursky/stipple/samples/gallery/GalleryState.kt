@@ -22,7 +22,7 @@ class GalleryState(
     var cell by mutableFloatStateOf(3f)
     var shape by mutableStateOf(CellShape.Square)
     var pattern by mutableStateOf<DitherPattern>(DitherPatterns.Bayer4)
-    var animated by mutableStateOf(false)
+    var animated by mutableStateOf(true)
     var motion by mutableStateOf(StippleMotion.System)
 
     /** The theme on the stage: the chosen colors over the light or dark base. */

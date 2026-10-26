@@ -11,10 +11,13 @@ private fun pageFromHash(): String? =
         .removePrefix("#")
         .ifEmpty { null }
 
-/** A query flag such as `?embed=1`: present and not "0". */
-private fun flag(name: String): Boolean {
+/** A query flag such as `?embed=1`: [default] when absent, otherwise true unless it is "0". */
+private fun flag(
+    name: String,
+    default: Boolean = false,
+): Boolean {
     val value = Regex("[?&]$name=([^&]*)").find(window.location.search)?.groupValues?.get(1)
-    return value != null && value != "0"
+    return if (value == null) default else value != "0"
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -22,7 +25,7 @@ fun main() {
     ComposeViewport(document.body!!) {
         GalleryApp(
             initialPage = pageFromHash(),
-            initialAnimated = flag("animated"),
+            initialAnimated = flag("animated", default = true),
             embed = flag("embed"),
             onPageChange = { id ->
                 // Replace instead of push, so the back button leaves the gallery rather than stepping through pages.

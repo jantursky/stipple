@@ -51,7 +51,7 @@ jobs:
         with:
           node-version: 22
       - run: bun install --frozen-lockfile
-      - run: bunx playwright install --with-deps chromium
+      - run: bunx playwright install --with-deps chromium firefox webkit
       - name: Browser tests of the gallery
         run: bun run test:web
       - name: Keep the Playwright traces of a failed run

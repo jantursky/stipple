@@ -60,7 +60,7 @@ const val GALLERY_VERSION = "1.0.0"
  * @param initialPage The id of the page to open, such as `gauge`; the overview by default.
  * @param onPageChange Called with the id of each page that opens, so a host can keep it in a URL.
  * @param onDarkModeChange Called with the theme in use, so a host can match its system bars.
- * @param initialAnimated Starts with animation on, as the docs' live examples do.
+ * @param initialAnimated Starts with animation on, which is the gallery's default. Reduced motion still wins.
  * @param embed Shows only the current page's example, with no bar or sidebar, for embedding in another page.
  */
 @Composable
@@ -70,7 +70,7 @@ fun GalleryApp(
     initialDark: Boolean = isSystemInDarkTheme(),
     onPageChange: (String) -> Unit = {},
     onDarkModeChange: (Boolean) -> Unit = {},
-    initialAnimated: Boolean = false,
+    initialAnimated: Boolean = true,
     embed: Boolean = false,
 ) {
     val state = remember { GalleryState(initialDark).also { it.animated = initialAnimated } }

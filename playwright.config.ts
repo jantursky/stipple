@@ -15,6 +15,8 @@ export default defineConfig({
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'] } },
     { name: 'phone', use: { ...devices['Pixel 7'] } },
+    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
+    { name: 'safari', use: { ...devices['Desktop Safari'] } },
   ],
   webServer: {
     command: 'node scripts/serve-demo.mjs 4173',

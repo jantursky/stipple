@@ -136,7 +136,7 @@ Stipple adds a small engine of its own, modifiers for any element, a cell render
 | Android 6 to 12 (API 23 to 32) | yes | no, uses cells | animator duration scale | Robolectric tests; not on a device |
 | iOS | yes | Skia runtime effect, **unverified** | Reduce Motion | simulator tests and the gallery on an iPhone 17 simulator; not on a device |
 | JVM desktop | yes | Skia runtime effect | none, use `LocalStippleMotion` | tests and screenshots on macOS |
-| wasmJs | yes | Skia runtime effect | `prefers-reduced-motion` | Chromium via Playwright (software GL); not Firefox or Safari |
+| wasmJs | yes | Skia runtime effect | `prefers-reduced-motion` | Chromium and WebKit (the engine of Safari) via Playwright, software GL; not Firefox, not Safari itself |
 
 Built with Kotlin 2.4 and Compose Multiplatform 1.12.
 

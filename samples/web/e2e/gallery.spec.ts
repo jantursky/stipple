@@ -3,8 +3,12 @@ import { readFileSync } from 'node:fs'
 import { expect, test, type Page } from '@playwright/test'
 import sharp from 'sharp'
 
-// Skiko warns about an API it uses itself. Nothing else may reach the console as an error.
-const KNOWN_ERRORS = [/Accessing `memory` via `wasmExports` is deprecated/]
+// Skiko warns about APIs it uses itself, and WebKit reports a WebGL extension query as an error. Nothing else may
+// reach the console as an error.
+const KNOWN_ERRORS = [
+  /Accessing `memory` via `wasmExports` is deprecated/,
+  /WEBGL_debug_renderer_info not enabled/,
+]
 
 const collectErrors = (page: Page) => {
   const errors: string[] = []
@@ -81,8 +85,8 @@ for (const path of ['/', '/#scenes', '/#gauge']) {
   })
 }
 
-test('embed mode shows only the example, and animated=1 makes it move', async ({ page }) => {
-  await page.goto('/?embed=1&animated=1#scenes')
+test('examples animate by default', async ({ page }) => {
+  await page.goto('/?embed=1#scenes')
   await ready(page)
   await page.waitForTimeout(800)
   const first = await page.screenshot()
@@ -90,8 +94,8 @@ test('embed mode shows only the example, and animated=1 makes it move', async ({
   await expect.poll(async () => difference(first, await page.screenshot()), { timeout: 5_000 }).toBeGreaterThan(0.5)
 })
 
-test('without animated=1 an example holds still', async ({ page }) => {
-  await page.goto('/?embed=1#scenes')
+test('animated=0 makes an example hold still', async ({ page }) => {
+  await page.goto('/?embed=1&animated=0#scenes')
   await ready(page)
   await page.waitForTimeout(800)
   const first = await page.screenshot()
