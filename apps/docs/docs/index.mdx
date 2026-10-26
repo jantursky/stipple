@@ -1,0 +1,29 @@
+---
+title: Introduction
+description: A dither engine and dithered UI components for Compose Multiplatform.
+sidebar:
+  order: 1
+---
+
+Stipple draws dithers. A dither turns a smooth tone into a pattern of ink and paper dots, the way old print and early displays did. In Stipple the pattern comes from a small engine, and anything in Compose can use it: a background, a button, a chart column, a photo, a line of text.
+
+It runs on Android, iOS, JVM desktop and wasmJs from one `commonMain` source set, and has no Material dependency.
+
+Three ideas carry everything:
+
+- A **field** says how much ink each point wants. It is a pure function of position and time.
+- A **pattern** is a threshold map. A cell is ink when the field's tone is above its threshold: Bayer 2, 4 and 8, blue noise, or your own.
+- A **theme** holds the ink and paper colours, an optional palette, and the cell size.
+
+On top of the engine there are modifiers (`dither`, `ditherProgress`, `ditherImage`, `ditherFill`, `ditherMask`) and ten components: `DitherButton`, `DitherBarChart`, `DitherGrid`, `DitherGauge`, `DitherStatCard`, `DitherProgressBar`, `DitherText`, `DitherAvatar`, `DitherImage` and `DitherBackground`. Components are static unless you pass `animated = true`, and animation stops under reduced motion.
+
+The current version is {{version}}. See the [changelog](/changelog) for what each release changed.
+
+<include example="overview">./_snippets/live-example.mdx</include>
+
+## Where to go next
+
+- [Getting started](/getting-started) installs the library and draws a first dither.
+- The guides cover [theming](/guides/theming), [patterns and fields](/guides/patterns-and-fields), [writing your own dither](/guides/writing-your-own), [choosing a renderer](/guides/renderers), [performance](/guides/performance) and [accessibility](/guides/accessibility).
+- [Agent skill](/guides/agent-skill) teaches a coding agent to build with Stipple.
+- [Prior art](/prior-art) says what exists already and how Stipple differs.

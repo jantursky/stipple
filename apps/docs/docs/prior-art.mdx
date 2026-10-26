@@ -1,0 +1,19 @@
+---
+title: Prior art
+description: What exists already, what Stipple learned from it and where it differs.
+sidebar:
+  order: 6
+---
+
+- **dithercn** is a set of dithered components for React and shadcn, with GLSL fields, MIT licensed. Its idea of one engine under many components, themed with an ink and a paper colour, and its agent skill for writing new dithers, were the inspiration for Stipple. Stipple shares no code with it.
+- **Paper Shaders for Android** ports Paper Design's shaders, including dithering and halftone, to AGSL. It is Android only, needs API 33 and isn't on Maven.
+- **dither-kit-compose** is a Compose library of dithered components. It uses a single Bayer 4x4 pattern, has no pattern or field abstraction and no modifiers, and has no web target.
+
+What Stipple adds: a small engine (patterns, fields, themes) separate from the components, modifiers that dither any element, a cell renderer that works back to Android 6, an optional shader renderer, error diffusion for images, reduced motion on every platform, and a skill file for coding agents.
+
+## Not covered yet
+
+- Mesh gradients, globes and maps, and the scramble and dissolve text effects from dithercn.
+- Fields written as shaders by the user are supported, but the built-in `noise` and `sweep` fields have no shader and always use cells.
+- Blue noise and custom patterns are drawn by the cell renderer only.
+- Dot-shaped cells and multi-colour palettes are cell renderer only.

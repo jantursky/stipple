@@ -1,0 +1,36 @@
+---
+title: Accessibility
+description: Reduced motion, contrast for dithered text, and the semantics of each component.
+---
+
+## Reduced motion
+
+Animation freezes under reduced motion on every platform. Stipple reads the setting from:
+
+| Target | Source |
+| --- | --- |
+| Android | `ValueAnimator.areAnimatorsEnabled()`, and Compose's `MotionDurationScale`, which is 0 when animations are off. |
+| iOS | Reduce Motion in Accessibility settings. |
+| wasmJs | The `prefers-reduced-motion: reduce` media query. |
+| JVM desktop | No system source: motion is full unless you override it. |
+
+You can override it with `LocalStippleMotion` (`System`, `Full` or `Reduced`). Read the resolved value with `isStippleMotionReduced()`.
+
+A frozen field is drawn at the modifier's `stillTime`. Progress and value changes still update, because they are information, not decoration.
+
+## Contrast
+
+`DitherText` keeps text readable. If the contrast between ink and paper falls below `minContrast` (4.5 by default), it swaps the ink for black or white. `theme.contrastRatio` gives the ratio for any theme.
+
+Keep the field's tone under about 0.5 where text sits on a dithered background.
+
+## Semantics
+
+Components expose normal semantics:
+
+- `DitherButton` has a button role, focus and press states, and its text.
+- `DitherProgressBar` and `DitherGauge` report their value as a range.
+- `DitherBarChart`, `DitherGrid` and `DitherGauge` take a `contentDescription`, and `DitherStatCard` describes its label, value and delta as one element.
+- `DitherImage` and `DitherAvatar` take a description or a name.
+
+A plain `Modifier.dither` is decoration and is invisible to screen readers. If it carries meaning, give the element its own semantics.

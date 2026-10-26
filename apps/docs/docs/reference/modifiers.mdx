@@ -1,0 +1,70 @@
+---
+title: Modifiers
+description: dither, ditherProgress, ditherImage, ditherFill and ditherMask.
+---
+
+All modifiers live in `com.jantursky.stipple`. `theme = null` means the theme from `LocalStippleTheme`.
+
+## Modifier.dither
+
+Fills the element's shape with a field, behind its content.
+
+```kotlin
+fun Modifier.dither(
+    field: DitherField,
+    pattern: DitherPattern = DitherPatterns.Bayer4,
+    theme: StippleTheme? = null,
+    shape: Shape = RectangleShape,
+    animated: Boolean = false,
+    speed: Float = 1f,
+    stillTime: Float = 0f,
+    renderer: DitherRenderer = DitherRenderer.Cells,
+): Modifier
+```
+
+## Modifier.ditherProgress
+
+A fill driven by a value: bars, gauge segments, chart columns. `progress` is a lambda read in the draw phase.
+
+```kotlin
+fun Modifier.ditherProgress(
+    progress: () -> Float,
+    pattern: DitherPattern = DitherPatterns.Bayer4,
+    theme: StippleTheme? = null,
+    direction: ProgressDirection = ProgressDirection.Right,
+    shape: Shape = RectangleShape,
+    track: Float = 0f,
+    softness: Float = 0.12f,
+    fill: DitherField = DitherFields.solid(1f),
+    animated: Boolean = false,
+    speed: Float = 1f,
+    stillTime: Float = 0f,
+): Modifier
+```
+
+`track` is the tone of the unfilled part. `softness` is the width of the dithered edge as a fraction of the element's length along `direction`. Progress is information, so reduced motion does not freeze it.
+
+## Modifier.ditherImage
+
+Dithers whatever the element draws. The content is read back once, dithered off the main thread and cached.
+
+```kotlin
+fun Modifier.ditherImage(
+    pattern: DitherPattern = DitherPatterns.Bayer4,
+    theme: StippleTheme? = null,
+    algorithm: DitherAlgorithm = DitherAlgorithm.Ordered,
+    invert: Boolean = false,
+    key: Any? = null,
+): Modifier
+```
+
+`DitherAlgorithm` is `Ordered`, `FloydSteinberg` or `Atkinson`. Pass a `key` that changes with the content. It is for content that holds still.
+
+## Modifier.ditherFill and ditherMask
+
+```kotlin
+fun Modifier.ditherFill(field, pattern, theme, animated, speed, stillTime): Modifier
+fun Modifier.ditherMask(field, pattern, theme, animated, speed, stillTime): Modifier
+```
+
+`ditherFill` keeps the shape of what the element draws and swaps its colours for the dither: text, icons, silhouettes. `ditherMask` shows the content only where the dither is lit, so a sweep reveals a picture through the pattern. Both always use the cell renderer.

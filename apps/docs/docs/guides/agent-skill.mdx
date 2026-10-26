@@ -1,0 +1,14 @@
+---
+title: Agent skill
+description: A skill file that teaches a coding agent to build with Stipple, and to write new dithers.
+---
+
+`skills/stipple/SKILL.md` in the repository is a skill for coding agents. It explains the field, pattern and theme model, the rules that keep a dither cheap and accessible, and a short checklist for writing a new dither. It has three worked examples, and they are compiled in the test suite so they cannot drift from the API.
+
+Copy it into your agent's skills folder, or point your agent at the file on GitHub:
+
+```
+https://raw.githubusercontent.com/jantursky/stipple/main/skills/stipple/SKILL.md
+```
+
+Ask an agent for "a dithered upload card with a progress bar" or "a rippling dither background for the hero" and it should reach for a component or a field before it writes a renderer.

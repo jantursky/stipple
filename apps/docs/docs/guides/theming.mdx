@@ -1,0 +1,40 @@
+---
+title: Theming
+description: StippleTheme holds ink, paper, an optional palette, the cell size and the cell shape.
+---
+
+A `StippleTheme` has five parts:
+
+| Part | Meaning |
+| --- | --- |
+| `ink` | The colour of a filled cell. |
+| `paper` | The colour of an empty cell. |
+| `palette` | Optional colours from paper to ink. With three or more, a tone picks a position on the ramp and the pattern decides between the two colours around it. |
+| `cell` | Cell size in dp. Whole pixels are used, so neighbouring cells never leave seams. Default 3 dp. |
+| `shape` | `CellShape.Square` or `CellShape.Dot`. |
+
+`StippleTheme.Light` and `StippleTheme.Dark` are the defaults. `copy` changes one part.
+
+```kotlin
+val sunset = StippleTheme.Light.copy(
+    palette = listOf(Color(0xFF14122B), Color(0xFF6B5B95), Color(0xFFEC003F), Color(0xFFFFB900), Color(0xFFFFF8E5)),
+)
+```
+
+## Provide it once
+
+`ProvideStippleTheme` puts a theme in a composition local. Every dither below it uses that theme unless the call passes its own `theme`.
+
+```kotlin
+ProvideStippleTheme(StippleTheme.Light.copy(cell = 2.dp)) {
+    Screen()
+}
+```
+
+Without an argument, `ProvideStippleTheme()` follows the system's light or dark mode through `systemStippleTheme()`.
+
+## Contrast
+
+A dither shows less than full ink, so what a viewer sees has lower contrast than `ink` against `paper`. `theme.contrastRatio` gives the WCAG ratio of the two colours: aim for 4.5 for text and 3 for graphics. `DitherText` checks this for you and swaps the ink for black or white when it falls short.
+
+<include example="theme">../_snippets/live-example.mdx</include>

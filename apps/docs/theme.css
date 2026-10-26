@@ -1,0 +1,56 @@
+/* Stipple design tokens (design/tokens.css) mapped onto Blume's. Violet is only for focus and the active item. */
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+@import '../../../../../design/tokens.css';
+
+:root,
+:root[data-theme='light'],
+:root[data-theme='dark'] {
+  --blume-background: var(--stipple-page);
+  --blume-foreground: var(--stipple-text);
+  --blume-muted: var(--stipple-panel);
+  --blume-muted-foreground: var(--stipple-muted);
+  --blume-border: var(--stipple-hairline);
+  --blume-accent: var(--stipple-accent);
+  --blume-accent-foreground: var(--stipple-on-accent);
+  --blume-code-background: var(--stipple-code);
+  --blume-radius: var(--stipple-radius-card);
+  --blume-font-display: var(--stipple-font);
+  --blume-font-body: var(--stipple-font);
+  --blume-font-mono: var(--stipple-font-mono);
+}
+
+*,
+*::before,
+*::after {
+  box-shadow: none !important;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+table,
+td,
+th {
+  font-variant-numeric: tabular-nums;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--stipple-focus) !important;
+}
+
+.live-example {
+  display: block;
+  width: 100%;
+  height: 420px;
+  margin: 24px 0;
+  border: 1px solid var(--stipple-hairline);
+  border-radius: var(--stipple-radius-card);
+  background: var(--stipple-page);
+}

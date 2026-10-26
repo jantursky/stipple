@@ -1,0 +1,38 @@
+---
+title: Choosing a renderer
+description: The cell renderer works everywhere. The shader renderer is faster on large surfaces. Which devices have it and what it can draw.
+---
+
+`Modifier.dither` takes a `renderer`:
+
+| Value | Meaning |
+| --- | --- |
+| `DitherRenderer.Cells` | One rectangle per cell run on the canvas. The default. |
+| `DitherRenderer.Shader` | One fragment shader for the element, when possible. |
+| `DitherRenderer.Auto` | The shader above 20,000 cells, cells below. |
+
+Both draw the same picture. In the tests, the shader output matches the cell output for every built-in field and Bayer size to within a handful of pixels in 40,000.
+
+<include example="renderers">../_snippets/live-example.mdx</include>
+
+## What the shader can draw
+
+The shader renderer draws an element only if all of these hold. Otherwise the cell renderer draws it, with no error:
+
+- the field is a `ShaderField`, which the built-in `solid`, `linear`, `radial`, `waves` and `ripples` are (`noise` and `sweep` are not);
+- the pattern is Bayer 2, 4 or 8;
+- the cell shape is square and the theme has two colours (no palette);
+- the modifier is plain `dither`, not `ditherFill` or `ditherMask`;
+- the platform has runtime shaders, and the platform's compiler accepts the program.
+
+## Where it runs
+
+| Target | Shader | Checked on |
+| --- | --- | --- |
+| Android 13 and later | AGSL `RuntimeShader` | Samsung SM-G991B, Android 15 (API 35) |
+| Android 12 and earlier | None: cells | Not checked on a device |
+| JVM desktop | Skia runtime effect | macOS, in the test suite |
+| wasmJs | Skia runtime effect | Chromium, headless, software GL |
+| iOS | Skia runtime effect | **Unverified.** It compiles, and has not been run. |
+
+Firefox and Safari have not been checked.

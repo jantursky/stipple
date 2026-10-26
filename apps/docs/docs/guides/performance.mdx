@@ -1,0 +1,39 @@
+---
+title: Performance
+description: What a dither costs per frame, and how to keep it out of composition.
+---
+
+## Draw phase only
+
+The animation clock is snapshot state that only the draw block reads. A frame redraws the element and recomposes nothing. The tests count recompositions while a dither animates and require the count to stay at zero.
+
+Do the same in your code. Pass progress as a lambda, so the read happens while drawing:
+
+```kotlin
+val progress by animateFloatAsState(target)
+Box(Modifier.ditherProgress({ progress }))
+```
+
+Reading `progress` in the composable body would recompose on every frame.
+
+## Cell count is the cost
+
+The cell renderer samples the field once per cell and draws neighbouring cells of one colour as a single rectangle. The cost grows with the number of cells, which is width times height over the square of the cell size. As a guide:
+
+| Surface | Cell | Cells |
+| --- | --- | --- |
+| 100 x 100 dp button | 3 dp | about 1,100 |
+| 360 x 800 dp phone screen | 3 dp | about 32,000 |
+| 360 x 800 dp phone screen | 1 dp | about 288,000 |
+
+The renderer coarsens the grid above 90,000 cells. For big surfaces use `DitherRenderer.Auto`, which switches to the shader past 20,000 cells where it can.
+
+Animated dithers redraw every frame. A static dither is drawn once and cached by Compose like any other content.
+
+## Images
+
+`ditherImage` reads the content back once, dithers it on a background dispatcher and caches the result. The previous result stays on screen while a new one computes. Ordered dithering is cheapest. Floyd-Steinberg and Atkinson diffuse error and cost more per cell, which only shows on very large images.
+
+## What is not measured yet
+
+Frame times on low-end Android devices and on a physical iPhone have not been measured. The gallery's frame meter shows the time between frames, not the cost of rendering.

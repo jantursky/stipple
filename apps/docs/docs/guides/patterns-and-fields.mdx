@@ -1,0 +1,37 @@
+---
+title: Patterns and fields
+description: How a field and a pattern turn into dots, and the built-in ones.
+---
+
+A dither is two functions meeting at every cell. The **field** answers "how much ink here?" with a tone from 0 (paper) to 1 (ink). The **pattern** answers "how much ink does this cell need before it turns on?" with a threshold. The cell is ink when the tone is above the threshold.
+
+<include example="patterns">../_snippets/live-example.mdx</include>
+
+## Patterns
+
+| Pattern | Look |
+| --- | --- |
+| `DitherPatterns.Bayer2` | Coarse four-step grid. Strong, graphic. |
+| `DitherPatterns.Bayer4` | The default. Sixteen steps, a crosshatch feel. |
+| `DitherPatterns.Bayer8` | Sixty-four steps and the smoothest ramps. |
+| `DitherPatterns.BlueNoise` | Irregular and grain-like, with no repeating texture. A 64 by 64 texture made offline. |
+
+A pattern implements `DitherPattern.threshold(x, y)`, returning a value between 0 and 1 for any integer cell coordinates. You can write your own.
+
+## Fields
+
+A field is a `DitherField`: `tone(x, y, t, aspect)`. `x` and `y` run from 0 to 1 across the element, `t` is time in seconds and `aspect` is width over height. Fields are pure, so they work in common code and are easy to test.
+
+| Built-in | Notes |
+| --- | --- |
+| `solid(tone)` | The same tone everywhere. |
+| `linear(from, to, angleDegrees)` | A ramp that spans the element corner to corner at any angle. |
+| `radial(inner, outer, centerX, centerY, radius)` | A round gradient. |
+| `noise(scale, speed, level, contrast)` | Soft, drifting value noise. |
+| `waves(count, speed, angleDegrees, low, high)` | Diagonal bands that travel. |
+| `ripples(rings, speed, centerX, centerY, radius)` | Rings that spread and fade. |
+| `sweep(progress, softness)` | A soft edge that moves from left to right. |
+
+<include example="fields">../_snippets/live-example.mdx</include>
+
+Static fields ignore `t`. Animated ones are frozen at the modifier's `stillTime` when animation is off or reduced.

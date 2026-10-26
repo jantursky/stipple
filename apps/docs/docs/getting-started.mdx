@@ -1,0 +1,80 @@
+---
+title: Getting started
+description: Add Stipple to a Compose Multiplatform project and draw a first dither.
+sidebar:
+  order: 2
+---
+
+## Install
+
+Stipple publishes two artifacts to Maven Central. Add the engine, and the components if you want them.
+
+```kotlin title="build.gradle.kts"
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation("io.github.jantursky:stipple:{{version}}")
+            implementation("io.github.jantursky:stipple-components:{{version}}")
+        }
+    }
+}
+```
+
+The engine needs Compose runtime, foundation, UI and animation. Android needs minSdk 23.
+
+## A first dither
+
+`Modifier.dither` fills an element with a field, behind its content.
+
+```kotlin
+Box(
+    Modifier
+        .size(240.dp)
+        .dither(DitherFields.radial(), DitherPatterns.Bayer4),
+)
+```
+
+The radial field is dense in the middle and thins out towards the edge. Switch the pattern to `DitherPatterns.BlueNoise` and the same tones come out grainy instead of regular.
+
+## Animate it
+
+Dithers are static by default. Pass `animated = true` and a field that uses time:
+
+```kotlin
+Box(
+    Modifier
+        .fillMaxWidth()
+        .height(200.dp)
+        .dither(DitherFields.waves(), animated = true, stillTime = 1f),
+)
+```
+
+`stillTime` is the moment shown when animation is off, and the moment a reduced-motion user sees. Pick a frame that looks finished.
+
+## Use a component
+
+```kotlin
+DitherProgressBar(progress = 0.6f, contentDescription = "Upload progress")
+```
+
+Components read the theme from the composition, so a call site rarely needs one. Provide it once:
+
+```kotlin
+ProvideStippleTheme(StippleTheme.Light.copy(cell = 2.dp)) {
+    App()
+}
+```
+
+`ProvideStippleTheme()` with no argument follows the system's light or dark mode.
+
+## Try the gallery
+
+The gallery shows every page with its source next to it, and controls for the pattern, cell size and colours. Run it from the repository:
+
+```sh
+./gradlew :samples:desktop:run                      # desktop
+./gradlew :samples:web:wasmJsBrowserDevelopmentRun  # browser
+./gradlew :samples:androidApp:installDebug          # Android device or emulator
+```
+
+The iOS app is in `samples/iosApp`; generate its Xcode project with `xcodegen` and run it on a simulator.

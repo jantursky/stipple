@@ -1,0 +1,33 @@
+/* Stipple design tokens. Source of truth: design/DESIGN.md. */
+:root {
+  --stipple-page: #ffffff;
+  --stipple-panel: #fafafa;
+  --stipple-hairline: #e4e4e7;
+  --stipple-text: #09090b;
+  --stipple-muted: #52525c;
+  --stipple-faint: #71717a;
+  --stipple-accent: #615fff;
+  --stipple-on-accent: #ffffff;
+  --stipple-code: #f4f4f5;
+
+  --stipple-radius-control: 6px;
+  --stipple-radius-card: 12px;
+  --stipple-radius-stage: 16px;
+
+  --stipple-font: 'Geist Variable', 'Inter', system-ui, sans-serif;
+  --stipple-font-mono: 'Geist Mono Variable', ui-monospace, monospace;
+  --stipple-focus: 0 0 0 2px rgba(97, 95, 255, 0.6);
+}
+
+:root[data-theme='dark'] {
+  --stipple-page: #09090b;
+  --stipple-panel: #111113;
+  --stipple-hairline: #27272a;
+  --stipple-text: #fafafa;
+  --stipple-muted: #a1a1aa;
+  --stipple-faint: #8e8e98;
+  --stipple-accent: #8b8aff;
+  --stipple-on-accent: #09090b;
+  --stipple-code: #18181b;
+  --stipple-focus: 0 0 0 2px rgba(139, 138, 255, 0.6);
+}

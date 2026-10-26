@@ -1,0 +1,28 @@
+---
+title: Components
+description: The ten components in stipple-components.
+---
+
+All components live in `com.jantursky.stipple.components`. Each takes `theme`, `pattern` and `animated`, with the defaults `null` (the provided theme), `DitherPatterns.Bayer4` and `false`.
+
+| Component | What it is | Main parameters |
+| --- | --- | --- |
+| `DitherButton` | A paper face with a dithered shadow that thickens on hover and focus and sinks on press. | `onClick`, `enabled`, `depth`, `content` (or a `text` overload) |
+| `DitherBarChart` | Columns filled with a dither that is dense at the foot and lighter towards the top. | `entries: List<BarEntry>`, `maxValue`, `barGap`, `showLabels` |
+| `DitherGrid` | A square grid of dithered cells, one value each. | `values`, `columns`, `gap`, `cell` |
+| `DitherGauge` | A ring of dithered blocks showing one reading, with a content slot in the middle. | `value`, `range`, `startAngle`, `sweepAngle`, `thickness`, `content` |
+| `DitherStatCard` | A KPI card with a headline number, a delta and a dithered trend. | `label`, `value`, `delta`, `trend`, `trendHeight` |
+| `DitherProgressBar` | A progress bar with a dithered leading edge. | `progress` (null for indeterminate), `height`, `track` |
+| `DitherText` | Text filled with a dither, with a minimum contrast. | `text`, `style`, `cell`, `fadeTo`, `field`, `minContrast` |
+| `DitherAvatar` | A mirrored dither face made from a name, or a dithered photo. | `name`, `size`, `painter`, `shape`, `algorithm` |
+| `DitherImage` | A dithered image that can be revealed coarse to fine. | `painter`, `contentDescription`, `contentScale`, `algorithm`, `reveal` |
+| `DitherBackground` | A dithered field behind your content. | `field`, `content` |
+
+Every component is static unless `animated = true`, and respects reduced motion. Components that show a value (`DitherProgressBar`, `DitherGauge`, `DitherBarChart`, `DitherGrid`) take a `contentDescription`.
+
+```kotlin
+DitherBarChart(
+    entries = listOf(BarEntry("Mon", 4f), BarEntry("Tue", 7f), BarEntry("Wed", 5f)),
+    contentDescription = "Sign-ups this week",
+)
+```
