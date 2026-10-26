@@ -40,9 +40,7 @@ class DitherImageTest {
             setDitherContent {
                 Square(Modifier.ditherImage(theme = light).background(Color.White))
             }
-            mainClock.advanceTimeBy(500)
-            waitForIdle()
-            assertEquals(1f, capture().shareOf(light.paper))
+            assertEquals(1f, shareWhenReady(light.paper))
         }
 
     @Test
@@ -60,9 +58,7 @@ class DitherImageTest {
             setDitherContent {
                 Square(Modifier.ditherImage(theme = light, invert = true).background(Color.Black))
             }
-            mainClock.advanceTimeBy(500)
-            waitForIdle()
-            assertEquals(1f, capture().shareOf(light.paper))
+            assertEquals(1f, shareWhenReady(light.paper))
         }
 
     @Test
