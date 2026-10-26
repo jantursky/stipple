@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Gallery (iOS)" type="ShConfigurationType">
+    <option name="SCRIPT_TEXT" value="cd samples/iosApp &amp;&amp; xcodegen generate --quiet &amp;&amp; UDID=$(xcrun simctl list devices available | grep -F '    iPhone 17 Pro (' | tail -1 | sed -E 's/.*\(([0-9A-F-]{36})\).*/\1/') &amp;&amp; xcrun simctl bootstatus $UDID -b &amp;&amp; open -a Simulator &amp;&amp; xcodebuild -project GalleryApp.xcodeproj -scheme GalleryApp -sdk iphonesimulator -destination id=$UDID -derivedDataPath build build -quiet &amp;&amp; xcrun simctl install $UDID build/Build/Products/Debug-iphonesimulator/GalleryApp.app &amp;&amp; xcrun simctl launch --terminate-running-process $UDID com.jantursky.stipple.samples.gallery" />
+    <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+    <option name="SCRIPT_PATH" value="" />
+    <option name="SCRIPT_OPTIONS" value="" />
+    <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+    <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+    <option name="INTERPRETER_PATH" value="/bin/zsh" />
+    <option name="INTERPRETER_OPTIONS" value="-l" />
+    <option name="EXECUTE_IN_TERMINAL" value="true" />
+    <option name="EXECUTE_SCRIPT_FILE" value="false" />
+    <envs />
+    <method v="2" />
+  </configuration>
+</component>
