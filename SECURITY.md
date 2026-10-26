@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-Only the latest release of `io.github.jantursky:stipple` and its companion artifacts gets fixes.
+Only the latest release of `com.github.jantursky.stipple:stipple` and its companion artifacts gets fixes.
 
 ## Reporting a vulnerability
 

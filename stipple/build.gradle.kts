@@ -117,9 +117,6 @@ kover {
 }
 
 mavenPublishing {
-    publishToMavenCentral()
-    // CI passes the key as ORG_GRADLE_PROJECT_signingInMemoryKey; local builds publish unsigned.
-    if (providers.gradleProperty("signingInMemoryKey").isPresent) signAllPublications()
     coordinates(artifactId = "stipple")
     pom {
         name.set("Stipple")

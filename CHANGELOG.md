@@ -13,4 +13,5 @@ All notable changes to Stipple are listed here. The format follows [Keep a Chang
 - Modifiers `dither`, `ditherProgress`, `ditherImage` (ordered, Floyd-Steinberg and Atkinson), `ditherFill` and `ditherMask`.
 - Reduced motion that freezes animation on Android, iOS, desktop and web.
 - Components: `DitherButton`, `DitherBarChart`, `DitherGrid`, `DitherGauge`, `DitherStatCard`, `DitherProgressBar`, `DitherText`, `DitherAvatar`, `DitherImage` and `DitherBackground`.
+- Published on JitPack as `com.github.jantursky.stipple:stipple` and `stipple-components`.
 - Gallery apps for web, desktop, Android and iOS, and an agent skill (`skills/stipple/SKILL.md`).

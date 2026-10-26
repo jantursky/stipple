@@ -7,14 +7,25 @@ sidebar:
 
 ## Install
 
-Stipple publishes two artifacts to Maven Central. Add the engine, and the components if you want them.
+Stipple publishes two artifacts on [JitPack](https://jitpack.io/#jantursky/stipple). Add the repository once:
+
+```kotlin title="settings.gradle.kts"
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        maven("https://jitpack.io")
+    }
+}
+```
+
+Then add the engine, and the components if you want them.
 
 ```kotlin title="build.gradle.kts"
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("io.github.jantursky:stipple:{{version}}")
-            implementation("io.github.jantursky:stipple-components:{{version}}")
+            implementation("com.github.jantursky.stipple:stipple:{{version}}")
+            implementation("com.github.jantursky.stipple:stipple-components:{{version}}")
         }
     }
 }

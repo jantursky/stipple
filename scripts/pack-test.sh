@@ -23,7 +23,7 @@ pluginManagement {
 
 dependencyResolutionManagement {
     repositories {
-        mavenLocal { content { includeGroup("io.github.jantursky") } }
+        mavenLocal { content { includeGroup("com.github.jantursky.stipple") } }
         google()
         mavenCentral()
     }
@@ -45,8 +45,8 @@ kotlin {
     wasmJs { browser() }
     sourceSets {
         commonMain.dependencies {
-            implementation("io.github.jantursky:stipple:$version")
-            implementation("io.github.jantursky:stipple-components:$version")
+            implementation("com.github.jantursky.stipple:stipple:$version")
+            implementation("com.github.jantursky.stipple:stipple-components:$version")
         }
     }
 }
@@ -99,4 +99,4 @@ fun Screen(progress: Float) {
 EOF
 
 "$root/gradlew" -p "$consumer" compileKotlinJvm compileKotlinWasmJs --quiet
-echo "Consumer compiled for jvm and wasmJs against io.github.jantursky:stipple and stipple-components $version"
+echo "Consumer compiled for jvm and wasmJs against com.github.jantursky.stipple:stipple and stipple-components $version"

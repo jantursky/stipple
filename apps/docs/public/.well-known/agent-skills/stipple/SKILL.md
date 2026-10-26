@@ -1,6 +1,6 @@
 ---
 name: stipple
-description: Build dithered UI in Compose Multiplatform with Stipple (io.github.jantursky:stipple). Use it when a user wants a dithered background, button, chart, gauge, progress bar, text or image in Compose, or wants to write a new dither field, pattern or component on Android, iOS, desktop or web.
+description: Build dithered UI in Compose Multiplatform with Stipple (com.github.jantursky.stipple:stipple). Use it when a user wants a dithered background, button, chart, gauge, progress bar, text or image in Compose, or wants to write a new dither field, pattern or component on Android, iOS, desktop or web.
 ---
 
 # Stipple
@@ -14,7 +14,7 @@ new work stays small.
 | Pattern | `DitherPattern` | A threshold map. A cell is ink when the tone is above its threshold. `DitherPatterns.Bayer2/4/8`, `BlueNoise`. |
 | Theme | `StippleTheme` | `ink`, `paper`, optional `palette`, `cell` size in dp, `shape` (Square or Dot). |
 
-Artifacts: `io.github.jantursky:stipple` (engine and modifiers) and `io.github.jantursky:stipple-components`
+Artifacts: `com.github.jantursky.stipple:stipple` (engine and modifiers) and `com.github.jantursky.stipple:stipple-components`
 (`DitherButton`, `DitherBarChart`, `DitherGrid`, `DitherGauge`, `DitherStatCard`, `DitherProgressBar`, `DitherText`,
 `DitherAvatar`, `DitherImage`, `DitherBackground`). Package `com.jantursky.stipple`, components in
 `com.jantursky.stipple.components`. Targets: Android (minSdk 23), iOS, desktop, wasmJs.
