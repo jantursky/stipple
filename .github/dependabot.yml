@@ -9,7 +9,7 @@ updates:
         patterns: ['org.jetbrains.compose*', 'org.jetbrains.kotlin*']
         exclude-patterns: ['org.jetbrains.kotlinx.kover*', 'org.jetbrains.kotlinx.binary-compatibility-validator*', 'org.jetbrains.dokka*']
       haptics-and-hinge:
-        patterns: ['com.github.jantursky*', 'top.ltfan*']
+        patterns: ['io.github.jantursky*', 'top.ltfan*']
       build-tooling:
         patterns:
           - 'com.android*'

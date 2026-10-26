@@ -2,9 +2,9 @@
 
 # Stipple
 
-[![JitPack](https://jitpack.io/v/jantursky/stipple.svg)](https://jitpack.io/#jantursky/stipple) [![CI](https://github.com/jantursky/stipple/actions/workflows/ci.yml/badge.svg)](https://github.com/jantursky/stipple/actions/workflows/ci.yml) [![Kotlin](https://img.shields.io/badge/kotlin-2.4-7f52ff)](https://kotlinlang.org) [![license](https://img.shields.io/github/license/jantursky/stipple)](LICENSE) [![codecov](https://codecov.io/gh/jantursky/stipple/graph/badge.svg)](https://codecov.io/gh/jantursky/stipple)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.jantursky/stipple)](https://central.sonatype.com/artifact/io.github.jantursky/stipple) [![CI](https://github.com/jantursky/stipple/actions/workflows/ci.yml/badge.svg)](https://github.com/jantursky/stipple/actions/workflows/ci.yml) [![Kotlin](https://img.shields.io/badge/kotlin-2.4-7f52ff)](https://kotlinlang.org) [![license](https://img.shields.io/github/license/jantursky/stipple)](LICENSE) [![codecov](https://codecov.io/gh/jantursky/stipple/graph/badge.svg)](https://codecov.io/gh/jantursky/stipple)
 
-[Docs](https://stipple-docs.vercel.app) · [Demo](https://stipple-demo.vercel.app) · [JitPack](https://jitpack.io/#jantursky/stipple) · [Changelog](CHANGELOG.md)
+[Docs](https://stipple-docs.vercel.app) · [Demo](https://stipple-demo.vercel.app) · [Maven Central](https://central.sonatype.com/artifact/io.github.jantursky/stipple) · [Changelog](CHANGELOG.md)
 
 Stipple: dithered UI for Compose Multiplatform. A small dither engine, modifiers that dither any element, and ten ready-made components: buttons, charts, gauges, text, avatars, images and backgrounds. Android, iOS, desktop and the browser, from one `commonMain`.
 
@@ -33,8 +33,8 @@ A dither turns a smooth tone into a pattern of ink and paper dots. Stipple split
 
 | folder               | what it is                                                                                           |
 | -------------------- | ---------------------------------------------------------------------------------------------------- |
-| `stipple`            | The engine and the modifiers, published as `com.github.jantursky.stipple:stipple`. No Material dependency.    |
-| `stipple-components` | The ten components, published as `com.github.jantursky.stipple:stipple-components`.                           |
+| `stipple`            | The engine and the modifiers, published as `io.github.jantursky:stipple`. No Material dependency.    |
+| `stipple-components` | The ten components, published as `io.github.jantursky:stipple-components`.                           |
 | `skills/stipple`     | An agent skill that teaches a coding agent to build with Stipple.                                    |
 | `samples/gallery`    | The gallery's examples and their controls, shared by the web, desktop and mobile gallery.            |
 | `samples/web`        | The gallery in the browser: every page live, with its source next to it.                             |
@@ -44,28 +44,14 @@ A dither turns a smooth tone into a pattern of ink and paper dots. Stipple split
 
 ## Install
 
-Stipple is published on [JitPack](https://jitpack.io/#jantursky/stipple). Add the repository once:
-
-```kotlin
-// settings.gradle.kts
-dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-        maven("https://jitpack.io")
-    }
-}
-```
-
-Then add the dependencies:
-
 ```kotlin
 // build.gradle.kts
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("com.github.jantursky.stipple:stipple:1.0.0")
+            implementation("io.github.jantursky:stipple:1.0.0")
             // Optional:
-            implementation("com.github.jantursky.stipple:stipple-components:1.0.0")
+            implementation("io.github.jantursky:stipple-components:1.0.0")
         }
     }
 }
@@ -129,7 +115,7 @@ The [gallery](https://stipple-demo.vercel.app) shows every pattern, field, modif
 ## Prior art
 
 - [dithercn](https://dithercn.dev) is the closest relative: dithered components for React and shadcn, one engine under many pieces, with a skill for coding agents. Stipple takes the idea, not the code, and credits it in [NOTICE](NOTICE).
-- [Paper Shaders for Android](https://github.com/AndreFrelicot/paper-shaders-android) ports Paper Design's shaders, including dithering and halftone, to AGSL. It is Android only, needs API 33 and isn't published as a library.
+- [Paper Shaders for Android](https://github.com/AndreFrelicot/paper-shaders-android) ports Paper Design's shaders, including dithering and halftone, to AGSL. It is Android only, needs API 33 and isn't on Maven.
 - [dither-kit-compose](https://github.com/ryumacodes/dither-kit-compose) is a set of dithered Compose components. It has one Bayer pattern, no field or pattern abstraction, no modifiers and no web target.
 
 Stipple adds a small engine of its own, modifiers for any element, a cell renderer that works back to Android 6, an optional shader renderer, error diffusion for images, reduced motion on every platform and an agent skill.

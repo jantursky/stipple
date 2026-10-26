@@ -90,7 +90,7 @@ fun Overview(state: GalleryState) {
                     .padding(horizontal = 14.dp, vertical = 10.dp),
             ) {
                 BasicText(
-                    "implementation(\"com.github.jantursky.stipple:stipple:1.0.0\")",
+                    "implementation(\"io.github.jantursky:stipple:1.0.0\")",
                     style = Gallery.type.code.copy(color = colors.text),
                 )
             }

@@ -18,7 +18,7 @@ export default defineConfig({
   navigation: {
     actions: [
       { href: 'https://stipple-demo.vercel.app', label: 'Demo' },
-      { href: 'https://jitpack.io/#jantursky/stipple', label: 'JitPack' },
+      { href: 'https://central.sonatype.com/artifact/io.github.jantursky/stipple', label: 'Maven Central' },
     ],
   },
   content: {
