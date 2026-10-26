@@ -24,6 +24,8 @@ import com.jantursky.stipple.samples.gallery.examples.AvatarExample
 import com.jantursky.stipple.samples.gallery.examples.BackgroundExample
 import com.jantursky.stipple.samples.gallery.examples.BarChartExample
 import com.jantursky.stipple.samples.gallery.examples.ButtonExample
+import com.jantursky.stipple.samples.gallery.examples.ChartKind
+import com.jantursky.stipple.samples.gallery.examples.ChartsExample
 import com.jantursky.stipple.samples.gallery.examples.CustomFieldExample
 import com.jantursky.stipple.samples.gallery.examples.CustomKind
 import com.jantursky.stipple.samples.gallery.examples.DitherModifierExample
@@ -32,6 +34,7 @@ import com.jantursky.stipple.samples.gallery.examples.FieldsExample
 import com.jantursky.stipple.samples.gallery.examples.FillExample
 import com.jantursky.stipple.samples.gallery.examples.GaugeExample
 import com.jantursky.stipple.samples.gallery.examples.GridExample
+import com.jantursky.stipple.samples.gallery.examples.ImageCompareExample
 import com.jantursky.stipple.samples.gallery.examples.ImageExample
 import com.jantursky.stipple.samples.gallery.examples.ImageModifierExample
 import com.jantursky.stipple.samples.gallery.examples.InterfaceExample
@@ -356,6 +359,30 @@ val Catalog: List<Page> =
                 controls = { Segmented(InterfaceKind.entries, kind, { kind = it }, { it.name }) },
             ) {
                 InterfaceExample(kind, g.theme, g.pattern, g.animated)
+            }
+        },
+        Page(
+            "charts",
+            Group.Interface,
+            "More charts",
+            "An area chart, a calendar heatmap, a donut and an uptime row. The data sits inside the field; the pattern makes the texture, and a tone of 1 comes out as a solid block.",
+            listOf("ChartsExample"),
+        ) { g ->
+            var kind by remember { mutableStateOf(ChartKind.Area) }
+            Demo(g, minHeight = 240, controls = { Segmented(ChartKind.entries, kind, { kind = it }, { it.name }) }) {
+                ChartsExample(kind, g.theme, g.pattern)
+            }
+        },
+        Page(
+            "image-compare",
+            Group.Interface,
+            "Image compare",
+            "A before and after slider. The picture underneath is untouched; the same picture on top is dithered and clipped to the left of the handle. Drag on it.",
+            listOf("ImageCompareExample"),
+        ) { g ->
+            var algorithm by remember { mutableStateOf(DitherAlgorithm.Atkinson) }
+            Demo(g, controls = { Segmented(DitherAlgorithm.entries, algorithm, { algorithm = it }, { it.name }) }) {
+                ImageCompareExample(g.theme, g.pattern, algorithm)
             }
         },
     )
