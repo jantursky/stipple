@@ -1,0 +1,28 @@
+# Gradle and Kotlin
+.gradle/
+.kotlin/
+build/
+local.properties
+
+# IDEs
+.idea/
+*.iml
+.DS_Store
+
+# Xcode
+xcuserdata/
+DerivedData/
+*.xcworkspace/xcuserdata/
+
+# Docs site
+node_modules/
+apps/docs/dist/
+apps/docs/.blume/
+apps/docs/docs/_generated/
+apps/docs/public/api/
+apps/docs/public/demo/
+apps/docs/public/screenshots/
+
+# Browser tests
+test-results/
+playwright-report/
