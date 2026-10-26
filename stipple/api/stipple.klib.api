@@ -1,0 +1,157 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <stipple:stipple>
+final enum class com.jantursky.stipple/CellShape : kotlin/Enum<com.jantursky.stipple/CellShape> { // com.jantursky.stipple/CellShape|null[0]
+    enum entry Dot // com.jantursky.stipple/CellShape.Dot|null[0]
+    enum entry Square // com.jantursky.stipple/CellShape.Square|null[0]
+
+    final val entries // com.jantursky.stipple/CellShape.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.jantursky.stipple/CellShape> // com.jantursky.stipple/CellShape.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.jantursky.stipple/CellShape // com.jantursky.stipple/CellShape.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.jantursky.stipple/CellShape> // com.jantursky.stipple/CellShape.values|values#static(){}[0]
+}
+
+final enum class com.jantursky.stipple/DitherAlgorithm : kotlin/Enum<com.jantursky.stipple/DitherAlgorithm> { // com.jantursky.stipple/DitherAlgorithm|null[0]
+    enum entry Atkinson // com.jantursky.stipple/DitherAlgorithm.Atkinson|null[0]
+    enum entry FloydSteinberg // com.jantursky.stipple/DitherAlgorithm.FloydSteinberg|null[0]
+    enum entry Ordered // com.jantursky.stipple/DitherAlgorithm.Ordered|null[0]
+
+    final val entries // com.jantursky.stipple/DitherAlgorithm.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.jantursky.stipple/DitherAlgorithm> // com.jantursky.stipple/DitherAlgorithm.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.jantursky.stipple/DitherAlgorithm // com.jantursky.stipple/DitherAlgorithm.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.jantursky.stipple/DitherAlgorithm> // com.jantursky.stipple/DitherAlgorithm.values|values#static(){}[0]
+}
+
+final enum class com.jantursky.stipple/DitherRenderer : kotlin/Enum<com.jantursky.stipple/DitherRenderer> { // com.jantursky.stipple/DitherRenderer|null[0]
+    enum entry Auto // com.jantursky.stipple/DitherRenderer.Auto|null[0]
+    enum entry Cells // com.jantursky.stipple/DitherRenderer.Cells|null[0]
+    enum entry Shader // com.jantursky.stipple/DitherRenderer.Shader|null[0]
+
+    final val entries // com.jantursky.stipple/DitherRenderer.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.jantursky.stipple/DitherRenderer> // com.jantursky.stipple/DitherRenderer.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.jantursky.stipple/DitherRenderer // com.jantursky.stipple/DitherRenderer.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.jantursky.stipple/DitherRenderer> // com.jantursky.stipple/DitherRenderer.values|values#static(){}[0]
+}
+
+final enum class com.jantursky.stipple/ProgressDirection : kotlin/Enum<com.jantursky.stipple/ProgressDirection> { // com.jantursky.stipple/ProgressDirection|null[0]
+    enum entry Down // com.jantursky.stipple/ProgressDirection.Down|null[0]
+    enum entry Left // com.jantursky.stipple/ProgressDirection.Left|null[0]
+    enum entry Right // com.jantursky.stipple/ProgressDirection.Right|null[0]
+    enum entry Up // com.jantursky.stipple/ProgressDirection.Up|null[0]
+
+    final val entries // com.jantursky.stipple/ProgressDirection.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.jantursky.stipple/ProgressDirection> // com.jantursky.stipple/ProgressDirection.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.jantursky.stipple/ProgressDirection // com.jantursky.stipple/ProgressDirection.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.jantursky.stipple/ProgressDirection> // com.jantursky.stipple/ProgressDirection.values|values#static(){}[0]
+}
+
+final enum class com.jantursky.stipple/StippleMotion : kotlin/Enum<com.jantursky.stipple/StippleMotion> { // com.jantursky.stipple/StippleMotion|null[0]
+    enum entry Full // com.jantursky.stipple/StippleMotion.Full|null[0]
+    enum entry Reduced // com.jantursky.stipple/StippleMotion.Reduced|null[0]
+    enum entry System // com.jantursky.stipple/StippleMotion.System|null[0]
+
+    final val entries // com.jantursky.stipple/StippleMotion.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.jantursky.stipple/StippleMotion> // com.jantursky.stipple/StippleMotion.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.jantursky.stipple/StippleMotion // com.jantursky.stipple/StippleMotion.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.jantursky.stipple/StippleMotion> // com.jantursky.stipple/StippleMotion.values|values#static(){}[0]
+}
+
+abstract fun interface com.jantursky.stipple/DitherField { // com.jantursky.stipple/DitherField|null[0]
+    abstract fun tone(kotlin/Float, kotlin/Float, kotlin/Float, kotlin/Float): kotlin/Float // com.jantursky.stipple/DitherField.tone|tone(kotlin.Float;kotlin.Float;kotlin.Float;kotlin.Float){}[0]
+}
+
+abstract interface com.jantursky.stipple/DitherPattern { // com.jantursky.stipple/DitherPattern|null[0]
+    abstract val size // com.jantursky.stipple/DitherPattern.size|{}size[0]
+        abstract fun <get-size>(): kotlin/Int // com.jantursky.stipple/DitherPattern.size.<get-size>|<get-size>(){}[0]
+
+    abstract fun threshold(kotlin/Int, kotlin/Int): kotlin/Float // com.jantursky.stipple/DitherPattern.threshold|threshold(kotlin.Int;kotlin.Int){}[0]
+}
+
+abstract interface com.jantursky.stipple/ShaderField : com.jantursky.stipple/DitherField { // com.jantursky.stipple/ShaderField|null[0]
+    abstract val shaderSource // com.jantursky.stipple/ShaderField.shaderSource|{}shaderSource[0]
+        abstract fun <get-shaderSource>(): kotlin/String // com.jantursky.stipple/ShaderField.shaderSource.<get-shaderSource>|<get-shaderSource>(){}[0]
+}
+
+final class com.jantursky.stipple/StippleTheme { // com.jantursky.stipple/StippleTheme|null[0]
+    constructor <init>(androidx.compose.ui.graphics/Color, androidx.compose.ui.graphics/Color, kotlin.collections/List<androidx.compose.ui.graphics/Color>? = ..., androidx.compose.ui.unit/Dp = ..., com.jantursky.stipple/CellShape = ...) // com.jantursky.stipple/StippleTheme.<init>|<init>(androidx.compose.ui.graphics.Color;androidx.compose.ui.graphics.Color;kotlin.collections.List<androidx.compose.ui.graphics.Color>?;androidx.compose.ui.unit.Dp;com.jantursky.stipple.CellShape){}[0]
+
+    final val cell // com.jantursky.stipple/StippleTheme.cell|{}cell[0]
+        final fun <get-cell>(): androidx.compose.ui.unit/Dp // com.jantursky.stipple/StippleTheme.cell.<get-cell>|<get-cell>(){}[0]
+    final val contrastRatio // com.jantursky.stipple/StippleTheme.contrastRatio|{}contrastRatio[0]
+        final fun <get-contrastRatio>(): kotlin/Float // com.jantursky.stipple/StippleTheme.contrastRatio.<get-contrastRatio>|<get-contrastRatio>(){}[0]
+    final val ink // com.jantursky.stipple/StippleTheme.ink|{}ink[0]
+        final fun <get-ink>(): androidx.compose.ui.graphics/Color // com.jantursky.stipple/StippleTheme.ink.<get-ink>|<get-ink>(){}[0]
+    final val palette // com.jantursky.stipple/StippleTheme.palette|{}palette[0]
+        final fun <get-palette>(): kotlin.collections/List<androidx.compose.ui.graphics/Color>? // com.jantursky.stipple/StippleTheme.palette.<get-palette>|<get-palette>(){}[0]
+    final val paper // com.jantursky.stipple/StippleTheme.paper|{}paper[0]
+        final fun <get-paper>(): androidx.compose.ui.graphics/Color // com.jantursky.stipple/StippleTheme.paper.<get-paper>|<get-paper>(){}[0]
+    final val shape // com.jantursky.stipple/StippleTheme.shape|{}shape[0]
+        final fun <get-shape>(): com.jantursky.stipple/CellShape // com.jantursky.stipple/StippleTheme.shape.<get-shape>|<get-shape>(){}[0]
+
+    final fun copy(androidx.compose.ui.graphics/Color = ..., androidx.compose.ui.graphics/Color = ..., kotlin.collections/List<androidx.compose.ui.graphics/Color>? = ..., androidx.compose.ui.unit/Dp = ..., com.jantursky.stipple/CellShape = ...): com.jantursky.stipple/StippleTheme // com.jantursky.stipple/StippleTheme.copy|copy(androidx.compose.ui.graphics.Color;androidx.compose.ui.graphics.Color;kotlin.collections.List<androidx.compose.ui.graphics.Color>?;androidx.compose.ui.unit.Dp;com.jantursky.stipple.CellShape){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // com.jantursky.stipple/StippleTheme.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // com.jantursky.stipple/StippleTheme.hashCode|hashCode(){}[0]
+
+    final object Companion { // com.jantursky.stipple/StippleTheme.Companion|null[0]
+        final val Dark // com.jantursky.stipple/StippleTheme.Companion.Dark|{}Dark[0]
+            final fun <get-Dark>(): com.jantursky.stipple/StippleTheme // com.jantursky.stipple/StippleTheme.Companion.Dark.<get-Dark>|<get-Dark>(){}[0]
+        final val Light // com.jantursky.stipple/StippleTheme.Companion.Light|{}Light[0]
+            final fun <get-Light>(): com.jantursky.stipple/StippleTheme // com.jantursky.stipple/StippleTheme.Companion.Light.<get-Light>|<get-Light>(){}[0]
+    }
+}
+
+final object com.jantursky.stipple/DitherFields { // com.jantursky.stipple/DitherFields|null[0]
+    final fun linear(kotlin/Float = ..., kotlin/Float = ..., kotlin/Float = ...): com.jantursky.stipple/DitherField // com.jantursky.stipple/DitherFields.linear|linear(kotlin.Float;kotlin.Float;kotlin.Float){}[0]
+    final fun noise(kotlin/Float = ..., kotlin/Float = ..., kotlin/Float = ..., kotlin/Float = ...): com.jantursky.stipple/DitherField // com.jantursky.stipple/DitherFields.noise|noise(kotlin.Float;kotlin.Float;kotlin.Float;kotlin.Float){}[0]
+    final fun radial(kotlin/Float = ..., kotlin/Float = ..., kotlin/Float = ..., kotlin/Float = ..., kotlin/Float = ...): com.jantursky.stipple/DitherField // com.jantursky.stipple/DitherFields.radial|radial(kotlin.Float;kotlin.Float;kotlin.Float;kotlin.Float;kotlin.Float){}[0]
+    final fun ripples(kotlin/Float = ..., kotlin/Float = ..., kotlin/Float = ..., kotlin/Float = ..., kotlin/Float = ...): com.jantursky.stipple/DitherField // com.jantursky.stipple/DitherFields.ripples|ripples(kotlin.Float;kotlin.Float;kotlin.Float;kotlin.Float;kotlin.Float){}[0]
+    final fun solid(kotlin/Float = ...): com.jantursky.stipple/DitherField // com.jantursky.stipple/DitherFields.solid|solid(kotlin.Float){}[0]
+    final fun sweep(kotlin/Float, kotlin/Float = ...): com.jantursky.stipple/DitherField // com.jantursky.stipple/DitherFields.sweep|sweep(kotlin.Float;kotlin.Float){}[0]
+    final fun waves(kotlin/Float = ..., kotlin/Float = ..., kotlin/Float = ..., kotlin/Float = ..., kotlin/Float = ...): com.jantursky.stipple/DitherField // com.jantursky.stipple/DitherFields.waves|waves(kotlin.Float;kotlin.Float;kotlin.Float;kotlin.Float;kotlin.Float){}[0]
+}
+
+final object com.jantursky.stipple/DitherPatterns { // com.jantursky.stipple/DitherPatterns|null[0]
+    final val All // com.jantursky.stipple/DitherPatterns.All|{}All[0]
+        final fun <get-All>(): kotlin.collections/List<com.jantursky.stipple/DitherPattern> // com.jantursky.stipple/DitherPatterns.All.<get-All>|<get-All>(){}[0]
+    final val Bayer2 // com.jantursky.stipple/DitherPatterns.Bayer2|{}Bayer2[0]
+        final fun <get-Bayer2>(): com.jantursky.stipple/DitherPattern // com.jantursky.stipple/DitherPatterns.Bayer2.<get-Bayer2>|<get-Bayer2>(){}[0]
+    final val Bayer4 // com.jantursky.stipple/DitherPatterns.Bayer4|{}Bayer4[0]
+        final fun <get-Bayer4>(): com.jantursky.stipple/DitherPattern // com.jantursky.stipple/DitherPatterns.Bayer4.<get-Bayer4>|<get-Bayer4>(){}[0]
+    final val Bayer8 // com.jantursky.stipple/DitherPatterns.Bayer8|{}Bayer8[0]
+        final fun <get-Bayer8>(): com.jantursky.stipple/DitherPattern // com.jantursky.stipple/DitherPatterns.Bayer8.<get-Bayer8>|<get-Bayer8>(){}[0]
+    final val BlueNoise // com.jantursky.stipple/DitherPatterns.BlueNoise|{}BlueNoise[0]
+        final fun <get-BlueNoise>(): com.jantursky.stipple/DitherPattern // com.jantursky.stipple/DitherPatterns.BlueNoise.<get-BlueNoise>|<get-BlueNoise>(){}[0]
+
+    final fun nameOf(com.jantursky.stipple/DitherPattern): kotlin/String // com.jantursky.stipple/DitherPatterns.nameOf|nameOf(com.jantursky.stipple.DitherPattern){}[0]
+}
+
+final val com.jantursky.stipple/LocalStippleMotion // com.jantursky.stipple/LocalStippleMotion|{}LocalStippleMotion[0]
+    final fun <get-LocalStippleMotion>(): androidx.compose.runtime/ProvidableCompositionLocal<com.jantursky.stipple/StippleMotion> // com.jantursky.stipple/LocalStippleMotion.<get-LocalStippleMotion>|<get-LocalStippleMotion>(){}[0]
+final val com.jantursky.stipple/LocalStippleTheme // com.jantursky.stipple/LocalStippleTheme|{}LocalStippleTheme[0]
+    final fun <get-LocalStippleTheme>(): androidx.compose.runtime/ProvidableCompositionLocal<com.jantursky.stipple/StippleTheme> // com.jantursky.stipple/LocalStippleTheme.<get-LocalStippleTheme>|<get-LocalStippleTheme>(){}[0]
+final val com.jantursky.stipple/com_jantursky_stipple_DitherFields$stableprop // com.jantursky.stipple/com_jantursky_stipple_DitherFields$stableprop|#static{}com_jantursky_stipple_DitherFields$stableprop[0]
+final val com.jantursky.stipple/com_jantursky_stipple_DitherPatterns$stableprop // com.jantursky.stipple/com_jantursky_stipple_DitherPatterns$stableprop|#static{}com_jantursky_stipple_DitherPatterns$stableprop[0]
+final val com.jantursky.stipple/com_jantursky_stipple_StippleTheme$stableprop // com.jantursky.stipple/com_jantursky_stipple_StippleTheme$stableprop|#static{}com_jantursky_stipple_StippleTheme$stableprop[0]
+
+final fun (androidx.compose.ui/Modifier).com.jantursky.stipple/dither(com.jantursky.stipple/DitherField, com.jantursky.stipple/DitherPattern = ..., com.jantursky.stipple/StippleTheme? = ..., androidx.compose.ui.graphics/Shape = ..., kotlin/Boolean = ..., kotlin/Float = ..., kotlin/Float = ..., com.jantursky.stipple/DitherRenderer = ...): androidx.compose.ui/Modifier // com.jantursky.stipple/dither|dither@androidx.compose.ui.Modifier(com.jantursky.stipple.DitherField;com.jantursky.stipple.DitherPattern;com.jantursky.stipple.StippleTheme?;androidx.compose.ui.graphics.Shape;kotlin.Boolean;kotlin.Float;kotlin.Float;com.jantursky.stipple.DitherRenderer){}[0]
+final fun (androidx.compose.ui/Modifier).com.jantursky.stipple/ditherFill(com.jantursky.stipple/DitherField, com.jantursky.stipple/DitherPattern = ..., com.jantursky.stipple/StippleTheme? = ..., kotlin/Boolean = ..., kotlin/Float = ..., kotlin/Float = ...): androidx.compose.ui/Modifier // com.jantursky.stipple/ditherFill|ditherFill@androidx.compose.ui.Modifier(com.jantursky.stipple.DitherField;com.jantursky.stipple.DitherPattern;com.jantursky.stipple.StippleTheme?;kotlin.Boolean;kotlin.Float;kotlin.Float){}[0]
+final fun (androidx.compose.ui/Modifier).com.jantursky.stipple/ditherImage(com.jantursky.stipple/DitherPattern = ..., com.jantursky.stipple/StippleTheme? = ..., com.jantursky.stipple/DitherAlgorithm = ..., kotlin/Boolean = ..., kotlin/Any? = ...): androidx.compose.ui/Modifier // com.jantursky.stipple/ditherImage|ditherImage@androidx.compose.ui.Modifier(com.jantursky.stipple.DitherPattern;com.jantursky.stipple.StippleTheme?;com.jantursky.stipple.DitherAlgorithm;kotlin.Boolean;kotlin.Any?){}[0]
+final fun (androidx.compose.ui/Modifier).com.jantursky.stipple/ditherMask(com.jantursky.stipple/DitherField, com.jantursky.stipple/DitherPattern = ..., com.jantursky.stipple/StippleTheme? = ..., kotlin/Boolean = ..., kotlin/Float = ..., kotlin/Float = ...): androidx.compose.ui/Modifier // com.jantursky.stipple/ditherMask|ditherMask@androidx.compose.ui.Modifier(com.jantursky.stipple.DitherField;com.jantursky.stipple.DitherPattern;com.jantursky.stipple.StippleTheme?;kotlin.Boolean;kotlin.Float;kotlin.Float){}[0]
+final fun (androidx.compose.ui/Modifier).com.jantursky.stipple/ditherProgress(kotlin/Function0<kotlin/Float>, com.jantursky.stipple/DitherPattern = ..., com.jantursky.stipple/StippleTheme? = ..., com.jantursky.stipple/ProgressDirection = ..., androidx.compose.ui.graphics/Shape = ..., kotlin/Float = ..., kotlin/Float = ..., com.jantursky.stipple/DitherField = ..., kotlin/Boolean = ..., kotlin/Float = ..., kotlin/Float = ...): androidx.compose.ui/Modifier // com.jantursky.stipple/ditherProgress|ditherProgress@androidx.compose.ui.Modifier(kotlin.Function0<kotlin.Float>;com.jantursky.stipple.DitherPattern;com.jantursky.stipple.StippleTheme?;com.jantursky.stipple.ProgressDirection;androidx.compose.ui.graphics.Shape;kotlin.Float;kotlin.Float;com.jantursky.stipple.DitherField;kotlin.Boolean;kotlin.Float;kotlin.Float){}[0]
+final fun com.jantursky.stipple/ProvideStippleTheme(com.jantursky.stipple/StippleTheme?, kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.jantursky.stipple/ProvideStippleTheme|ProvideStippleTheme(com.jantursky.stipple.StippleTheme?;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun com.jantursky.stipple/com_jantursky_stipple_DitherFields$stableprop_getter(): kotlin/Int // com.jantursky.stipple/com_jantursky_stipple_DitherFields$stableprop_getter|com_jantursky_stipple_DitherFields$stableprop_getter(){}[0]
+final fun com.jantursky.stipple/com_jantursky_stipple_DitherPatterns$stableprop_getter(): kotlin/Int // com.jantursky.stipple/com_jantursky_stipple_DitherPatterns$stableprop_getter|com_jantursky_stipple_DitherPatterns$stableprop_getter(){}[0]
+final fun com.jantursky.stipple/com_jantursky_stipple_StippleTheme$stableprop_getter(): kotlin/Int // com.jantursky.stipple/com_jantursky_stipple_StippleTheme$stableprop_getter|com_jantursky_stipple_StippleTheme$stableprop_getter(){}[0]
+final fun com.jantursky.stipple/contrastRatio(androidx.compose.ui.graphics/Color, androidx.compose.ui.graphics/Color): kotlin/Float // com.jantursky.stipple/contrastRatio|contrastRatio(androidx.compose.ui.graphics.Color;androidx.compose.ui.graphics.Color){}[0]
+final fun com.jantursky.stipple/isStippleMotionReduced(androidx.compose.runtime/Composer?, kotlin/Int): kotlin/Boolean // com.jantursky.stipple/isStippleMotionReduced|isStippleMotionReduced(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+final fun com.jantursky.stipple/systemStippleTheme(androidx.compose.runtime/Composer?, kotlin/Int): com.jantursky.stipple/StippleTheme // com.jantursky.stipple/systemStippleTheme|systemStippleTheme(androidx.compose.runtime.Composer?;kotlin.Int){}[0]

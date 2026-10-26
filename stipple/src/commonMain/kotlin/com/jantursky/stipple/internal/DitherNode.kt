@@ -312,7 +312,9 @@ internal class DitherNode(
         }
         when (val outline = shape.createOutline(size, layoutDirection, this)) {
             is Outline.Rectangle -> {
-                clipRect { render(theme, t, ramp, blendMode) }
+                clipRect(outline.rect.left, outline.rect.top, outline.rect.right, outline.rect.bottom) {
+                    render(theme, t, ramp, blendMode)
+                }
             }
 
             is Outline.Rounded -> {

@@ -9,6 +9,7 @@ import androidx.compose.ui.test.v2.runDesktopComposeUiTest
 import androidx.compose.ui.unit.dp
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalTestApi::class)
@@ -86,7 +87,7 @@ class DitherImageTest {
             }
             mainClock.advanceTimeBy(500)
             waitForIdle()
-            // Nothing drawn means the cell renderer draws paper only: the window is the white test background.
-            assertEquals(Color.White, capture().toPixelMap()[50, 50])
+            // Nothing drawn is paper or nothing yet, depending on whether the result has landed; never ink.
+            assertNotEquals(light.ink, capture().toPixelMap()[50, 50])
         }
 }

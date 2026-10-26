@@ -1,0 +1,135 @@
+public final class com/jantursky/stipple/CellShape : java/lang/Enum {
+	public static final field Dot Lcom/jantursky/stipple/CellShape;
+	public static final field Square Lcom/jantursky/stipple/CellShape;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/jantursky/stipple/CellShape;
+	public static fun values ()[Lcom/jantursky/stipple/CellShape;
+}
+
+public final class com/jantursky/stipple/DitherAlgorithm : java/lang/Enum {
+	public static final field Atkinson Lcom/jantursky/stipple/DitherAlgorithm;
+	public static final field FloydSteinberg Lcom/jantursky/stipple/DitherAlgorithm;
+	public static final field Ordered Lcom/jantursky/stipple/DitherAlgorithm;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/jantursky/stipple/DitherAlgorithm;
+	public static fun values ()[Lcom/jantursky/stipple/DitherAlgorithm;
+}
+
+public abstract interface class com/jantursky/stipple/DitherField {
+	public abstract fun tone (FFFF)F
+}
+
+public final class com/jantursky/stipple/DitherFields {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/jantursky/stipple/DitherFields;
+	public final fun linear (FFF)Lcom/jantursky/stipple/DitherField;
+	public static synthetic fun linear$default (Lcom/jantursky/stipple/DitherFields;FFFILjava/lang/Object;)Lcom/jantursky/stipple/DitherField;
+	public final fun noise (FFFF)Lcom/jantursky/stipple/DitherField;
+	public static synthetic fun noise$default (Lcom/jantursky/stipple/DitherFields;FFFFILjava/lang/Object;)Lcom/jantursky/stipple/DitherField;
+	public final fun radial (FFFFF)Lcom/jantursky/stipple/DitherField;
+	public static synthetic fun radial$default (Lcom/jantursky/stipple/DitherFields;FFFFFILjava/lang/Object;)Lcom/jantursky/stipple/DitherField;
+	public final fun ripples (FFFFF)Lcom/jantursky/stipple/DitherField;
+	public static synthetic fun ripples$default (Lcom/jantursky/stipple/DitherFields;FFFFFILjava/lang/Object;)Lcom/jantursky/stipple/DitherField;
+	public final fun solid (F)Lcom/jantursky/stipple/DitherField;
+	public static synthetic fun solid$default (Lcom/jantursky/stipple/DitherFields;FILjava/lang/Object;)Lcom/jantursky/stipple/DitherField;
+	public final fun sweep (FF)Lcom/jantursky/stipple/DitherField;
+	public static synthetic fun sweep$default (Lcom/jantursky/stipple/DitherFields;FFILjava/lang/Object;)Lcom/jantursky/stipple/DitherField;
+	public final fun waves (FFFFF)Lcom/jantursky/stipple/DitherField;
+	public static synthetic fun waves$default (Lcom/jantursky/stipple/DitherFields;FFFFFILjava/lang/Object;)Lcom/jantursky/stipple/DitherField;
+}
+
+public final class com/jantursky/stipple/DitherModifiersKt {
+	public static final fun dither (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherField;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;Landroidx/compose/ui/graphics/Shape;ZFFLcom/jantursky/stipple/DitherRenderer;)Landroidx/compose/ui/Modifier;
+	public static synthetic fun dither$default (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherField;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;Landroidx/compose/ui/graphics/Shape;ZFFLcom/jantursky/stipple/DitherRenderer;ILjava/lang/Object;)Landroidx/compose/ui/Modifier;
+	public static final fun ditherFill (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherField;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;ZFF)Landroidx/compose/ui/Modifier;
+	public static synthetic fun ditherFill$default (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherField;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;ZFFILjava/lang/Object;)Landroidx/compose/ui/Modifier;
+	public static final fun ditherImage (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherAlgorithm;ZLjava/lang/Object;)Landroidx/compose/ui/Modifier;
+	public static synthetic fun ditherImage$default (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherAlgorithm;ZLjava/lang/Object;ILjava/lang/Object;)Landroidx/compose/ui/Modifier;
+	public static final fun ditherMask (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherField;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;ZFF)Landroidx/compose/ui/Modifier;
+	public static synthetic fun ditherMask$default (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherField;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;ZFFILjava/lang/Object;)Landroidx/compose/ui/Modifier;
+	public static final fun ditherProgress (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/ProgressDirection;Landroidx/compose/ui/graphics/Shape;FFLcom/jantursky/stipple/DitherField;ZFF)Landroidx/compose/ui/Modifier;
+	public static synthetic fun ditherProgress$default (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/ProgressDirection;Landroidx/compose/ui/graphics/Shape;FFLcom/jantursky/stipple/DitherField;ZFFILjava/lang/Object;)Landroidx/compose/ui/Modifier;
+}
+
+public abstract interface class com/jantursky/stipple/DitherPattern {
+	public abstract fun getSize ()I
+	public abstract fun threshold (II)F
+}
+
+public final class com/jantursky/stipple/DitherPatterns {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/jantursky/stipple/DitherPatterns;
+	public final fun getAll ()Ljava/util/List;
+	public final fun getBayer2 ()Lcom/jantursky/stipple/DitherPattern;
+	public final fun getBayer4 ()Lcom/jantursky/stipple/DitherPattern;
+	public final fun getBayer8 ()Lcom/jantursky/stipple/DitherPattern;
+	public final fun getBlueNoise ()Lcom/jantursky/stipple/DitherPattern;
+	public final fun nameOf (Lcom/jantursky/stipple/DitherPattern;)Ljava/lang/String;
+}
+
+public final class com/jantursky/stipple/DitherRenderer : java/lang/Enum {
+	public static final field Auto Lcom/jantursky/stipple/DitherRenderer;
+	public static final field Cells Lcom/jantursky/stipple/DitherRenderer;
+	public static final field Shader Lcom/jantursky/stipple/DitherRenderer;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/jantursky/stipple/DitherRenderer;
+	public static fun values ()[Lcom/jantursky/stipple/DitherRenderer;
+}
+
+public final class com/jantursky/stipple/ProgressDirection : java/lang/Enum {
+	public static final field Down Lcom/jantursky/stipple/ProgressDirection;
+	public static final field Left Lcom/jantursky/stipple/ProgressDirection;
+	public static final field Right Lcom/jantursky/stipple/ProgressDirection;
+	public static final field Up Lcom/jantursky/stipple/ProgressDirection;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/jantursky/stipple/ProgressDirection;
+	public static fun values ()[Lcom/jantursky/stipple/ProgressDirection;
+}
+
+public abstract interface class com/jantursky/stipple/ShaderField : com/jantursky/stipple/DitherField {
+	public abstract fun getShaderSource ()Ljava/lang/String;
+}
+
+public final class com/jantursky/stipple/StippleMotion : java/lang/Enum {
+	public static final field Full Lcom/jantursky/stipple/StippleMotion;
+	public static final field Reduced Lcom/jantursky/stipple/StippleMotion;
+	public static final field System Lcom/jantursky/stipple/StippleMotion;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/jantursky/stipple/StippleMotion;
+	public static fun values ()[Lcom/jantursky/stipple/StippleMotion;
+}
+
+public final class com/jantursky/stipple/StippleMotionKt {
+	public static final fun getLocalStippleMotion ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun isStippleMotionReduced (Landroidx/compose/runtime/Composer;I)Z
+}
+
+public final class com/jantursky/stipple/StippleTheme {
+	public static final field $stable I
+	public static final field Companion Lcom/jantursky/stipple/StippleTheme$Companion;
+	public synthetic fun <init> (JJLjava/util/List;FLcom/jantursky/stipple/CellShape;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JJLjava/util/List;FLcom/jantursky/stipple/CellShape;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun copy-gx2NUHE (JJLjava/util/List;FLcom/jantursky/stipple/CellShape;)Lcom/jantursky/stipple/StippleTheme;
+	public static synthetic fun copy-gx2NUHE$default (Lcom/jantursky/stipple/StippleTheme;JJLjava/util/List;FLcom/jantursky/stipple/CellShape;ILjava/lang/Object;)Lcom/jantursky/stipple/StippleTheme;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCell-D9Ej5fM ()F
+	public final fun getContrastRatio ()F
+	public final fun getInk-0d7_KjU ()J
+	public final fun getPalette ()Ljava/util/List;
+	public final fun getPaper-0d7_KjU ()J
+	public final fun getShape ()Lcom/jantursky/stipple/CellShape;
+	public fun hashCode ()I
+}
+
+public final class com/jantursky/stipple/StippleTheme$Companion {
+	public final fun getDark ()Lcom/jantursky/stipple/StippleTheme;
+	public final fun getLight ()Lcom/jantursky/stipple/StippleTheme;
+}
+
+public final class com/jantursky/stipple/StippleThemeKt {
+	public static final fun ProvideStippleTheme (Lcom/jantursky/stipple/StippleTheme;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun contrastRatio--OWjLjI (JJ)F
+	public static final fun getLocalStippleTheme ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun systemStippleTheme (Landroidx/compose/runtime/Composer;I)Lcom/jantursky/stipple/StippleTheme;
+}
+

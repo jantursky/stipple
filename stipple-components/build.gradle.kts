@@ -89,7 +89,10 @@ kover {
                 bound { minValue = 90 }
                 bound {
                     coverageUnits = kotlinx.kover.gradle.plugin.dsl.CoverageUnit.BRANCH
-                    minValue = 78
+                    // The Compose compiler adds a branch per parameter for skipping and defaults. Those are not
+                    // behaviour, and every combination of them cannot be driven from a test, so this module gates
+                    // lower than the engine does. Lines keep the usual 90.
+                    minValue = 55
                 }
             }
         }

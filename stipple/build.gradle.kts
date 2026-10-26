@@ -100,6 +100,8 @@ kover {
             excludes {
                 // Reduced-motion readers talk to the OS; they are exercised on devices, not in host tests.
                 packages("com.jantursky.stipple.platform")
+                // The AGSL painter needs Android 13; it is exercised on a device, not in host tests.
+                classes("*AgslShaderPainter*")
             }
         }
         verify {
