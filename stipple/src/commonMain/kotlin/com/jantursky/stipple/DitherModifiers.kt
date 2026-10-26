@@ -4,6 +4,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import com.jantursky.stipple.internal.DitherElement
+import com.jantursky.stipple.internal.DitherMode
 import com.jantursky.stipple.internal.DitherImageElement
 import com.jantursky.stipple.internal.ProgressField
 
@@ -31,7 +32,7 @@ public fun Modifier.dither(
     animated: Boolean = false,
     speed: Float = 1f,
     stillTime: Float = 0f,
-): Modifier = this then DitherElement(field, pattern, theme, shape, animated, speed, stillTime)
+): Modifier = this then DitherElement(DitherMode.Behind, field, pattern, theme, shape, animated, speed, stillTime)
 
 /**
  * Fills the element up to a [progress] between 0 and 1, behind its content: a progress bar, a gauge segment or the
@@ -75,3 +76,36 @@ public fun Modifier.ditherImage(
     invert: Boolean = false,
     key: Any? = null,
 ): Modifier = this then DitherImageElement(pattern, theme, algorithm, invert, key)
+
+/**
+ * Paints what the element draws with a dither: the content keeps its shape and its transparency, and its colors come
+ * from the cells. Use it on text, icons and silhouettes. Where the field's tone is low the content takes the paper
+ * color, so on a paper-colored background it fades away; keep the tone high where it must stay readable.
+ *
+ * The parameters are those of [dither]. The content is drawn into an offscreen layer, so this works on every target,
+ * live and animated, and costs one extra layer.
+ */
+public fun Modifier.ditherFill(
+    field: DitherField,
+    pattern: DitherPattern = DitherPatterns.Bayer4,
+    theme: StippleTheme? = null,
+    animated: Boolean = false,
+    speed: Float = 1f,
+    stillTime: Float = 0f,
+): Modifier = this then DitherElement(DitherMode.Fill, field, pattern, theme, RectangleShape, animated, speed, stillTime)
+
+/**
+ * Shows what the element draws only where the dither is lit, so a photo or a card appears through a pattern of dots
+ * and vanishes through the rest. Drive [field] with [DitherFields.sweep] to reveal or hide content. The element's own
+ * content is drawn into an offscreen layer.
+ *
+ * The parameters are those of [dither].
+ */
+public fun Modifier.ditherMask(
+    field: DitherField,
+    pattern: DitherPattern = DitherPatterns.Bayer4,
+    theme: StippleTheme? = null,
+    animated: Boolean = false,
+    speed: Float = 1f,
+    stillTime: Float = 0f,
+): Modifier = this then DitherElement(DitherMode.Mask, field, pattern, theme, RectangleShape, animated, speed, stillTime)

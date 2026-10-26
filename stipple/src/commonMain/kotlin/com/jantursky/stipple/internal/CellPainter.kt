@@ -2,6 +2,8 @@ package com.jantursky.stipple.internal
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import com.jantursky.stipple.CellShape
 import com.jantursky.stipple.DitherField
@@ -46,13 +48,14 @@ internal fun cellGrid(
 internal inline fun DrawScope.paintCells(
     grid: CellGrid,
     theme: StippleTheme,
+    ramp: List<Color> = theme.ramp,
+    blendMode: BlendMode = BlendMode.SrcOver,
     levelAt: (column: Int, row: Int) -> Int,
 ) {
     val width = size.width
     val height = size.height
-    val ramp = theme.ramp
     val cell = grid.cell
-    drawRect(ramp[0])
+    drawRect(ramp[0], blendMode = blendMode)
     val dots = theme.shape == CellShape.Dot
     for (row in 0 until grid.rows) {
         val top = row * cell
@@ -66,6 +69,7 @@ internal inline fun DrawScope.paintCells(
                         color = ramp[level],
                         radius = min(cell, min(width - column * cell, height - top)) / 2f,
                         center = Offset(column * cell + cell / 2f, top + cell / 2f),
+                        blendMode = blendMode,
                     )
                 }
                 continue
@@ -77,6 +81,7 @@ internal inline fun DrawScope.paintCells(
                     color = ramp[runLevel],
                     topLeft = Offset(left, top),
                     size = Size(min(column * cell, width) - left, min(cell, height - top)),
+                    blendMode = blendMode,
                 )
             }
             runLevel = level
@@ -101,6 +106,8 @@ internal object CellPainter {
         pattern: DitherPattern,
         theme: StippleTheme,
         t: Float,
+        ramp: List<Color> = theme.ramp,
+        blendMode: BlendMode = BlendMode.SrcOver,
     ) {
         with(scope) {
             val width = size.width
@@ -110,8 +117,8 @@ internal object CellPainter {
             val grid = cellGrid(width, height, theme.cell.toPx())
             val cell = grid.cell
             val aspect = width / height
-            val levels = theme.ramp.size
-            paintCells(grid, theme) { column, row ->
+            val levels = ramp.size
+            paintCells(grid, theme, ramp, blendMode) { column, row ->
                 val x = min((column * cell + cell / 2f) / width, 1f)
                 val y = min((row * cell + cell / 2f) / height, 1f)
                 quantize(field.tone(x, y, t, aspect), pattern.threshold(column, row), levels)

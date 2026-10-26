@@ -9,6 +9,7 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlin.math.pow
 
 /** The shape of one lit cell. */
 public enum class CellShape {
@@ -41,6 +42,13 @@ public class StippleTheme(
 ) {
     /** The colors of the ramp from paper to ink, at least two. */
     internal val ramp: List<Color> = palette?.takeIf { it.size >= 2 } ?: listOf(paper, ink)
+
+    /**
+     * The WCAG contrast ratio between [ink] and [paper], from 1 to 21. Text needs 4.5, large text and graphics 3.
+     * A dither draws less than full ink, so what a viewer sees is lower still.
+     */
+    public val contrastRatio: Float
+        get() = contrastRatio(ink, paper)
 
     /** A copy with the given values changed. */
     public fun copy(
@@ -92,3 +100,24 @@ public fun ProvideStippleTheme(
 ) {
     CompositionLocalProvider(LocalStippleTheme provides theme, content = content)
 }
+
+/** The WCAG contrast ratio between two colors, from 1 to 21. */
+public fun contrastRatio(
+    a: Color,
+    b: Color,
+): Float {
+    val la = relativeLuminance(a)
+    val lb = relativeLuminance(b)
+    return (maxOf(la, lb) + 0.05f) / (minOf(la, lb) + 0.05f)
+}
+
+private fun relativeLuminance(color: Color): Float {
+    fun linear(channel: Float): Float =
+        if (channel <= 0.03928f) channel / 12.92f else powf((channel + 0.055f) / 1.055f, 2.4f)
+    return 0.2126f * linear(color.red) + 0.7152f * linear(color.green) + 0.0722f * linear(color.blue)
+}
+
+private fun powf(
+    base: Float,
+    exponent: Float,
+): Float = base.toDouble().pow(exponent.toDouble()).toFloat()
