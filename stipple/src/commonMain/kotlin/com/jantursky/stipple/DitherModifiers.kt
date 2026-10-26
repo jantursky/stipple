@@ -44,6 +44,8 @@ public fun Modifier.dither(
  *
  * @param track The tone of the unfilled part: 0 is plain paper, a little more leaves a faint dotted track.
  * @param softness The width of the dithered edge as a fraction of the element's length along [direction].
+ * @param fill The tone of the filled part. Defaults to solid ink; give a gradient for a fill that fades, or an
+ *   animated field with [animated] for a fill that moves. [animated], [speed] and [stillTime] are those of [dither].
  */
 public fun Modifier.ditherProgress(
     progress: () -> Float,
@@ -53,7 +55,20 @@ public fun Modifier.ditherProgress(
     shape: Shape = RectangleShape,
     track: Float = 0f,
     softness: Float = 0.12f,
-): Modifier = dither(ProgressField(progress, direction, softness.coerceAtLeast(0.001f), track), pattern, theme, shape)
+    fill: DitherField = DitherFields.solid(1f),
+    animated: Boolean = false,
+    speed: Float = 1f,
+    stillTime: Float = 0f,
+): Modifier =
+    dither(
+        ProgressField(progress, direction, softness.coerceAtLeast(0.001f), track, fill),
+        pattern,
+        theme,
+        shape,
+        animated,
+        speed,
+        stillTime,
+    )
 
 /**
  * Dithers whatever the element draws: an image, an avatar, text. The content is drawn into an offscreen layer, read

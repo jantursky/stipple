@@ -12,6 +12,7 @@ internal class ProgressField(
     private val direction: ProgressDirection,
     private val softness: Float,
     private val track: Float,
+    private val fill: DitherField,
 ) : DitherField,
     FrameAware {
     private var edge = 0f
@@ -34,6 +35,6 @@ internal class ProgressField(
                 ProgressDirection.Up -> 1f - y
             }
         val filled = 1f - ((along - edge) / softness).coerceIn(0f, 1f)
-        return track + (1f - track) * filled
+        return track + (fill.tone(x, y, t, aspect) - track).coerceAtLeast(0f) * filled
     }
 }
