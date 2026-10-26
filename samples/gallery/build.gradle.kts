@@ -84,7 +84,7 @@ kotlin {
 
     sourceSets {
         commonMain {
-            kotlin.srcDir(generatedSources)
+            kotlin.srcDir(files(generatedSources).builtBy(generateExampleSources))
             dependencies {
                 api(project(":stipple"))
                 api(project(":stipple-components"))
@@ -99,13 +99,6 @@ kotlin {
             implementation(kotlin("test"))
         }
     }
-}
-
-tasks.matching { it.name.startsWith("compile") && it.name.contains("Kotlin") }.configureEach {
-    dependsOn(generateExampleSources)
-}
-tasks.matching { it.name.endsWith("SourcesJar") || it.name.startsWith("ksp") || it.name.startsWith("lint") }.configureEach {
-    dependsOn(generateExampleSources)
 }
 
 compose.resources {

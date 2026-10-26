@@ -23,7 +23,17 @@ fun ThemeExample(
     theme: StippleTheme,
     pattern: DitherPattern,
 ) {
-    val sunset = theme.copy(palette = listOf(Color(0xFF14122B), Color(0xFF6B5B95), Color(0xFFEC003F), Color(0xFFFFB900), Color(0xFFFFF8E5)))
+    val sunset =
+        theme.copy(
+            palette =
+                listOf(
+                    Color(0xFF14122B),
+                    Color(0xFF6B5B95),
+                    Color(0xFFEC003F),
+                    Color(0xFFFFB900),
+                    Color(0xFFFFF8E5),
+                ),
+        )
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         listOf(theme, theme.copy(shape = CellShape.Dot), sunset).forEach { themed ->
             ProvideStippleTheme(themed) {

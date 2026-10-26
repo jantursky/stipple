@@ -56,4 +56,3 @@ include(
     ":samples:app",
     ":samples:androidApp",
 )
-

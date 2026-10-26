@@ -4,10 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -57,10 +57,11 @@ public fun DitherStatCard(
     Column(
         modifier
             .semantics(mergeDescendants = true) {
-                contentDescription = buildString {
-                    append(label).append(": ").append(value)
-                    if (delta != null) append(", ").append(delta)
-                }
+                contentDescription =
+                    buildString {
+                        append(label).append(": ").append(value)
+                        if (delta != null) append(", ").append(delta)
+                    }
             }.background(resolved.paper)
             .border(1.dp, resolved.ink),
     ) {
@@ -69,7 +70,13 @@ public fun DitherStatCard(
             Spacer(Modifier.height(6.dp))
             BasicText(
                 value,
-                style = TextStyle(color = resolved.ink, fontSize = 30.sp, fontWeight = FontWeight.SemiBold, fontFamily = FontFamily.Monospace),
+                style =
+                    TextStyle(
+                        color = resolved.ink,
+                        fontSize = 30.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = FontFamily.Monospace,
+                    ),
             )
             if (delta != null) {
                 Spacer(Modifier.height(2.dp))
@@ -83,7 +90,13 @@ public fun DitherStatCard(
                 Modifier
                     .fillMaxWidth()
                     .height(trendHeight)
-                    .dither(area.drawing { drawn.value }, pattern, resolved.copy(cell = 2.dp), animated = animated, stillTime = 0f),
+                    .dither(
+                        area.drawing { drawn.value },
+                        pattern,
+                        resolved.copy(cell = 2.dp),
+                        animated = animated,
+                        stillTime = 0f,
+                    ),
             )
         } else {
             Box(Modifier.height(6.dp))
@@ -107,7 +120,10 @@ private class TrendArea(
             val i = floor(position).toInt().coerceIn(0, points.size - 2)
             val line = 1f - (points[i] + (points[i + 1] - points[i]) * (position - i)) * 0.8f - 0.1f
             when {
-                y < line -> 0f
+                y < line -> {
+                    0f
+                }
+
                 else -> {
                     val depth = (y - line) / (1f - line).coerceAtLeast(0.01f)
                     // The line itself is solid; below it the tone falls away. A light band rides along it while animating.

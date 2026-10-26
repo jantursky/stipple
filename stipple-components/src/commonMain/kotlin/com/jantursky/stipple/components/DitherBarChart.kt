@@ -83,7 +83,12 @@ public fun DitherBarChart(
                         ),
                 )
                 if (showLabels) {
-                    Label(entry.label, resolved.ink, weight = FontWeight.Medium, modifier = Modifier.padding(top = 6.dp))
+                    Label(
+                        entry.label,
+                        resolved.ink,
+                        weight = FontWeight.Medium,
+                        modifier = Modifier.padding(top = 6.dp),
+                    )
                 }
             }
         }

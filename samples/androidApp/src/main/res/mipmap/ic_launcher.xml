@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Before adaptive icons (API 23 to 25): the mark on the dark canvas. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+    <path android:pathData="M0,0h64v64h-64z" android:fillColor="#FF09090B" />
+    <path android:pathData="M8,8h45v3h-45zM8,11h18v3h-18zM29,11h3v3h-3zM35,11h3v3h-3zM41,11h3v3h-3zM47,11h3v3h-3zM53,11h3v3h-3zM8,14h27v3h-27zM38,14h3v3h-3zM44,14h3v3h-3zM50,14h3v3h-3zM11,17h9v3h-9zM23,17h3v3h-3zM29,17h3v3h-3zM35,17h3v3h-3zM41,17h3v3h-3zM53,17h3v3h-3zM8,20h21v3h-21zM32,20h9v3h-9zM44,20h3v3h-3zM50,20h3v3h-3zM8,23h6v3h-6zM17,23h3v3h-3zM23,23h3v3h-3zM29,23h3v3h-3zM35,23h3v3h-3zM41,23h3v3h-3zM47,23h3v3h-3zM8,26h15v3h-15zM26,26h3v3h-3zM32,26h3v3h-3zM38,26h3v3h-3zM44,26h3v3h-3zM50,26h3v3h-3zM11,29h3v3h-3zM17,29h3v3h-3zM23,29h3v3h-3zM29,29h3v3h-3zM41,29h3v3h-3zM8,32h21v3h-21zM32,32h3v3h-3zM38,32h3v3h-3zM44,32h3v3h-3zM50,32h3v3h-3zM11,35h3v3h-3zM17,35h3v3h-3zM23,35h3v3h-3zM29,35h3v3h-3zM35,35h3v3h-3zM8,38h3v3h-3zM14,38h3v3h-3zM20,38h3v3h-3zM26,38h3v3h-3zM32,38h3v3h-3zM38,38h3v3h-3zM44,38h3v3h-3zM50,38h3v3h-3zM11,41h3v3h-3zM17,41h3v3h-3zM29,41h3v3h-3zM8,44h9v3h-9zM20,44h3v3h-3zM26,44h3v3h-3zM32,44h3v3h-3zM38,44h3v3h-3zM44,44h3v3h-3zM11,47h3v3h-3zM17,47h3v3h-3zM23,47h3v3h-3zM8,50h3v3h-3zM14,50h3v3h-3zM20,50h3v3h-3zM26,50h3v3h-3zM32,50h3v3h-3zM38,50h3v3h-3zM17,53h3v3h-3z" android:fillColor="#FFFAFAFA" />
+</vector>

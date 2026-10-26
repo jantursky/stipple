@@ -33,7 +33,13 @@ fun GaugeExample(
     ) {
         BasicText(
             "${(value * 100).roundToInt()}%",
-            style = TextStyle(color = theme.ink, fontSize = 40.sp, fontWeight = FontWeight.SemiBold, fontFamily = FontFamily.Monospace),
+            style =
+                TextStyle(
+                    color = theme.ink,
+                    fontSize = 40.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = FontFamily.Monospace,
+                ),
         )
     }
 }

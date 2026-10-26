@@ -90,9 +90,16 @@ private fun generatedField(
 ): DitherField {
     var hash = 17
     for (c in name) hash = hash * 31 + c.code
+
     fun unit(shift: Int): Float = (((hash ushr shift) and 0xFF) / 255f)
     val angle = unit(0) * 360f
     val ramp = DitherFields.linear(from = 0.15f, to = 0.95f, angleDegrees = angle)
-    val grain = DitherFields.noise(scale = 2f + unit(8) * 3f, speed = if (animated) 0.4f else 0f, level = 0f, contrast = 0.5f)
+    val grain =
+        DitherFields.noise(
+            scale = 2f + unit(8) * 3f,
+            speed = if (animated) 0.4f else 0f,
+            level = 0f,
+            contrast = 0.5f,
+        )
     return DitherField { x, y, t, aspect -> ramp.tone(x, y, t, aspect) + grain.tone(x, y, t, aspect) }
 }

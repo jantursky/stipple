@@ -20,7 +20,13 @@ fun ProgressBarExample(
     animated: Boolean,
 ) {
     Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(20.dp)) {
-        DitherProgressBar(progress, theme = theme, pattern = pattern, animated = animated, contentDescription = "Upload")
+        DitherProgressBar(
+            progress,
+            theme = theme,
+            pattern = pattern,
+            animated = animated,
+            contentDescription = "Upload",
+        )
         DitherProgressBar(null, theme = theme, pattern = pattern, animated = animated, contentDescription = "Loading")
     }
 }

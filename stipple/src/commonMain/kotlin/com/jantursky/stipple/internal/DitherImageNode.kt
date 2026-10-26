@@ -153,7 +153,14 @@ internal class DitherImageNode(
             pending = source
             val layer = layer ?: requireGraphicsContext().createGraphicsLayer().also { layer = it }
             val outer = this
-            layer.record(outer.density.let { androidx.compose.ui.unit.Density(it, outer.fontScale) }, layoutDirection, source.size) {
+            layer.record(
+                outer.density.let {
+                    androidx.compose.ui.unit
+                        .Density(it, outer.fontScale)
+                },
+                layoutDirection,
+                source.size,
+            ) {
                 val context = outer.drawContext
                 val canvas = context.canvas
                 context.canvas = drawContext.canvas
@@ -192,9 +199,20 @@ internal class DitherImageNode(
                         val ramp = source.theme.ramp
                         val inkIsLight = ramp.last().luminance() > ramp.first().luminance()
                         val flip = inkIsLight == source.invert
-                        val tones = FloatArray(samples.luminance.size) { if (flip) 1f - samples.luminance[it] else samples.luminance[it] }
+                        val tones =
+                            FloatArray(
+                                samples.luminance.size,
+                            ) { if (flip) 1f - samples.luminance[it] else samples.luminance[it] }
                         val levels =
-                            ditherCells(tones, samples.alpha, grid.columns, grid.rows, source.algorithm, source.pattern, ramp.size)
+                            ditherCells(
+                                tones,
+                                samples.alpha,
+                                grid.columns,
+                                grid.rows,
+                                source.algorithm,
+                                source.pattern,
+                                ramp.size,
+                            )
                         Result(source, grid, levels)
                     }
                 result = made

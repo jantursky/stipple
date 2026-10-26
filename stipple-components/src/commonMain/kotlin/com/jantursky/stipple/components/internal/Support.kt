@@ -1,7 +1,7 @@
 package com.jantursky.stipple.components.internal
 
-import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.text.BasicText
@@ -53,5 +53,18 @@ internal fun Label(
     weight: FontWeight = FontWeight.Medium,
     modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier,
 ) {
-    BasicText(text, modifier, TextStyle(color = color, fontSize = sizeSp.sp, fontWeight = weight, lineHeight = (sizeSp * 1.35f).sp))
+    BasicText(
+        text,
+        modifier,
+        TextStyle(
+            color = color,
+            fontSize = sizeSp.sp,
+            fontWeight = weight,
+            lineHeight =
+                (
+                    sizeSp *
+                        1.35f
+                ).sp,
+        ),
+    )
 }

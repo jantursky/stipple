@@ -198,17 +198,32 @@ internal class DitherNode(
                 dither(theme, t)
                 drawContent()
             }
+
             DitherMode.Fill -> {
                 drawIntoCanvas { it.saveLayer(bounds, layerPaint) }
                 drawContent()
                 dither(theme, t, blendMode = BlendMode.SrcIn)
                 drawIntoCanvas { it.restore() }
             }
+
             DitherMode.Mask -> {
                 drawIntoCanvas { it.saveLayer(bounds, layerPaint) }
                 drawContent()
                 drawIntoCanvas { it.saveLayer(bounds, maskPaint) }
-                dither(theme, t, ramp = theme.ramp.mapIndexed { i, _ -> if (i == 0) Color.Transparent else Color.Black })
+                dither(
+                    theme,
+                    t,
+                    ramp =
+                        theme.ramp.mapIndexed { i, _ ->
+                            if (i ==
+                                0
+                            ) {
+                                Color.Transparent
+                            } else {
+                                Color.Black
+                            }
+                        },
+                )
                 drawIntoCanvas { it.restore() }
                 drawIntoCanvas { it.restore() }
             }
@@ -226,12 +241,19 @@ internal class DitherNode(
             return
         }
         when (val outline = shape.createOutline(size, layoutDirection, this)) {
-            is Outline.Rectangle -> clipRect { CellPainter.draw(this, field, pattern, theme, t, ramp, blendMode) }
-            is Outline.Rounded ->
+            is Outline.Rectangle -> {
+                clipRect { CellPainter.draw(this, field, pattern, theme, t, ramp, blendMode) }
+            }
+
+            is Outline.Rounded -> {
                 clipPath(Path().apply { addRoundRect(outline.roundRect) }) {
                     CellPainter.draw(this, field, pattern, theme, t, ramp, blendMode)
                 }
-            is Outline.Generic -> clipPath(outline.path) { CellPainter.draw(this, field, pattern, theme, t, ramp, blendMode) }
+            }
+
+            is Outline.Generic -> {
+                clipPath(outline.path) { CellPainter.draw(this, field, pattern, theme, t, ramp, blendMode) }
+            }
         }
     }
 }

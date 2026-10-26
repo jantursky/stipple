@@ -33,7 +33,10 @@ fun BackgroundExample(
         animated = animated,
     ) {
         Column(Modifier.fillMaxWidth().height(260.dp), Arrangement.Center, Alignment.CenterHorizontally) {
-            BasicText("Content on top", style = TextStyle(color = theme.ink, fontSize = 28.sp, fontWeight = FontWeight.SemiBold))
+            BasicText(
+                "Content on top",
+                style = TextStyle(color = theme.ink, fontSize = 28.sp, fontWeight = FontWeight.SemiBold),
+            )
         }
     }
 }

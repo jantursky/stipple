@@ -4,8 +4,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import com.jantursky.stipple.internal.DitherElement
-import com.jantursky.stipple.internal.DitherMode
 import com.jantursky.stipple.internal.DitherImageElement
+import com.jantursky.stipple.internal.DitherMode
 import com.jantursky.stipple.internal.ProgressField
 
 /**
@@ -107,7 +107,8 @@ public fun Modifier.ditherFill(
     animated: Boolean = false,
     speed: Float = 1f,
     stillTime: Float = 0f,
-): Modifier = this then DitherElement(DitherMode.Fill, field, pattern, theme, RectangleShape, animated, speed, stillTime)
+): Modifier =
+    this then DitherElement(DitherMode.Fill, field, pattern, theme, RectangleShape, animated, speed, stillTime)
 
 /**
  * Shows what the element draws only where the dither is lit, so a photo or a card appears through a pattern of dots
@@ -123,4 +124,5 @@ public fun Modifier.ditherMask(
     animated: Boolean = false,
     speed: Float = 1f,
     stillTime: Float = 0f,
-): Modifier = this then DitherElement(DitherMode.Mask, field, pattern, theme, RectangleShape, animated, speed, stillTime)
+): Modifier =
+    this then DitherElement(DitherMode.Mask, field, pattern, theme, RectangleShape, animated, speed, stillTime)

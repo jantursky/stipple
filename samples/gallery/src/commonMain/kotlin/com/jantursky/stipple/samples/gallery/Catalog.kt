@@ -3,13 +3,13 @@ package com.jantursky.stipple.samples.gallery
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.BasicText
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -58,7 +58,13 @@ private fun percent(v: Float): String = "${(v * 100).roundToInt()}%"
 /** Every page of the gallery, in sidebar order. */
 val Catalog: List<Page> =
     listOf(
-        Page("overview", Group.Start, "Stipple", "Dithered UI for Compose Multiplatform.", emptyList()) { Overview(it) },
+        Page(
+            "overview",
+            Group.Start,
+            "Stipple",
+            "Dithered UI for Compose Multiplatform.",
+            emptyList(),
+        ) { Overview(it) },
         Page(
             "patterns",
             Group.Engine,
@@ -79,7 +85,11 @@ val Catalog: List<Page> =
                 g,
                 controls = {
                     Segmented(FieldKind.entries, kind, { kind = it }, { it.name })
-                    if (kind == FieldKind.Sweep) SliderField("Progress", progress, { progress = it }, 0f..1f, format = ::percent)
+                    if (kind ==
+                        FieldKind.Sweep
+                    ) {
+                        SliderField("Progress", progress, { progress = it }, 0f..1f, format = ::percent)
+                    }
                 },
             ) { FieldsExample(kind, g.theme, g.pattern, g.animated, progress) }
         },
@@ -155,7 +165,9 @@ val Catalog: List<Page> =
             listOf("ButtonExample"),
         ) { g ->
             var clicks by remember { mutableIntStateOf(0) }
-            Demo(g, minHeight = 200, controls = { BasicText("Clicked $clicks times", style = Gallery.type.number.copy(color = Gallery.colors.muted)) }) {
+            Demo(g, minHeight = 200, controls = {
+                BasicText("Clicked $clicks times", style = Gallery.type.number.copy(color = Gallery.colors.muted))
+            }) {
                 ButtonExample(g.theme, g.pattern, g.animated) { clicks++ }
             }
         },
@@ -182,11 +194,25 @@ val Catalog: List<Page> =
             var columns by remember { mutableFloatStateOf(16f) }
             var gap by remember { mutableFloatStateOf(0.16f) }
             var seed by remember { mutableIntStateOf(1) }
-            val values = List(columns.roundToInt() * 7) { i -> (unit(i, seed) * unit(i / 7, seed + 9)).let { it * it * 1.4f }.coerceIn(0f, 1f) }
+            val values =
+                List(columns.roundToInt() * 7) { i ->
+                    (unit(i, seed) * unit(i / 7, seed + 9))
+                        .let {
+                            it * it *
+                                1.4f
+                        }.coerceIn(0f, 1f)
+                }
             Demo(
                 g,
                 controls = {
-                    SliderField("Columns", columns, { columns = it }, 6f..30f, step = 1f, format = { it.roundToInt().toString() })
+                    SliderField(
+                        "Columns",
+                        columns,
+                        { columns = it },
+                        6f..30f,
+                        step = 1f,
+                        format = { it.roundToInt().toString() },
+                    )
                     SliderField("Gap", gap, { gap = it }, 0f..0.5f, format = ::percent)
                     PillButton("Randomise", { seed++ })
                 },
@@ -200,7 +226,11 @@ val Catalog: List<Page> =
             listOf("GaugeExample"),
         ) { g ->
             var value by remember { mutableFloatStateOf(0.72f) }
-            Demo(g, minHeight = 320, controls = { SliderField("Value", value, { value = it }, 0f..1f, format = ::percent) }) {
+            Demo(
+                g,
+                minHeight = 320,
+                controls = { SliderField("Value", value, { value = it }, 0f..1f, format = ::percent) },
+            ) {
                 GaugeExample(value, g.theme, g.pattern, g.animated)
             }
         },
@@ -225,7 +255,9 @@ val Catalog: List<Page> =
             listOf("ProgressBarExample"),
         ) { g ->
             var progress by remember { mutableFloatStateOf(0.45f) }
-            Demo(g, minHeight = 200, controls = { SliderField("Progress", progress, { progress = it }, 0f..1f, format = ::percent) }) {
+            Demo(g, minHeight = 200, controls = {
+                SliderField("Progress", progress, { progress = it }, 0f..1f, format = ::percent)
+            }) {
                 ProgressBarExample(progress, g.theme, g.pattern, g.animated)
             }
         },
@@ -250,11 +282,12 @@ val Catalog: List<Page> =
                             singleLine = true,
                             textStyle = Gallery.type.body.copy(color = colors.text),
                             cursorBrush = SolidColor(colors.accent),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .border(1.dp, colors.hairline, RoundedCornerShape(6.dp))
-                                .background(colors.panel, RoundedCornerShape(6.dp))
-                                .padding(horizontal = 10.dp, vertical = 8.dp),
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .border(1.dp, colors.hairline, RoundedCornerShape(6.dp))
+                                    .background(colors.panel, RoundedCornerShape(6.dp))
+                                    .padding(horizontal = 10.dp, vertical = 8.dp),
                         )
                     }
                     SliderField("Fade to", fadeTo, { fadeTo = it }, 0.2f..1f, format = ::percent)

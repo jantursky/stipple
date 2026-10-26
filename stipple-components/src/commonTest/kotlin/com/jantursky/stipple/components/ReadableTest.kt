@@ -31,7 +31,12 @@ class ReadableTest {
 
     @Test
     fun aPaletteIsDroppedWhenInkIsReplaced() {
-        val weak = StippleTheme(ink = Color.LightGray, paper = Color.White, palette = listOf(Color.White, Color.Yellow, Color.LightGray))
+        val weak =
+            StippleTheme(
+                ink = Color.LightGray,
+                paper = Color.White,
+                palette = listOf(Color.White, Color.Yellow, Color.LightGray),
+            )
         assertEquals(null, readable(weak, 4.5f).palette)
     }
 

@@ -59,7 +59,15 @@ public fun DitherProgressBar(
                     }
             }.border(1.dp, resolved.ink)
     if (progress == null) {
-        Box(bar.dither(remember(track) { IndeterminateBand(track) }, pattern, resolved, animated = animated, stillTime = 0.6f))
+        Box(
+            bar.dither(
+                remember(track) { IndeterminateBand(track) },
+                pattern,
+                resolved,
+                animated = animated,
+                stillTime = 0.6f,
+            ),
+        )
         return
     }
     val eased = rememberEased(progress.coerceIn(0f, 1f), animated)

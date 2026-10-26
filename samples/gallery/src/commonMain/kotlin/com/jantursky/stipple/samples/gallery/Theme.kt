@@ -91,7 +91,9 @@ private fun variableFamily(
     font: FontResource,
     vararg weights: FontWeight,
 ): FontFamily =
-    FontFamily(weights.map { Font(font, it, variationSettings = FontVariation.Settings(FontVariation.weight(it.weight))) })
+    FontFamily(
+        weights.map { Font(font, it, variationSettings = FontVariation.Settings(FontVariation.weight(it.weight))) },
+    )
 
 @Composable
 fun GalleryTheme(
@@ -108,7 +110,13 @@ fun GalleryTheme(
                 line: Int,
                 weight: FontWeight,
                 tracking: Float = 0f,
-            ) = TextStyle(fontFamily = family, fontSize = size.sp, lineHeight = line.sp, fontWeight = weight, letterSpacing = tracking.sp)
+            ) = TextStyle(
+                fontFamily = family,
+                fontSize = size.sp,
+                lineHeight = line.sp,
+                fontWeight = weight,
+                letterSpacing = tracking.sp,
+            )
             GalleryType(
                 title = style(sans, 30, 36, FontWeight.SemiBold, -0.6f),
                 heading = style(sans, 18, 26, FontWeight.SemiBold, -0.2f),

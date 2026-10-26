@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -19,7 +20,6 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import androidx.compose.runtime.withFrameNanos
 
 /** The time between the last frames, in milliseconds. The ring is read only when the meter draws. */
 private const val FRAMES = 48
@@ -47,11 +47,17 @@ fun FrameMeter(
             tick = index.toLong()
         }
     }
-    val average = run {
-        tick
-        times.filter { it > 0f }.let { if (it.isEmpty()) 0f else it.average().toFloat() }
-    }
-    Row(modifier.semantics { contentDescription = "Frame time ${average.toInt()} milliseconds" }, verticalAlignment = Alignment.CenterVertically) {
+    val average =
+        run {
+            tick
+            times.filter { it > 0f }.let { if (it.isEmpty()) 0f else it.average().toFloat() }
+        }
+    Row(
+        modifier.semantics {
+            contentDescription = "Frame time ${average.toInt()} milliseconds"
+        },
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
         Canvas(Modifier.width(if (compact) 28.dp else 72.dp).height(20.dp)) {
             tick
             val barWidth = size.width / FRAMES

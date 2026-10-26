@@ -3,6 +3,7 @@ package com.jantursky.stipple.samples.gallery
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,7 +23,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.layout.Arrangement
 
 /** The source of the example on the page, selectable, with Kotlin highlighted. */
 @Composable
@@ -60,8 +60,32 @@ fun CodePanel(
 
 private val keywords =
     setOf(
-        "fun", "val", "var", "if", "else", "when", "return", "class", "object", "private", "public", "internal", "override",
-        "remember", "by", "in", "for", "is", "null", "true", "false", "it", "interface", "import", "package", "this",
+        "fun",
+        "val",
+        "var",
+        "if",
+        "else",
+        "when",
+        "return",
+        "class",
+        "object",
+        "private",
+        "public",
+        "internal",
+        "override",
+        "remember",
+        "by",
+        "in",
+        "for",
+        "is",
+        "null",
+        "true",
+        "false",
+        "it",
+        "interface",
+        "import",
+        "package",
+        "this",
     )
 
 private val token = Regex("""//[^\n]*|"(?:\\.|[^"\\])*"|\b\d[\d_.]*[fFLdp]*\b|@[A-Za-z]+|\b[A-Za-z_][A-Za-z0-9_]*\b""")

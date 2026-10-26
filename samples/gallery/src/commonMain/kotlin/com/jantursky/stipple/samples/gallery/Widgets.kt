@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.drag
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
@@ -78,6 +80,7 @@ fun <T> Segmented(
             .clip(RoundedCornerShape(8.dp))
             .border(1.dp, colors.hairline, RoundedCornerShape(8.dp))
             .background(colors.panel)
+            .horizontalScroll(rememberScrollState())
             .padding(2.dp),
         horizontalArrangement = Arrangement.spacedBy(2.dp),
     ) {
@@ -88,12 +91,19 @@ fun <T> Segmented(
                     .clip(RoundedCornerShape(6.dp))
                     .background(if (on) colors.page else Color.Transparent)
                     .then(if (on) Modifier.border(1.dp, colors.hairline, RoundedCornerShape(6.dp)) else Modifier)
-                    .semantics { role = Role.RadioButton; this.selected = on }
-                    .clickable { onSelect(option) }
+                    .semantics {
+                        role = Role.RadioButton
+                        this.selected = on
+                    }.clickable { onSelect(option) }
                     .padding(horizontal = 10.dp, vertical = 5.dp),
                 contentAlignment = Alignment.Center,
             ) {
-                BasicText(label(option), style = Gallery.type.caption.copy(color = if (on) colors.text else colors.muted))
+                BasicText(
+                    label(option),
+                    style = Gallery.type.caption.copy(color = if (on) colors.text else colors.muted),
+                    maxLines = 1,
+                    softWrap = false,
+                )
             }
         }
     }
@@ -127,7 +137,10 @@ fun GallerySlider(
             .semantics {
                 contentDescription = description
                 progressBarRangeInfo = ProgressBarRangeInfo(value, range)
-                setProgress { onChange(snap(it)); true }
+                setProgress {
+                    onChange(snap(it))
+                    true
+                }
             }.pointerInput(range, step) {
                 awaitEachGesture {
                     val down = awaitFirstDown()
@@ -140,13 +153,27 @@ fun GallerySlider(
             },
         contentAlignment = Alignment.CenterStart,
     ) {
-        Box(Modifier.fillMaxWidth().height(4.dp).clip(CircleShape).background(colors.hairline))
-        Box(Modifier.fillMaxWidth(fraction).height(4.dp).clip(CircleShape).background(colors.accent))
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .height(4.dp)
+                .clip(CircleShape)
+                .background(colors.hairline),
+        )
+        Box(
+            Modifier
+                .fillMaxWidth(fraction)
+                .height(4.dp)
+                .clip(CircleShape)
+                .background(colors.accent),
+        )
         val thumb = 16.dp
         Box(
             Modifier
-                .offset { androidx.compose.ui.unit.IntOffset((fraction * (width - thumb.roundToPx())).roundToInt(), 0) }
-                .size(thumb)
+                .offset {
+                    androidx.compose.ui.unit
+                        .IntOffset((fraction * (width - thumb.roundToPx())).roundToInt(), 0)
+                }.size(thumb)
                 .clip(CircleShape)
                 .background(colors.page)
                 .border(2.dp, colors.accent, CircleShape),
@@ -225,12 +252,19 @@ fun Swatches(
                     .semantics {
                         role = Role.RadioButton
                         this.selected = on
-                        contentDescription = if (option == null) "$description: theme default" else "$description colour"
+                        contentDescription =
+                            if (option == null) "$description: theme default" else "$description colour"
                     }.clickable { onSelect(option) },
             ) {
                 if (option == null) {
                     // A slash marks the swatch that follows the theme.
-                    Box(Modifier.align(Alignment.Center).width(14.dp).height(1.5.dp).background(colors.faint))
+                    Box(
+                        Modifier
+                            .align(Alignment.Center)
+                            .width(14.dp)
+                            .height(1.5.dp)
+                            .background(colors.faint),
+                    )
                 }
             }
         }
@@ -256,7 +290,12 @@ fun PillButton(
             .padding(horizontal = 12.dp, vertical = 7.dp),
         contentAlignment = Alignment.Center,
     ) {
-        BasicText(text, style = Gallery.type.label.copy(color = if (primary) colors.page else colors.text), maxLines = 1, softWrap = false)
+        BasicText(
+            text,
+            style = Gallery.type.label.copy(color = if (primary) colors.page else colors.text),
+            maxLines = 1,
+            softWrap = false,
+        )
     }
 }
 

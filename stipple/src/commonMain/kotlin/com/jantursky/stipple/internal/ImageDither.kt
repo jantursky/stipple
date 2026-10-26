@@ -71,14 +71,22 @@ internal fun ditherCells(
 ): IntArray {
     val out = IntArray(columns * rows)
     when (algorithm) {
-        DitherAlgorithm.Ordered ->
+        DitherAlgorithm.Ordered -> {
             for (row in 0 until rows) {
                 for (column in 0 until columns) {
-                    out[row * columns + column] = quantize(tones[row * columns + column], pattern.threshold(column, row), levels)
+                    out[row * columns + column] =
+                        quantize(tones[row * columns + column], pattern.threshold(column, row), levels)
                 }
             }
-        DitherAlgorithm.FloydSteinberg -> diffuse(tones, out, columns, rows, levels, FLOYD_STEINBERG)
-        DitherAlgorithm.Atkinson -> diffuse(tones, out, columns, rows, levels, ATKINSON)
+        }
+
+        DitherAlgorithm.FloydSteinberg -> {
+            diffuse(tones, out, columns, rows, levels, FLOYD_STEINBERG)
+        }
+
+        DitherAlgorithm.Atkinson -> {
+            diffuse(tones, out, columns, rows, levels, ATKINSON)
+        }
     }
     for (i in out.indices) if (alpha[i] < 0.5f) out[i] = TRANSPARENT_CELL
     return out

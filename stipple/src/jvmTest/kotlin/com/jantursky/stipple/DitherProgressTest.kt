@@ -50,7 +50,9 @@ class DitherProgressTest {
     fun theDirectionChangesTheEdge() =
         runDitherTest {
             setDitherContent {
-                Square(Modifier.ditherProgress({ 0.5f }, theme = theme, direction = ProgressDirection.Up, softness = 0.1f))
+                Square(
+                    Modifier.ditherProgress({ 0.5f }, theme = theme, direction = ProgressDirection.Up, softness = 0.1f),
+                )
             }
             val map = capture().toPixelMap()
             assertEquals(ink, map[50, 90])

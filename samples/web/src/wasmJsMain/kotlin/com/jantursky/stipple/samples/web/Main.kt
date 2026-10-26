@@ -6,7 +6,10 @@ import com.jantursky.stipple.samples.gallery.GalleryApp
 import kotlinx.browser.document
 import kotlinx.browser.window
 
-private fun pageFromHash(): String? = window.location.hash.removePrefix("#").ifEmpty { null }
+private fun pageFromHash(): String? =
+    window.location.hash
+        .removePrefix("#")
+        .ifEmpty { null }
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {

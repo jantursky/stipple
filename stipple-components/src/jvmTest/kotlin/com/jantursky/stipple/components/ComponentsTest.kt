@@ -1,10 +1,10 @@
 package com.jantursky.stipple.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.background
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
@@ -15,12 +15,12 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertContentDescriptionEquals
 import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
-import androidx.compose.ui.test.click
 import androidx.compose.ui.unit.dp
 import com.jantursky.stipple.StippleMotion
 import com.jantursky.stipple.StippleTheme
@@ -96,7 +96,13 @@ class ComponentsTest {
     fun barChartGrowsInWhenAnimated() =
         runComponentTest {
             setComponent {
-                DitherBarChart(listOf(BarEntry("A", 10f)), Modifier.size(100.dp), showLabels = false, animated = true, theme = light.copy(cell = 1.dp))
+                DitherBarChart(
+                    listOf(BarEntry("A", 10f)),
+                    Modifier.size(100.dp),
+                    showLabels = false,
+                    animated = true,
+                    theme = light.copy(cell = 1.dp),
+                )
             }
             mainClock.advanceTimeByFrame()
             val start = capture().shareOf(light.ink)
@@ -108,7 +114,13 @@ class ComponentsTest {
     fun reducedMotionSkipsTheGrowIn() =
         runComponentTest {
             setComponent(StippleMotion.Reduced) {
-                DitherBarChart(listOf(BarEntry("A", 10f)), Modifier.size(100.dp), showLabels = false, animated = true, theme = light.copy(cell = 1.dp))
+                DitherBarChart(
+                    listOf(BarEntry("A", 10f)),
+                    Modifier.size(100.dp),
+                    showLabels = false,
+                    animated = true,
+                    theme = light.copy(cell = 1.dp),
+                )
             }
             mainClock.advanceTimeByFrame()
             mainClock.advanceTimeByFrame()
@@ -119,7 +131,14 @@ class ComponentsTest {
     fun gridDrawsSquaresWithGaps() =
         runComponentTest {
             setComponent {
-                DitherGrid(listOf(1f, 0f, 0f, 1f), columns = 2, Modifier.size(100.dp), theme = light, gap = 0.2f, cell = 1.dp)
+                DitherGrid(
+                    listOf(1f, 0f, 0f, 1f),
+                    columns = 2,
+                    Modifier.size(100.dp),
+                    theme = light,
+                    gap = 0.2f,
+                    cell = 1.dp,
+                )
             }
             val image = capture()
             assertEquals(1f, image.shareOf(light.ink, 10, 10, 30, 30))
@@ -139,13 +158,21 @@ class ComponentsTest {
             assertEquals(100, onNodeRoot().height)
         }
 
-    private fun androidx.compose.ui.test.ComposeUiTest.onNodeRoot() = onRoot().fetchSemanticsNode().children.first().size
+    private fun androidx.compose.ui.test.ComposeUiTest.onNodeRoot() =
+        onRoot()
+            .fetchSemanticsNode()
+            .children
+            .first()
+            .size
 
     @Test
     fun gaugeReportsItsValue() =
         runComponentTest {
             setComponent { DitherGauge(0.4f, Modifier.size(100.dp), contentDescription = "Battery") }
-            val info = onNodeWithContentDescription("Battery").fetchSemanticsNode().config.getOrNull(SemanticsProperties.ProgressBarRangeInfo)
+            val info =
+                onNodeWithContentDescription(
+                    "Battery",
+                ).fetchSemanticsNode().config.getOrNull(SemanticsProperties.ProgressBarRangeInfo)
             assertEquals(ProgressBarRangeInfo(0.4f, 0f..1f), info)
         }
 
@@ -164,7 +191,15 @@ class ComponentsTest {
     @Test
     fun gaugeShowsItsContent() =
         runComponentTest {
-            setComponent { DitherGauge(0.5f, Modifier.size(100.dp)) { androidx.compose.foundation.text.BasicText("50%") } }
+            setComponent {
+                DitherGauge(
+                    0.5f,
+                    Modifier.size(100.dp),
+                ) {
+                    androidx.compose.foundation.text
+                        .BasicText("50%")
+                }
+            }
             onNodeWithText("50%").assertExists()
         }
 
@@ -179,7 +214,14 @@ class ComponentsTest {
     fun statCardDrawsItsTrendBelowTheText() =
         runComponentTest {
             setComponent {
-                DitherStatCard("Visits", "9", Modifier.width(200.dp), trend = listOf(1f, 2f, 3f, 4f), theme = light, trendHeight = 80.dp)
+                DitherStatCard(
+                    "Visits",
+                    "9",
+                    Modifier.width(200.dp),
+                    trend = listOf(1f, 2f, 3f, 4f),
+                    theme = light,
+                    trendHeight = 80.dp,
+                )
             }
             val image = capture()
             assertTrue(image.shareOf(light.ink, 10, image.height - 60, 180, 50) > 0.1f)
@@ -190,7 +232,10 @@ class ComponentsTest {
     fun progressBarReportsItsProgress() =
         runComponentTest {
             setComponent { DitherProgressBar(0.25f, contentDescription = "Upload") }
-            val info = onNodeWithContentDescription("Upload").fetchSemanticsNode().config.getOrNull(SemanticsProperties.ProgressBarRangeInfo)
+            val info =
+                onNodeWithContentDescription(
+                    "Upload",
+                ).fetchSemanticsNode().config.getOrNull(SemanticsProperties.ProgressBarRangeInfo)
             assertEquals(ProgressBarRangeInfo(0.25f, 0f..1f), info)
         }
 
@@ -198,14 +243,24 @@ class ComponentsTest {
     fun anIndeterminateProgressBarSaysSo() =
         runComponentTest {
             setComponent { DitherProgressBar(null, contentDescription = "Loading") }
-            val info = onNodeWithContentDescription("Loading").fetchSemanticsNode().config.getOrNull(SemanticsProperties.ProgressBarRangeInfo)
+            val info =
+                onNodeWithContentDescription(
+                    "Loading",
+                ).fetchSemanticsNode().config.getOrNull(SemanticsProperties.ProgressBarRangeInfo)
             assertEquals(ProgressBarRangeInfo.Indeterminate, info)
         }
 
     @Test
     fun anIndeterminateBarMovesOnlyWhenAnimated() =
         runComponentTest {
-            setComponent { DitherProgressBar(null, Modifier.width(200.dp), animated = true, theme = light.copy(cell = 1.dp)) }
+            setComponent {
+                DitherProgressBar(
+                    null,
+                    Modifier.width(200.dp),
+                    animated = true,
+                    theme = light.copy(cell = 1.dp),
+                )
+            }
             mainClock.advanceTimeByFrame()
             val first = capture()
             mainClock.advanceTimeBy(600)
@@ -215,7 +270,9 @@ class ComponentsTest {
     @Test
     fun anIndeterminateBarRestsUnderReducedMotion() =
         runComponentTest {
-            setComponent(StippleMotion.Reduced) { DitherProgressBar(null, Modifier.width(200.dp), animated = true, theme = light.copy(cell = 1.dp)) }
+            setComponent(StippleMotion.Reduced) {
+                DitherProgressBar(null, Modifier.width(200.dp), animated = true, theme = light.copy(cell = 1.dp))
+            }
             mainClock.advanceTimeByFrame()
             val first = capture()
             mainClock.advanceTimeBy(600)
@@ -225,7 +282,14 @@ class ComponentsTest {
     @Test
     fun theProgressFillMatchesTheProgress() =
         runComponentTest {
-            setComponent { DitherProgressBar(0.5f, Modifier.width(200.dp), theme = light.copy(cell = 1.dp), track = 0f) }
+            setComponent {
+                DitherProgressBar(
+                    0.5f,
+                    Modifier.width(200.dp),
+                    theme = light.copy(cell = 1.dp),
+                    track = 0f,
+                )
+            }
             val image = capture()
             assertTrue(image.shareOf(light.ink, 4, 4, 80, 6) > 0.9f)
             assertTrue(image.shareOf(light.ink, 120, 4, 70, 6) < 0.01f)
@@ -278,7 +342,9 @@ class ComponentsTest {
     @Test
     fun aPhotoAvatarIsDithered() =
         runComponentTest {
-            setComponent { DitherAvatar("Ada", size = 100.dp, painter = ColorPainter(Color.Black), theme = light.copy(cell = 1.dp)) }
+            setComponent {
+                DitherAvatar("Ada", size = 100.dp, painter = ColorPainter(Color.Black), theme = light.copy(cell = 1.dp))
+            }
             waitUntil(timeoutMillis = 5_000) { capture().shareOf(light.ink) > 0.5f }
         }
 
@@ -287,7 +353,13 @@ class ComponentsTest {
         runComponentTest {
             val red = Color(0xFFFF0000)
             setComponent {
-                DitherImage(ColorPainter(red), "A red field", Modifier.size(100.dp), theme = light.copy(cell = 1.dp), reveal = 0.5f)
+                DitherImage(
+                    ColorPainter(red),
+                    "A red field",
+                    Modifier.size(100.dp),
+                    theme = light.copy(cell = 1.dp),
+                    reveal = 0.5f,
+                )
             }
             waitUntil(timeoutMillis = 5_000) { capture().shareOf(red, 0, 0, 40, 100) > 0.5f }
             val image = capture()

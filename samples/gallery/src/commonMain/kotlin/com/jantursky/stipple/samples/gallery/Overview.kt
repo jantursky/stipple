@@ -53,7 +53,17 @@ fun StippleMark(
     state: GalleryState,
     size: Int = 24,
 ) {
-    val theme = remember(state.dark) { (if (state.dark) com.jantursky.stipple.StippleTheme.Dark else com.jantursky.stipple.StippleTheme.Light).copy(cell = (size / 16f).dp) }
+    val theme =
+        remember(state.dark) {
+            (if (state.dark) com.jantursky.stipple.StippleTheme.Dark else com.jantursky.stipple.StippleTheme.Light)
+                .copy(
+                    cell =
+                        (
+                            size /
+                                16f
+                        ).dp,
+                )
+        }
     Box(Modifier.size(size.dp).dither(DitherFields.linear(1f, 0f, 45f), DitherPatterns.Bayer8, theme))
 }
 
@@ -79,16 +89,31 @@ fun Overview(state: GalleryState) {
                     .background(colors.code)
                     .padding(horizontal = 14.dp, vertical = 10.dp),
             ) {
-                BasicText("implementation(\"io.github.jantursky:stipple:1.0.0\")", style = Gallery.type.code.copy(color = colors.text))
+                BasicText(
+                    "implementation(\"io.github.jantursky:stipple:1.0.0\")",
+                    style = Gallery.type.code.copy(color = colors.text),
+                )
             }
         }
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(14.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(14.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp),
+        ) {
             Tile("Patterns", "patterns", state) {
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    DitherPatterns.All.forEach { Box(Modifier.size(34.dp).dither(DitherFields.linear(), it, state.theme.copy(cell = 2.dp))) }
+                    DitherPatterns.All.forEach {
+                        Box(Modifier.size(34.dp).dither(DitherFields.linear(), it, state.theme.copy(cell = 2.dp)))
+                    }
                 }
             }
-            Tile("DitherGauge", "gauge", state) { DitherGauge(0.72f, Modifier.size(110.dp), theme = state.theme.copy(cell = 2.dp), animated = state.animated) }
+            Tile("DitherGauge", "gauge", state) {
+                DitherGauge(
+                    0.72f,
+                    Modifier.size(110.dp),
+                    theme = state.theme.copy(cell = 2.dp),
+                    animated = state.animated,
+                )
+            }
             Tile("DitherBarChart", "bar-chart", state) {
                 DitherBarChart(
                     List(6) { BarEntry("", 30f + unit(it, 3) * 70f) },
@@ -100,11 +125,18 @@ fun Overview(state: GalleryState) {
                 )
             }
             Tile("DitherText", "text", state) {
-                DitherText("Aa", style = TextStyle(fontSize = 76.sp, fontWeight = FontWeight.Bold), theme = state.theme, animated = state.animated)
+                DitherText(
+                    "Aa",
+                    style = TextStyle(fontSize = 76.sp, fontWeight = FontWeight.Bold),
+                    theme = state.theme,
+                    animated = state.animated,
+                )
             }
             Tile("DitherAvatar", "avatar", state) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    listOf("Ada Lovelace", "Grace Hopper", "Alan Turing").forEach { DitherAvatar(it, size = 52.dp, theme = state.theme, animated = state.animated) }
+                    listOf("Ada Lovelace", "Grace Hopper", "Alan Turing").forEach {
+                        DitherAvatar(it, size = 52.dp, theme = state.theme, animated = state.animated)
+                    }
                 }
             }
             Tile("DitherProgressBar", "progress-bar", state) {
@@ -114,9 +146,21 @@ fun Overview(state: GalleryState) {
                 }
             }
             Tile("DitherGrid", "grid", state) {
-                DitherGrid(List(7 * 12) { (unit(it, 5) * unit(it / 7, 8)).coerceIn(0f, 1f) }, 12, Modifier.width(170.dp), theme = state.theme, animated = state.animated)
+                DitherGrid(
+                    List(7 * 12) {
+                        (unit(it, 5) * unit(it / 7, 8)).coerceIn(0f, 1f)
+                    },
+                    12,
+                    Modifier.width(170.dp),
+                    theme = state.theme,
+                    animated = state.animated,
+                )
             }
-            Tile("DitherButton", "button", state) { DitherButton("Save", {}, theme = state.theme, animated = state.animated) }
+            Tile(
+                "DitherButton",
+                "button",
+                state,
+            ) { DitherButton("Save", {}, theme = state.theme, animated = state.animated) }
         }
     }
 }

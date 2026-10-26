@@ -42,17 +42,18 @@ private fun DrawScope.ridge(
     phase: Float,
     color: Color,
 ) {
-    val path = Path().apply {
-        moveTo(0f, size.height)
-        lineTo(0f, base)
-        val steps = 24
-        for (i in 1..steps) {
-            val x = size.width * i / steps
-            val wave = kotlin.math.sin(i * 0.55f + phase) * 0.6f + kotlin.math.sin(i * 1.3f + phase * 2f) * 0.4f
-            lineTo(x, base - wave * amplitude)
+    val path =
+        Path().apply {
+            moveTo(0f, size.height)
+            lineTo(0f, base)
+            val steps = 24
+            for (i in 1..steps) {
+                val x = size.width * i / steps
+                val wave = kotlin.math.sin(i * 0.55f + phase) * 0.6f + kotlin.math.sin(i * 1.3f + phase * 2f) * 0.4f
+                lineTo(x, base - wave * amplitude)
+            }
+            lineTo(size.width, size.height)
+            close()
         }
-        lineTo(size.width, size.height)
-        close()
-    }
     drawPath(path, color)
 }
