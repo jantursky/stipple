@@ -1,5 +1,5 @@
 name: Bug report
-description: An effect looks wrong, stutters, gets clipped, throws, or doesn't match the docs.
+description: A dither looks wrong, stutters, gets clipped, throws, or doesn't match the docs.
 labels: [bug]
 body:
   - type: markdown

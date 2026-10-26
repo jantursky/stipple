@@ -9,6 +9,6 @@
 - [ ] `./gradlew apiDump` was run, if the public API changed
 - [ ] New behavior has tests
 - [ ] `./gradlew :stipple:verifyRoborazziJvm` passes, or screenshots were re-recorded on purpose
-- [ ] The gallery in `samples/gallery` has an example, if this adds an effect
+- [ ] The gallery in `samples/gallery` has an example, if this adds a field, modifier or component
 - [ ] Docs in `apps/docs` are updated, if the behavior users see changed
 - [ ] `CHANGELOG.md` has an entry under `## [Unreleased]`

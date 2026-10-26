@@ -1,5 +1,5 @@
 name: Feature request
-description: An idea for an effect, the API, a platform or the docs.
+description: An idea for a field, a component, the API, a platform or the docs.
 labels: [enhancement]
 body:
   - type: textarea

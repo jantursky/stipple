@@ -2,4 +2,4 @@ blank_issues_enabled: false
 contact_links:
   - name: Documentation
     url: https://stipple-docs.vercel.app
-    about: One page per effect, the API reference and the live gallery.
+    about: The guides, the API reference and the live gallery.

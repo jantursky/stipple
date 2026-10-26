@@ -9,8 +9,7 @@
 # Options:
 #   --no-build      install what was built last instead of building first
 #   --light         open the pages in the light theme (default: dark)
-#   --wait <s>      seconds to let each page play before the screenshot (default: 2;
-#                   a transition shows at about 1.1 s and hides again at 2.3 s)
+#   --wait <s>      seconds to let each page settle before the screenshot (default: 2)
 #   --out <dir>     where screenshots go (default: build/device-smoke/<platform>)
 #
 # Without entry ids it runs every id in samples/gallery's Catalog.kt. The overview runs first as "overview".
@@ -54,8 +53,8 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 if [[ ${#ids[@]} -eq 0 ]]; then
-    # Every Entry( in the catalog starts with its id on the next line.
-    ids=(overview $(awk '/^ *Entry\($/ { getline; gsub(/[ ",]/, ""); print }' "$CATALOG"))
+    # Every Page( in the catalog starts with its id on the next line.
+    ids=(overview $(awk '/^ *Page\($/ { getline; gsub(/[ ",]/, ""); print }' "$CATALOG"))
 fi
 mkdir -p "$out"
 
