@@ -40,6 +40,57 @@ internal fun cellGrid(
 }
 
 /**
+ * Draws a grid of cells: [levelAt] gives the ramp index of each cell, 0 being paper. Paper is drawn once as the
+ * background, and neighbours of one level join into a single rectangle, so a still area costs few draw calls.
+ */
+internal inline fun DrawScope.paintCells(
+    grid: CellGrid,
+    theme: StippleTheme,
+    levelAt: (column: Int, row: Int) -> Int,
+) {
+    val width = size.width
+    val height = size.height
+    val ramp = theme.ramp
+    val cell = grid.cell
+    drawRect(ramp[0])
+    val dots = theme.shape == CellShape.Dot
+    for (row in 0 until grid.rows) {
+        val top = row * cell
+        var runLevel = 0
+        var runStart = 0
+        for (column in 0..grid.columns) {
+            val level = if (column == grid.columns) 0 else levelAt(column, row)
+            if (dots) {
+                if (level > 0) {
+                    drawCircle(
+                        color = ramp[level],
+                        radius = min(cell, min(width - column * cell, height - top)) / 2f,
+                        center = Offset(column * cell + cell / 2f, top + cell / 2f),
+                    )
+                }
+                continue
+            }
+            if (level == runLevel) continue
+            if (runLevel > 0) {
+                val left = runStart * cell
+                drawRect(
+                    color = ramp[runLevel],
+                    topLeft = Offset(left, top),
+                    size = Size(min(column * cell, width) - left, min(cell, height - top)),
+                )
+            }
+            runLevel = level
+            runStart = column
+        }
+    }
+}
+
+/** Implemented by fields that read their inputs once per frame instead of once per cell. */
+internal interface FrameAware {
+    fun beginFrame()
+}
+
+/**
  * The cell renderer: samples the field once per cell, quantizes it against the pattern and draws the result as
  * squares or dots. It uses nothing but the canvas, so it behaves the same on every target and on Android 6.
  */
@@ -55,48 +106,15 @@ internal object CellPainter {
             val width = size.width
             val height = size.height
             if (width <= 0f || height <= 0f) return
-            val ramp = theme.ramp
-            drawRect(ramp[0])
+            (field as? FrameAware)?.beginFrame()
             val grid = cellGrid(width, height, theme.cell.toPx())
             val cell = grid.cell
             val aspect = width / height
-            val levels = ramp.size
-            val dots = theme.shape == CellShape.Dot
-            for (row in 0 until grid.rows) {
-                val top = row * cell
-                val y = min((top + cell / 2f) / height, 1f)
-                var runLevel = 0
-                var runStart = 0
-                for (column in 0..grid.columns) {
-                    val level =
-                        if (column == grid.columns) {
-                            0
-                        } else {
-                            val x = min((column * cell + cell / 2f) / width, 1f)
-                            quantize(field.tone(x, y, t, aspect), pattern.threshold(column, row), levels)
-                        }
-                    if (dots) {
-                        if (level > 0) {
-                            drawCircle(
-                                color = ramp[level],
-                                radius = min(cell, min(width - column * cell, height - top)) / 2f,
-                                center = Offset(column * cell + cell / 2f, top + cell / 2f),
-                            )
-                        }
-                        continue
-                    }
-                    if (level == runLevel) continue
-                    if (runLevel > 0) {
-                        val left = runStart * cell
-                        drawRect(
-                            color = ramp[runLevel],
-                            topLeft = Offset(left, top),
-                            size = Size(min(column * cell, width) - left, min(cell, height - top)),
-                        )
-                    }
-                    runLevel = level
-                    runStart = column
-                }
+            val levels = theme.ramp.size
+            paintCells(grid, theme) { column, row ->
+                val x = min((column * cell + cell / 2f) / width, 1f)
+                val y = min((row * cell + cell / 2f) / height, 1f)
+                quantize(field.tone(x, y, t, aspect), pattern.threshold(column, row), levels)
             }
         }
     }
