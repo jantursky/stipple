@@ -43,6 +43,7 @@ import com.jantursky.stipple.samples.gallery.examples.MaskExample
 import com.jantursky.stipple.samples.gallery.examples.PatternsExample
 import com.jantursky.stipple.samples.gallery.examples.ProgressBarExample
 import com.jantursky.stipple.samples.gallery.examples.ProgressModifierExample
+import com.jantursky.stipple.samples.gallery.examples.RendererExample
 import com.jantursky.stipple.samples.gallery.examples.Scene
 import com.jantursky.stipple.samples.gallery.examples.ScenesExample
 import com.jantursky.stipple.samples.gallery.examples.StatCardExample
@@ -100,6 +101,13 @@ val Catalog: List<Page> =
                 },
             ) { FieldsExample(kind, g.theme, g.pattern, g.animated, progress) }
         },
+        Page(
+            "renderers",
+            Group.Engine,
+            "Renderers",
+            "The cell renderer draws a rectangle per cell and works everywhere. The shader renderer draws the whole element with one fragment shader: the same picture at a fraction of the cost when cells get small. Left: cells. Right: shader.",
+            listOf("RendererExample"),
+        ) { g -> Demo(g, minHeight = 320) { RendererExample(g.theme, g.pattern, g.animated) } },
         Page(
             "theme",
             Group.Engine,

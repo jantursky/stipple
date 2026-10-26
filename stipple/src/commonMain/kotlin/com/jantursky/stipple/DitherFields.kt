@@ -1,5 +1,7 @@
 package com.jantursky.stipple
 
+import com.jantursky.stipple.internal.ShaderBacked
+import com.jantursky.stipple.internal.glsl
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.cos
@@ -10,7 +12,11 @@ import kotlin.math.sin
 /** Ready-made [DitherField]s. All of them are pure functions of position and time. */
 public object DitherFields {
     /** The same [tone] everywhere. */
-    public fun solid(tone: Float = 1f): DitherField = DitherField { _, _, _, _ -> tone }
+    public fun solid(tone: Float = 1f): DitherField =
+        ShaderBacked(
+            { _, _, _, _ -> tone },
+            "float tone(float2 uv, float t, float aspect) { return ${glsl(tone)}; }",
+        )
 
     /**
      * A ramp from [from] to [to] along [angleDegrees]: 0 runs left to right, 90 runs top to bottom. The ramp spans the
@@ -24,13 +30,24 @@ public object DitherFields {
         val radians = angleDegrees * PI.toFloat() / 180f
         val dx = cos(radians)
         val dy = sin(radians)
-        return DitherField { x, y, _, aspect ->
-            val px = (x - 0.5f) * aspect
-            val py = y - 0.5f
-            val reach = (abs(dx) * aspect + abs(dy)) / 2f
-            val along = (px * dx + py * dy) / reach / 2f + 0.5f
-            from + (to - from) * along.coerceIn(0f, 1f)
-        }
+        return ShaderBacked(
+            { x, y, _, aspect ->
+                val px = (x - 0.5f) * aspect
+                val py = y - 0.5f
+                val reach = (abs(dx) * aspect + abs(dy)) / 2f
+                val along = (px * dx + py * dy) / reach / 2f + 0.5f
+                from + (to - from) * along.coerceIn(0f, 1f)
+            },
+            """
+            float tone(float2 uv, float t, float aspect) {
+                float2 d = float2(${glsl(dx)}, ${glsl(dy)});
+                float2 p = float2((uv.x - 0.5) * aspect, uv.y - 0.5);
+                float reach = (abs(d.x) * aspect + abs(d.y)) / 2.0;
+                float along = dot(p, d) / reach / 2.0 + 0.5;
+                return ${glsl(from)} + (${glsl(to)} - ${glsl(from)}) * clamp(along, 0.0, 1.0);
+            }
+            """.trimIndent(),
+        )
     }
 
     /**
@@ -44,10 +61,18 @@ public object DitherFields {
         centerY: Float = 0.5f,
         radius: Float = 0.5f,
     ): DitherField =
-        DitherField { x, y, _, aspect ->
-            val d = hypot((x - centerX) * aspect, y - centerY) / radius
-            inner + (outer - inner) * d.coerceIn(0f, 1f)
-        }
+        ShaderBacked(
+            { x, y, _, aspect ->
+                val d = hypot((x - centerX) * aspect, y - centerY) / radius
+                inner + (outer - inner) * d.coerceIn(0f, 1f)
+            },
+            """
+            float tone(float2 uv, float t, float aspect) {
+                float d = length(float2((uv.x - ${glsl(centerX)}) * aspect, uv.y - ${glsl(centerY)})) / ${glsl(radius)};
+                return ${glsl(inner)} + (${glsl(outer)} - ${glsl(inner)}) * clamp(d, 0.0, 1.0);
+            }
+            """.trimIndent(),
+        )
 
     /**
      * Soft, cloudy noise around [level] that drifts over time at [speed]. [scale] is the number of blobs across the
@@ -75,10 +100,18 @@ public object DitherFields {
         val radians = angleDegrees * PI.toFloat() / 180f
         val dx = cos(radians)
         val dy = sin(radians)
-        return DitherField { x, y, t, aspect ->
-            val phase = (x * aspect * dx + y * dy) * count - t * speed
-            low + (high - low) * (0.5f + 0.5f * sin(phase * 2f * PI.toFloat()))
-        }
+        return ShaderBacked(
+            { x, y, t, aspect ->
+                val phase = (x * aspect * dx + y * dy) * count - t * speed
+                low + (high - low) * (0.5f + 0.5f * sin(phase * 2f * PI.toFloat()))
+            },
+            """
+            float tone(float2 uv, float t, float aspect) {
+                float phase = (uv.x * aspect * ${glsl(dx)} + uv.y * ${glsl(dy)}) * ${glsl(count)} - t * ${glsl(speed)};
+                return ${glsl(low)} + (${glsl(high)} - ${glsl(low)}) * (0.5 + 0.5 * sin(phase * 6.2831855));
+            }
+            """.trimIndent(),
+        )
     }
 
     /**
@@ -92,11 +125,20 @@ public object DitherFields {
         centerY: Float = 0.5f,
         radius: Float = 0.8f,
     ): DitherField =
-        DitherField { x, y, t, aspect ->
-            val d = hypot((x - centerX) * aspect, y - centerY) / radius
-            val wave = 0.5f + 0.5f * cos((d * rings - t * speed) * 2f * PI.toFloat())
-            wave * (1f - d.coerceIn(0f, 1f))
-        }
+        ShaderBacked(
+            { x, y, t, aspect ->
+                val d = hypot((x - centerX) * aspect, y - centerY) / radius
+                val wave = 0.5f + 0.5f * cos((d * rings - t * speed) * 2f * PI.toFloat())
+                wave * (1f - d.coerceIn(0f, 1f))
+            },
+            """
+            float tone(float2 uv, float t, float aspect) {
+                float d = length(float2((uv.x - ${glsl(centerX)}) * aspect, uv.y - ${glsl(centerY)})) / ${glsl(radius)};
+                float wave = 0.5 + 0.5 * cos((d * ${glsl(rings)} - t * ${glsl(speed)}) * 6.2831855);
+                return wave * (1.0 - clamp(d, 0.0, 1.0));
+            }
+            """.trimIndent(),
+        )
 
     /**
      * A soft edge that sweeps from the left to the right as [progress] goes from 0 to 1: tone 1 behind the edge, 0

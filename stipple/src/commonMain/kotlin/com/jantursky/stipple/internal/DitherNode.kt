@@ -26,15 +26,22 @@ import androidx.compose.ui.node.currentValueOf
 import androidx.compose.ui.node.invalidateDraw
 import androidx.compose.ui.node.observeReads
 import androidx.compose.ui.platform.InspectorInfo
+import com.jantursky.stipple.CellShape
 import com.jantursky.stipple.DitherField
 import com.jantursky.stipple.DitherPattern
+import com.jantursky.stipple.DitherRenderer
 import com.jantursky.stipple.LocalStippleMotion
 import com.jantursky.stipple.LocalStippleTheme
+import com.jantursky.stipple.ShaderField
 import com.jantursky.stipple.StippleTheme
 import com.jantursky.stipple.durationScale
 import com.jantursky.stipple.resolveReducedMotion
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
+
+/** Where [DitherRenderer.Auto] switches to the shader: more cells than a frame of rectangles can reasonably cost. */
+internal const val AUTO_SHADER_CELLS = 20_000
 
 /** Where a dither goes relative to the element's own content. */
 internal enum class DitherMode {
@@ -57,10 +64,13 @@ internal class DitherElement(
     val animated: Boolean,
     val speed: Float,
     val stillTime: Float,
+    val renderer: DitherRenderer = DitherRenderer.Cells,
 ) : ModifierNodeElement<DitherNode>() {
-    override fun create(): DitherNode = DitherNode(mode, field, pattern, theme, shape, animated, speed, stillTime)
+    override fun create(): DitherNode =
+        DitherNode(mode, field, pattern, theme, shape, animated, speed, stillTime, renderer)
 
-    override fun update(node: DitherNode) = node.update(mode, field, pattern, theme, shape, animated, speed, stillTime)
+    override fun update(node: DitherNode) =
+        node.update(mode, field, pattern, theme, shape, animated, speed, stillTime, renderer)
 
     override fun equals(other: Any?): Boolean =
         other is DitherElement &&
@@ -71,7 +81,8 @@ internal class DitherElement(
             shape == other.shape &&
             animated == other.animated &&
             speed == other.speed &&
-            stillTime == other.stillTime
+            stillTime == other.stillTime &&
+            renderer == other.renderer
 
     override fun hashCode(): Int {
         var result = mode.hashCode()
@@ -82,6 +93,7 @@ internal class DitherElement(
         result = 31 * result + animated.hashCode()
         result = 31 * result + speed.hashCode()
         result = 31 * result + stillTime.hashCode()
+        result = 31 * result + renderer.hashCode()
         return result
     }
 
@@ -105,6 +117,7 @@ internal class DitherNode(
     private var animated: Boolean,
     private var speed: Float,
     private var stillTime: Float,
+    private var renderer: DitherRenderer,
 ) : Modifier.Node(),
     DrawModifierNode,
     CompositionLocalConsumerModifierNode,
@@ -125,6 +138,7 @@ internal class DitherNode(
         animated: Boolean,
         speed: Float,
         stillTime: Float,
+        renderer: DitherRenderer,
     ) {
         val clockChanged = this.animated != animated || this.speed != speed || this.stillTime != stillTime
         this.mode = mode
@@ -135,6 +149,7 @@ internal class DitherNode(
         this.animated = animated
         this.speed = speed
         this.stillTime = stillTime
+        this.renderer = renderer
         if (clockChanged) restartClock()
         invalidateDraw()
     }
@@ -230,6 +245,61 @@ internal class DitherNode(
         }
     }
 
+    private var shaderPainter: ShaderPainter? = null
+    private var shaderPainterCreated = false
+    private var brokenProgram: String? = null
+
+    /** The shader renderer when the dither allows it and this device has one, otherwise the cells. */
+    private fun DrawScope.render(
+        theme: StippleTheme,
+        t: Float,
+        ramp: List<Color>,
+        blendMode: BlendMode,
+    ) {
+        val program = (field as? ShaderField)?.shaderSource?.let(::shaderProgram)
+        val bayer = shaderBayerSide(pattern)
+        val usable =
+            renderer != DitherRenderer.Cells &&
+                program != null &&
+                program != brokenProgram &&
+                bayer > 0 &&
+                mode == DitherMode.Behind &&
+                theme.shape == CellShape.Square &&
+                ramp.size == 2 &&
+                (
+                    renderer == DitherRenderer.Shader ||
+                        cellGrid(
+                            size.width,
+                            size.height,
+                            theme.cell.toPx(),
+                        ).let { it.columns * it.rows > AUTO_SHADER_CELLS }
+                )
+        if (usable && program != null) {
+            if (!shaderPainterCreated) {
+                shaderPainter = createShaderPainter()
+                shaderPainterCreated = true
+            }
+            val painter = shaderPainter
+            if (painter != null) {
+                val cell =
+                    maxOf(
+                        1f,
+                        theme.cell
+                            .toPx()
+                            .roundToInt()
+                            .toFloat(),
+                    )
+                try {
+                    painter.draw(this, program, ShaderUniforms(t, cell, bayer, ramp[1], ramp[0]))
+                    return
+                } catch (_: Exception) {
+                    brokenProgram = program
+                }
+            }
+        }
+        CellPainter.draw(this, field, pattern, theme, t, ramp, blendMode)
+    }
+
     private fun DrawScope.dither(
         theme: StippleTheme,
         t: Float,
@@ -237,22 +307,22 @@ internal class DitherNode(
         blendMode: BlendMode = BlendMode.SrcOver,
     ) {
         if (shape === RectangleShape) {
-            CellPainter.draw(this, field, pattern, theme, t, ramp, blendMode)
+            render(theme, t, ramp, blendMode)
             return
         }
         when (val outline = shape.createOutline(size, layoutDirection, this)) {
             is Outline.Rectangle -> {
-                clipRect { CellPainter.draw(this, field, pattern, theme, t, ramp, blendMode) }
+                clipRect { render(theme, t, ramp, blendMode) }
             }
 
             is Outline.Rounded -> {
                 clipPath(Path().apply { addRoundRect(outline.roundRect) }) {
-                    CellPainter.draw(this, field, pattern, theme, t, ramp, blendMode)
+                    render(theme, t, ramp, blendMode)
                 }
             }
 
             is Outline.Generic -> {
-                clipPath(outline.path) { CellPainter.draw(this, field, pattern, theme, t, ramp, blendMode) }
+                clipPath(outline.path) { render(theme, t, ramp, blendMode) }
             }
         }
     }

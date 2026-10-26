@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -13,8 +14,20 @@ plugins {
     alias(libs.plugins.roborazzi)
 }
 
+@OptIn(ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     explicitApi()
+
+    // Desktop, iOS and web share Skia, so they share the runtime-effect shader renderer.
+    applyDefaultHierarchyTemplate {
+        common {
+            group("skiko") {
+                withJvm()
+                withWasmJs()
+                group("ios") { withIos() }
+            }
+        }
+    }
 
     android {
         namespace = "com.jantursky.stipple"
