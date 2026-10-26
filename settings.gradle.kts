@@ -49,3 +49,11 @@ rootProject.name = "stipple"
 
 include(":stipple", ":stipple-components")
 
+include(
+    ":samples:gallery",
+    ":samples:web",
+    ":samples:desktop",
+    ":samples:app",
+    ":samples:androidApp",
+)
+
