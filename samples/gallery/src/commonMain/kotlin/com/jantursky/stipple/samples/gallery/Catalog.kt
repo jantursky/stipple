@@ -34,10 +34,14 @@ import com.jantursky.stipple.samples.gallery.examples.GaugeExample
 import com.jantursky.stipple.samples.gallery.examples.GridExample
 import com.jantursky.stipple.samples.gallery.examples.ImageExample
 import com.jantursky.stipple.samples.gallery.examples.ImageModifierExample
+import com.jantursky.stipple.samples.gallery.examples.InterfaceExample
+import com.jantursky.stipple.samples.gallery.examples.InterfaceKind
 import com.jantursky.stipple.samples.gallery.examples.MaskExample
 import com.jantursky.stipple.samples.gallery.examples.PatternsExample
 import com.jantursky.stipple.samples.gallery.examples.ProgressBarExample
 import com.jantursky.stipple.samples.gallery.examples.ProgressModifierExample
+import com.jantursky.stipple.samples.gallery.examples.Scene
+import com.jantursky.stipple.samples.gallery.examples.ScenesExample
 import com.jantursky.stipple.samples.gallery.examples.StatCardExample
 import com.jantursky.stipple.samples.gallery.examples.TextExample
 import com.jantursky.stipple.samples.gallery.examples.ThemeExample
@@ -326,4 +330,32 @@ val Catalog: List<Page> =
             "A dithered backdrop with content on top. Every cell is drawn on every frame, so a screen-sized background wants a larger cell.",
             listOf("BackgroundExample"),
         ) { g -> Demo(g, minHeight = 280) { BackgroundExample(g.theme, g.pattern, g.animated) } },
+        Page(
+            "scenes",
+            Group.Scenes,
+            "Scenes",
+            "Twelve full backgrounds, each one field: glow, aurora, waves, ripples, metaballs, tunnel, a retro grid, an eclipse, stars, contours, halftone and beams. Change the pattern and cell size above and every scene follows.",
+            listOf("ScenesExample"),
+        ) { g ->
+            var scene by remember { mutableStateOf(Scene.Aurora) }
+            Demo(g, controls = { Segmented(Scene.entries, scene, { scene = it }, { it.name }) }) {
+                ScenesExample(scene, g.theme, g.pattern, g.animated)
+            }
+        },
+        Page(
+            "interface",
+            Group.Interface,
+            "Interface pieces",
+            "Dividers with faded ends, skeleton placeholders with a sweeping light, loaders and a sparkline. Each is a clipped box with a field.",
+            listOf("InterfaceExample"),
+        ) { g ->
+            var kind by remember { mutableStateOf(InterfaceKind.Skeleton) }
+            Demo(
+                g,
+                minHeight = 240,
+                controls = { Segmented(InterfaceKind.entries, kind, { kind = it }, { it.name }) },
+            ) {
+                InterfaceExample(kind, g.theme, g.pattern, g.animated)
+            }
+        },
     )

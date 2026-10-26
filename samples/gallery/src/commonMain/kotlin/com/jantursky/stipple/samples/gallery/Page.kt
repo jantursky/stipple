@@ -26,6 +26,8 @@ enum class Group(
     Engine("Engine"),
     Modifiers("Modifiers"),
     Components("Components"),
+    Scenes("Backgrounds"),
+    Interface("Interface"),
 }
 
 /**
