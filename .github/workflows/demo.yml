@@ -1,0 +1,43 @@
+name: Demo
+
+# Builds the gallery and deploys it as a static site to Vercel after each change to
+# the library, the samples or the Gradle build. Forks have no Vercel secrets, so the
+# deploy step is skipped there.
+on:
+  push:
+    branches: [main]
+    paths: ['stipple/**', 'stipple-components/**', 'samples/**', 'gradle/**', 'build.gradle.kts', 'settings.gradle.kts', 'gradle.properties']
+  workflow_dispatch:
+
+concurrency:
+  group: demo
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Build the gallery
+        run: ./gradlew :samples:web:wasmJsBrowserDistribution
+      - name: Check for Vercel credentials
+        id: vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: echo "enabled=$([ -n "$VERCEL_TOKEN" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+      - name: Deploy to Vercel
+        if: steps.vercel.outputs.enabled == 'true'
+        working-directory: samples/web/build/dist/wasmJs/productionExecutable
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: npx vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"

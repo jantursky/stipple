@@ -348,7 +348,7 @@ val Catalog: List<Page> =
             "Twelve full backgrounds, each one field: glow, aurora, waves, ripples, metaballs, tunnel, a retro grid, an eclipse, stars, contours, halftone and beams. Change the pattern and cell size above and every scene follows.",
             listOf("ScenesExample"),
         ) { g ->
-            var scene by remember { mutableStateOf(Scene.Aurora) }
+            var scene by remember { mutableStateOf(Scene.Metaballs) }
             Demo(g, controls = { Segmented(Scene.entries, scene, { scene = it }, { it.name }) }) {
                 ScenesExample(scene, g.theme, g.pattern, g.animated)
             }

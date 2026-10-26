@@ -1,0 +1,69 @@
+name: Bug report
+description: An effect looks wrong, stutters, gets clipped, throws, or doesn't match the docs.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Drawing and timing can differ between platforms, so the details below matter.
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Android
+        - iOS
+        - Desktop (JVM)
+        - Web (wasmJs)
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device or simulator
+      description: The model, such as Pixel 9, the simulator name, or the browser.
+      placeholder: Pixel 9
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS version
+      placeholder: Android 17 (API 37), iOS 27.1
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Stipple version
+      placeholder: 1.0.0
+    validations:
+      required: true
+  - type: input
+    id: toolchain
+    attributes:
+      label: Kotlin and Compose Multiplatform versions
+      placeholder: Kotlin 2.4.21, Compose Multiplatform 1.12.2
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: The smallest composable that shows the problem, or a link to a repository.
+      render: kotlin
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include the error or stack trace if there is one, and a screen recording if you can.
+    validations:
+      required: true

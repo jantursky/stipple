@@ -1,0 +1,20 @@
+name: Feature request
+description: An idea for an effect, the API, a platform or the docs.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do
+      description: The app moment you have in mind (a like, a purchase, an unread badge) and what gets in the way today.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you'd like
+      description: An API sketch or a code example helps.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you've tried

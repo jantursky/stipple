@@ -60,6 +60,8 @@ const val GALLERY_VERSION = "1.0.0"
  * @param initialPage The id of the page to open, such as `gauge`; the overview by default.
  * @param onPageChange Called with the id of each page that opens, so a host can keep it in a URL.
  * @param onDarkModeChange Called with the theme in use, so a host can match its system bars.
+ * @param initialAnimated Starts with animation on, as the docs' live examples do.
+ * @param embed Shows only the current page's example, with no bar or sidebar, for embedding in another page.
  */
 @Composable
 fun GalleryApp(
@@ -68,8 +70,10 @@ fun GalleryApp(
     initialDark: Boolean = isSystemInDarkTheme(),
     onPageChange: (String) -> Unit = {},
     onDarkModeChange: (Boolean) -> Unit = {},
+    initialAnimated: Boolean = false,
+    embed: Boolean = false,
 ) {
-    val state = remember { GalleryState(initialDark) }
+    val state = remember { GalleryState(initialDark).also { it.animated = initialAnimated } }
     var pageId by remember { mutableStateOf(Catalog.firstOrNull { it.id == initialPage }?.id ?: "overview") }
     var menuOpen by remember { mutableStateOf(false) }
     LaunchedEffect(pageId) { onPageChange(pageId) }
@@ -84,6 +88,11 @@ fun GalleryApp(
             },
         ) {
             val frame = modifier.fillMaxSize().background(colors.page).windowInsetsPadding(WindowInsets.safeDrawing)
+            if (embed) {
+                val example = Catalog.firstOrNull { it.id == pageId } ?: Catalog.first()
+                Box(frame.verticalScroll(rememberScrollState()).padding(12.dp)) { example.content(state) }
+                return@CompositionLocalProvider
+            }
             BoxWithConstraints(frame) {
                 val wide = maxWidth >= 880.dp
                 Column(Modifier.fillMaxSize()) {

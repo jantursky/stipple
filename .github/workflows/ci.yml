@@ -1,0 +1,100 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    # macOS, so the klib API dump covers the iOS targets too; Linux cannot build them.
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Format, API, JVM and Android host tests, screenshots, coverage gate
+        run: ./gradlew spotlessCheck apiCheck :stipple:jvmTest :stipple-components:jvmTest :stipple:testAndroidHostTest :stipple:verifyRoborazziJvm :stipple-components:verifyRoborazziJvm koverXmlReport koverVerify
+      - name: Upload coverage to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@v7
+        with:
+          files: stipple/build/reports/kover/report.xml,stipple-components/build/reports/kover/report.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+
+  wasm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Wasm tests (headless Chrome) and the gallery build
+        run: ./gradlew :stipple:wasmJsTest :stipple-components:wasmJsTest :samples:web:wasmJsBrowserDistribution :samples:desktop:build
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - run: bun install --frozen-lockfile
+      - run: bunx playwright install --with-deps chromium
+      - name: Browser tests of the gallery
+        run: bun run test:web
+      - name: Keep the Playwright traces of a failed run
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-traces
+          path: test-results/
+
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Simulator tests
+        run: ./gradlew :stipple:iosSimulatorArm64Test :stipple-components:iosSimulatorArm64Test
+
+  pack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Publish to Maven Local and compile a consumer against it
+        run: ./scripts/pack-test.sh
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - run: bun install --frozen-lockfile
+      - name: Build the docs site
+        run: bun run build:docs

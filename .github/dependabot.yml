@@ -1,0 +1,32 @@
+version: 2
+updates:
+  - package-ecosystem: gradle
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      compose-kotlin:
+        patterns: ['org.jetbrains.compose*', 'org.jetbrains.kotlin*']
+        exclude-patterns: ['org.jetbrains.kotlinx.kover*', 'org.jetbrains.kotlinx.binary-compatibility-validator*', 'org.jetbrains.dokka*']
+      haptics-and-hinge:
+        patterns: ['io.github.jantursky*', 'top.ltfan*']
+      build-tooling:
+        patterns:
+          - 'com.android*'
+          - 'com.diffplug*'
+          - 'com.vanniktech*'
+          - 'org.jetbrains.dokka*'
+          - 'org.jetbrains.kotlinx.kover*'
+          - 'org.jetbrains.kotlinx.binary-compatibility-validator*'
+          - 'io.github.takahirom.roborazzi*'
+  - package-ecosystem: bun
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      docs:
+        patterns: ['*']
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
