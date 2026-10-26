@@ -65,10 +65,15 @@ private val glow =
 private val aurora =
     DitherField { x, y, t, aspect ->
         val u = x * aspect
-        val sway = sin(u * 2.2f + t * 0.6f) * 0.12f + sin(u * 5f - t * 0.9f) * 0.04f
-        val curtain = 1f - smooth(0f, 0.45f, abs(y - (0.38f + sway)))
-        val shimmer = 0.65f + 0.35f * sin(u * 24f + t * 1.5f)
-        curtain * shimmer * (1f - y * 0.5f)
+        var tone = 0f
+        // Two curtains at different heights and speeds; each is a soft band with fine vertical rays along it.
+        for (k in 0 until 2) {
+            val sway = sin(u * (1.6f + k) + t * (0.35f + 0.2f * k) + k * 2f) * 0.14f
+            val band = 1f - smooth(0f, 0.34f, abs(y - (0.34f + 0.2f * k + sway)))
+            val rays = 0.6f + 0.4f * sin(u * 22f + sin(u * 3f + t * 0.5f) * 4f + k * 4f)
+            tone += band * band * rays * (0.9f - 0.3f * k)
+        }
+        tone.coerceIn(0f, 1f)
     }
 
 private val waves =
@@ -98,18 +103,19 @@ private val metaballs =
     DitherField { x, y, t, aspect ->
         var energy = 0f
         for (i in 0 until 4) {
-            val bx = (0.5f + 0.35f * sin(t * (0.5f + i * 0.17f) + i * 1.7f)) * aspect
-            val by = 0.5f + 0.35f * cos(t * (0.4f + i * 0.13f) + i * 2.3f)
+            val bx = (0.5f + 0.3f * sin(t * (0.5f + i * 0.17f) + i * 1.7f)) * aspect
+            val by = 0.5f + 0.3f * cos(t * (0.4f + i * 0.13f) + i * 2.3f)
             val d2 = (x * aspect - bx) * (x * aspect - bx) + (y - by) * (y - by)
-            energy += 0.012f / (d2 + 0.002f)
+            energy += 0.03f / (d2 + 0.004f)
         }
-        smooth(0.8f, 1.4f, energy)
+        // A soft rim around the merged shape reads as a glow before the solid core.
+        smooth(0.6f, 2.2f, energy)
     }
 
 private val tunnel =
     DitherField { x, y, t, aspect ->
         val r = max(hypot((x - 0.5f) * aspect, y - 0.5f), 0.02f)
-        val rings = 0.5f + 0.5f * sin(3f / r - t * 3f)
+        val rings = 0.5f + 0.5f * sin(6f / r - t * 3f)
         rings * smooth(0.02f, 0.35f, r)
     }
 
@@ -126,7 +132,7 @@ private val retroGrid =
             val depth = 1f / (y - horizon + 0.02f)
             val lineX = abs(fract((x - 0.5f) * aspect * depth * 0.5f) - 0.5f)
             val lineZ = abs(fract(depth * 0.35f + t * 0.4f) - 0.5f)
-            val line = max(1f - smooth(0f, 0.04f * depth * 0.4f, lineX), 1f - smooth(0f, 0.04f, lineZ))
+            val line = max(1f - smooth(0f, 0.12f * depth * 0.5f, lineX), 1f - smooth(0f, 0.16f, lineZ))
             line * (1f - smooth(0f, 1f, 1f - (y - horizon) * 2.2f))
         }
     }
@@ -152,10 +158,10 @@ private val starfield =
             val gy = y * scale + t * 0.3f * layer
             val cx = floor(gx).toInt()
             val cy = floor(gy).toInt()
-            if (hash(cx, cy + layer * 97) > 0.93f) {
+            if (hash(cx, cy + layer * 97) > 0.9f) {
                 val d = hypot(fract(gx) - 0.5f, fract(gy) - 0.5f)
                 val twinkle = 0.6f + 0.4f * sin(t * 3f + hash(cx, cy) * 40f)
-                tone = max(tone, (1f - smooth(0f, 0.35f, d)) * twinkle)
+                tone = max(tone, (1f - smooth(0f, 0.5f, d)) * twinkle)
             }
         }
         tone
@@ -172,14 +178,14 @@ private val contours =
 
 private val halftone =
     DitherField { x, y, t, aspect ->
-        val cell = 22f
+        val cell = 16f
         val gx = x * aspect * cell
         val gy = y * cell
         val d = hypot(fract(gx) - 0.5f, fract(gy) - 0.5f)
         val cx = (floor(gx) + 0.5f) / (cell * aspect)
         val cy = (floor(gy) + 0.5f) / cell
-        val level = 0.5f + 0.5f * sin(cx * 5f + cy * 3f + t)
-        1f - smooth(level * 0.5f - 0.05f, level * 0.5f + 0.05f, d)
+        val level = 0.5f + 0.5f * sin((cx * aspect + cy) * 2.2f + t * 0.6f)
+        1f - smooth(level * 0.55f - 0.04f, level * 0.55f + 0.04f, d)
     }
 
 private val beams =
