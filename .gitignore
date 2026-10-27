@@ -26,3 +26,5 @@ apps/docs/public/screenshots/
 # Browser tests
 test-results/
 playwright-report/
+.vercel
+.env*
