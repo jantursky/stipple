@@ -4,6 +4,8 @@ All notable changes to Stipple are listed here. The format follows [Keep a Chang
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-27
+
 ### Added
 
 - The shader renderer draws `ditherFill` and `ditherMask`, and `DitherFields.noise` and `DitherFields.sweep` carry a shader. `ditherFill`, `ditherMask`, `DitherText` and `DitherImage` take a `renderer`, `DitherRenderer.Cells` by default.
