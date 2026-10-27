@@ -1,0 +1,36 @@
+name: Docs
+
+# Deploys the docs site to Vercel after each change to it, to the design tokens it imports, to the agent skill it
+# publishes or to the changelog it shows. The project builds on Vercel with apps/docs/vercel.json; .vercelignore
+# keeps the upload small. Forks have no Vercel secrets, so the deploy step is skipped there.
+on:
+  push:
+    branches: [main]
+    paths: ['apps/docs/**', 'design/**', 'skills/**', 'CHANGELOG.md', 'gradle.properties', 'package.json', 'bun.lock', '.vercelignore']
+  workflow_dispatch:
+
+concurrency:
+  group: docs
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Check for Vercel credentials
+        id: vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: echo "enabled=$([ -n "$VERCEL_TOKEN" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+      - name: Deploy to Vercel
+        if: steps.vercel.outputs.enabled == 'true'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          # The stipple-docs project. Not a secret.
+          VERCEL_PROJECT_ID: prj_ADfKVGvKtLipsOpyXpfjaVjKBD5H
+        run: npx vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"
