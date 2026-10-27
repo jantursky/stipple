@@ -3,7 +3,7 @@ title: Choosing a renderer
 description: The cell renderer works everywhere. The shader renderer is faster on large surfaces. Which devices have it and what it can draw.
 ---
 
-`Modifier.dither` takes a `renderer`:
+`Modifier.dither`, `Modifier.ditherFill`, `Modifier.ditherMask` and the `DitherText` and `DitherImage` components take a `renderer`:
 
 | Value | Meaning |
 | --- | --- |
@@ -11,7 +11,7 @@ description: The cell renderer works everywhere. The shader renderer is faster o
 | `DitherRenderer.Shader` | One fragment shader for the element, when possible. |
 | `DitherRenderer.Auto` | The shader above 20,000 cells, cells below. |
 
-Both draw the same picture. In the tests, the shader output matches the cell output for every built-in field and Bayer size to within a handful of pixels in 40,000.
+Both draw the same picture. In the tests, the shader output matches the cell output for every built-in field and Bayer size to within a handful of pixels in 40,000. The noise field matches exactly, because the cell renderer and the shader use the same float hash.
 
 <include example="renderers">../_snippets/live-example.mdx</include>
 
@@ -19,11 +19,12 @@ Both draw the same picture. In the tests, the shader output matches the cell out
 
 The shader renderer draws an element only if all of these hold. Otherwise the cell renderer draws it, with no error:
 
-- the field is a `ShaderField`, which the built-in `solid`, `linear`, `radial`, `waves` and `ripples` are (`noise` and `sweep` are not);
+- the field is a `ShaderField`, which all the built-in fields except `ditherProgress`'s progress field are: `solid`, `linear`, `radial`, `noise`, `waves`, `ripples` and `sweep`;
 - the pattern is Bayer 2, 4 or 8;
 - the cell shape is square and the theme has two colours (no palette);
-- the modifier is plain `dither`, not `ditherFill` or `ditherMask`;
 - the platform has runtime shaders, and the platform's compiler accepts the program.
+
+For `ditherFill` and `ditherMask` the shader draws inside the offscreen layer those modifiers already use, so the content keeps its shape and transparency. The sweep's progress reaches the shader as a uniform, so an animated reveal compiles one program.
 
 ## Where it runs
 

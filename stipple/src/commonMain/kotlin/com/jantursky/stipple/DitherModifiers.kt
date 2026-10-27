@@ -102,7 +102,8 @@ public fun Modifier.ditherImage(
  * color, so on a paper-colored background it fades away; keep the tone high where it must stay readable.
  *
  * The parameters are those of [dither]. The content is drawn into an offscreen layer, so this works on every target,
- * live and animated, and costs one extra layer.
+ * live and animated, and costs one extra layer. With [DitherRenderer.Shader] the fill itself is one fragment shader
+ * inside that layer, under the conditions listed for [dither].
  */
 public fun Modifier.ditherFill(
     field: DitherField,
@@ -111,15 +112,17 @@ public fun Modifier.ditherFill(
     animated: Boolean = false,
     speed: Float = 1f,
     stillTime: Float = 0f,
+    renderer: DitherRenderer = DitherRenderer.Cells,
 ): Modifier =
-    this then DitherElement(DitherMode.Fill, field, pattern, theme, RectangleShape, animated, speed, stillTime)
+    this then
+        DitherElement(DitherMode.Fill, field, pattern, theme, RectangleShape, animated, speed, stillTime, renderer)
 
 /**
  * Shows what the element draws only where the dither is lit, so a photo or a card appears through a pattern of dots
  * and vanishes through the rest. Drive [field] with [DitherFields.sweep] to reveal or hide content. The element's own
  * content is drawn into an offscreen layer.
  *
- * The parameters are those of [dither].
+ * The parameters are those of [dither]; [DitherRenderer.Shader] draws the mask as one fragment shader.
  */
 public fun Modifier.ditherMask(
     field: DitherField,
@@ -128,5 +131,7 @@ public fun Modifier.ditherMask(
     animated: Boolean = false,
     speed: Float = 1f,
     stillTime: Float = 0f,
+    renderer: DitherRenderer = DitherRenderer.Cells,
 ): Modifier =
-    this then DitherElement(DitherMode.Mask, field, pattern, theme, RectangleShape, animated, speed, stillTime)
+    this then
+        DitherElement(DitherMode.Mask, field, pattern, theme, RectangleShape, animated, speed, stillTime, renderer)

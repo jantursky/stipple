@@ -43,7 +43,7 @@ public final class com/jantursky/stipple/components/DitherGridKt {
 }
 
 public final class com/jantursky/stipple/components/DitherImageKt {
-	public static final fun DitherImage (Landroidx/compose/ui/graphics/painter/Painter;Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/layout/ContentScale;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/DitherAlgorithm;FZLandroidx/compose/runtime/Composer;II)V
+	public static final fun DitherImage (Landroidx/compose/ui/graphics/painter/Painter;Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/layout/ContentScale;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/DitherAlgorithm;FZLcom/jantursky/stipple/DitherRenderer;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/jantursky/stipple/components/DitherProgressBarKt {
@@ -55,6 +55,6 @@ public final class com/jantursky/stipple/components/DitherStatCardKt {
 }
 
 public final class com/jantursky/stipple/components/DitherTextKt {
-	public static final fun DitherText-eBvBPno (Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherPattern;ZFFLcom/jantursky/stipple/DitherField;FIILandroidx/compose/runtime/Composer;III)V
+	public static final fun DitherText-itXwQ9o (Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherPattern;ZFFLcom/jantursky/stipple/DitherField;FIILcom/jantursky/stipple/DitherRenderer;Landroidx/compose/runtime/Composer;III)V
 }
 

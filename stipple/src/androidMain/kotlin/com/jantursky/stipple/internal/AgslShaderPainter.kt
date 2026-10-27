@@ -3,6 +3,7 @@ package com.jantursky.stipple.internal
 import android.graphics.RuntimeShader
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.drawscope.DrawScope
 
@@ -18,6 +19,7 @@ private class AgslShaderPainter : ShaderPainter {
         scope: DrawScope,
         program: String,
         uniforms: ShaderUniforms,
+        blendMode: BlendMode,
     ) {
         val shader = shaders.getOrPut(program) { RuntimeShader(program) }
         shader.setFloatUniform("size", scope.size.width, scope.size.height)
@@ -32,6 +34,7 @@ private class AgslShaderPainter : ShaderPainter {
             uniforms.paper.blue,
             uniforms.paper.alpha,
         )
-        scope.drawRect(ShaderBrush(shader))
+        uniforms.params?.let { shader.setFloatUniform("params", it) }
+        scope.drawRect(ShaderBrush(shader), blendMode = blendMode)
     }
 }

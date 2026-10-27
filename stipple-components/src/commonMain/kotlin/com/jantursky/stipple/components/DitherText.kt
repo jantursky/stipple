@@ -15,6 +15,7 @@ import com.jantursky.stipple.DitherField
 import com.jantursky.stipple.DitherFields
 import com.jantursky.stipple.DitherPattern
 import com.jantursky.stipple.DitherPatterns
+import com.jantursky.stipple.DitherRenderer
 import com.jantursky.stipple.StippleTheme
 import com.jantursky.stipple.components.internal.resolveTheme
 import com.jantursky.stipple.contrastRatio
@@ -34,6 +35,7 @@ import com.jantursky.stipple.ditherFill
  * @param cell The size of one dither cell. Text needs a finer grain than the theme's default.
  * @param fadeTo The tone at the far end of the default [field].
  * @param minContrast The least contrast ratio between ink and paper; 4.5 is the WCAG level for text.
+ * @param renderer How the fill is drawn; [DitherRenderer.Shader] needs the default fill or a shader field.
  */
 @Composable
 public fun DitherText(
@@ -49,6 +51,7 @@ public fun DitherText(
     minContrast: Float = 4.5f,
     maxLines: Int = Int.MAX_VALUE,
     overflow: TextOverflow = TextOverflow.Clip,
+    renderer: DitherRenderer = DitherRenderer.Cells,
 ) {
     val resolved = readable(resolveTheme(theme), minContrast).copy(cell = cell)
     val fill =
@@ -62,7 +65,7 @@ public fun DitherText(
             }
     BasicText(
         text,
-        modifier.ditherFill(fill, pattern, resolved, animated = animated),
+        modifier.ditherFill(fill, pattern, resolved, animated = animated, renderer = renderer),
         style.copy(color = Color.Black),
         maxLines = maxLines,
         overflow = overflow,

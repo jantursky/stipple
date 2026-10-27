@@ -256,14 +256,14 @@ internal class DitherNode(
         ramp: List<Color>,
         blendMode: BlendMode,
     ) {
-        val program = (field as? ShaderField)?.shaderSource?.let(::shaderProgram)
+        val params = (field as? ShaderParams)?.shaderParams()
+        val program = (field as? ShaderField)?.shaderSource?.let { shaderProgram(it, params?.size ?: 0) }
         val bayer = shaderBayerSide(pattern)
         val usable =
             renderer != DitherRenderer.Cells &&
                 program != null &&
                 program != brokenProgram &&
                 bayer > 0 &&
-                mode == DitherMode.Behind &&
                 theme.shape == CellShape.Square &&
                 ramp.size == 2 &&
                 (
@@ -290,7 +290,7 @@ internal class DitherNode(
                             .toFloat(),
                     )
                 try {
-                    painter.draw(this, program, ShaderUniforms(t, cell, bayer, ramp[1], ramp[0]))
+                    painter.draw(this, program, ShaderUniforms(t, cell, bayer, ramp[1], ramp[0], params), blendMode)
                     return
                 } catch (_: Exception) {
                     brokenProgram = program

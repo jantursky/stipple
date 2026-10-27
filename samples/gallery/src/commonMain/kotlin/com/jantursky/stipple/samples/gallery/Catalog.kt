@@ -106,9 +106,9 @@ val Catalog: List<Page> =
             "renderers",
             Group.Engine,
             "Renderers",
-            "The cell renderer draws a rectangle per cell and works everywhere. The shader renderer draws the whole element with one fragment shader: the same picture at a fraction of the cost when cells get small. Left: cells. Right: shader.",
+            "The cell renderer draws a rectangle per cell and works everywhere. The shader renderer draws the whole element with one fragment shader: the same picture at a fraction of the cost when cells get small. It draws behind-content dithers, fills and masks. Left: cells. Right: shader.",
             listOf("RendererExample"),
-        ) { g -> Demo(g, minHeight = 320) { RendererExample(g.theme, g.pattern, g.animated) } },
+        ) { g -> Demo(g, minHeight = 560) { RendererExample(g.theme, g.pattern, g.animated) } },
         Page(
             "bench",
             Group.Engine,

@@ -123,8 +123,7 @@ Stipple adds a small engine of its own, modifiers for any element, a cell render
 ## Not covered yet
 
 - Mesh gradients, globes, maps, and the scramble and dissolve text effects from dithercn.
-- A shader for the built-in `noise` and `sweep` fields, for blue noise, for dot-shaped cells and for palettes of more than two colours: those use the cell renderer.
-- The shader renderer applies to `Modifier.dither`, not to `ditherFill` or `ditherMask`.
+- A shader for blue noise, for dot-shaped cells and for palettes of more than two colours: those use the cell renderer.
 - Frame times on low-end Android devices and on a physical iPhone are not measured.
 - The docs' code samples are plain snippets; only the agent skill's examples are compiled by a test.
 

@@ -33,7 +33,9 @@ public final class com/jantursky/stipple/DitherFields {
 	public final fun solid (F)Lcom/jantursky/stipple/DitherField;
 	public static synthetic fun solid$default (Lcom/jantursky/stipple/DitherFields;FILjava/lang/Object;)Lcom/jantursky/stipple/DitherField;
 	public final fun sweep (FF)Lcom/jantursky/stipple/DitherField;
+	public final fun sweep (Lkotlin/jvm/functions/Function0;F)Lcom/jantursky/stipple/DitherField;
 	public static synthetic fun sweep$default (Lcom/jantursky/stipple/DitherFields;FFILjava/lang/Object;)Lcom/jantursky/stipple/DitherField;
+	public static synthetic fun sweep$default (Lcom/jantursky/stipple/DitherFields;Lkotlin/jvm/functions/Function0;FILjava/lang/Object;)Lcom/jantursky/stipple/DitherField;
 	public final fun waves (FFFFF)Lcom/jantursky/stipple/DitherField;
 	public static synthetic fun waves$default (Lcom/jantursky/stipple/DitherFields;FFFFFILjava/lang/Object;)Lcom/jantursky/stipple/DitherField;
 }
@@ -41,12 +43,12 @@ public final class com/jantursky/stipple/DitherFields {
 public final class com/jantursky/stipple/DitherModifiersKt {
 	public static final fun dither (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherField;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;Landroidx/compose/ui/graphics/Shape;ZFFLcom/jantursky/stipple/DitherRenderer;)Landroidx/compose/ui/Modifier;
 	public static synthetic fun dither$default (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherField;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;Landroidx/compose/ui/graphics/Shape;ZFFLcom/jantursky/stipple/DitherRenderer;ILjava/lang/Object;)Landroidx/compose/ui/Modifier;
-	public static final fun ditherFill (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherField;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;ZFF)Landroidx/compose/ui/Modifier;
-	public static synthetic fun ditherFill$default (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherField;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;ZFFILjava/lang/Object;)Landroidx/compose/ui/Modifier;
+	public static final fun ditherFill (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherField;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;ZFFLcom/jantursky/stipple/DitherRenderer;)Landroidx/compose/ui/Modifier;
+	public static synthetic fun ditherFill$default (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherField;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;ZFFLcom/jantursky/stipple/DitherRenderer;ILjava/lang/Object;)Landroidx/compose/ui/Modifier;
 	public static final fun ditherImage (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherAlgorithm;ZLjava/lang/Object;)Landroidx/compose/ui/Modifier;
 	public static synthetic fun ditherImage$default (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherAlgorithm;ZLjava/lang/Object;ILjava/lang/Object;)Landroidx/compose/ui/Modifier;
-	public static final fun ditherMask (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherField;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;ZFF)Landroidx/compose/ui/Modifier;
-	public static synthetic fun ditherMask$default (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherField;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;ZFFILjava/lang/Object;)Landroidx/compose/ui/Modifier;
+	public static final fun ditherMask (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherField;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;ZFFLcom/jantursky/stipple/DitherRenderer;)Landroidx/compose/ui/Modifier;
+	public static synthetic fun ditherMask$default (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherField;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;ZFFLcom/jantursky/stipple/DitherRenderer;ILjava/lang/Object;)Landroidx/compose/ui/Modifier;
 	public static final fun ditherProgress (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/ProgressDirection;Landroidx/compose/ui/graphics/Shape;FFLcom/jantursky/stipple/DitherField;ZFF)Landroidx/compose/ui/Modifier;
 	public static synthetic fun ditherProgress$default (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/ProgressDirection;Landroidx/compose/ui/graphics/Shape;FFLcom/jantursky/stipple/DitherField;ZFFILjava/lang/Object;)Landroidx/compose/ui/Modifier;
 }

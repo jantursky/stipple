@@ -1,5 +1,6 @@
 package com.jantursky.stipple.internal
 
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import com.jantursky.stipple.DitherPattern
@@ -7,11 +8,16 @@ import com.jantursky.stipple.DitherPatterns
 
 /** Draws a dither with one fragment shader. One painter per node, so compiled shaders are never shared by threads. */
 internal interface ShaderPainter {
-    /** Draws over the whole scope, and throws if the platform's compiler rejects the program. */
+    /**
+     * Draws over the whole scope with [blendMode], and throws if the platform's compiler rejects the program. Only
+     * [BlendMode.SrcOver] and [BlendMode.SrcIn] are drawn as asked, the two the dither modes use; any other mode
+     * draws as SrcOver.
+     */
     fun draw(
         scope: DrawScope,
         program: String,
         uniforms: ShaderUniforms,
+        blendMode: BlendMode = BlendMode.SrcOver,
     )
 }
 
@@ -21,6 +27,8 @@ internal class ShaderUniforms(
     val bayer: Int,
     val ink: Color,
     val paper: Color,
+    /** The values of the field's `params` array, or null when its shader declares none. */
+    val params: FloatArray? = null,
 )
 
 /** A painter for this platform, or null when it has no runtime shaders (Android below 13). */
@@ -39,7 +47,10 @@ internal fun shaderBayerSide(pattern: DitherPattern): Int =
  * The whole program: the uniforms, the [field] function and the ordered dither. It decides like
  * [quantize]: a cell is ink when the tone is above the Bayer threshold, and a tone of 1 is always ink.
  */
-internal fun shaderProgram(field: String): String =
+internal fun shaderProgram(
+    field: String,
+    paramCount: Int = 0,
+): String =
     """
     uniform float2 size;
     uniform float time;
@@ -47,6 +58,7 @@ internal fun shaderProgram(field: String): String =
     uniform float bayer;
     uniform float4 ink;
     uniform float4 paper;
+    ${if (paramCount > 0) "uniform float params[$paramCount];" else ""}
 
     $field
 

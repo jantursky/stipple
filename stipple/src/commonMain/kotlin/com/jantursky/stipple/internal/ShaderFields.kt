@@ -10,6 +10,15 @@ internal class ShaderBacked(
 ) : ShaderField,
     DitherField by field
 
+/**
+ * Implemented by shader fields whose values change while their source does not. The values go to the shader as the
+ * `params` uniform array, and the source reads `params[0]`, `params[1]` and so on, so a moving value never compiles a
+ * new program. The size of the array must not change.
+ */
+internal interface ShaderParams {
+    fun shaderParams(): FloatArray
+}
+
 /** A float literal the shading language accepts. */
 internal fun glsl(value: Float): String {
     val text = value.toString()

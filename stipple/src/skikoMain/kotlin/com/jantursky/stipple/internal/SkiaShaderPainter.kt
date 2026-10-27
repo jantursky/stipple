@@ -1,5 +1,6 @@
 package com.jantursky.stipple.internal
 
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
@@ -7,6 +8,7 @@ import org.jetbrains.skia.Paint
 import org.jetbrains.skia.Rect
 import org.jetbrains.skia.RuntimeEffect
 import org.jetbrains.skia.RuntimeShaderBuilder
+import org.jetbrains.skia.BlendMode as SkiaBlendMode
 
 internal actual fun createShaderPainter(): ShaderPainter? = SkiaShaderPainter()
 
@@ -18,6 +20,7 @@ private class SkiaShaderPainter : ShaderPainter {
         scope: DrawScope,
         program: String,
         uniforms: ShaderUniforms,
+        blendMode: BlendMode,
     ) {
         val effect = effects.getOrPut(program) { RuntimeEffect.makeForShader(program) }
         val width = scope.size.width
@@ -37,7 +40,9 @@ private class SkiaShaderPainter : ShaderPainter {
                 uniforms.paper.blue,
                 uniforms.paper.alpha,
             )
+            uniforms.params?.let { builder.uniform("params", it) }
             paint.shader = builder.makeShader()
+            paint.blendMode = if (blendMode == BlendMode.SrcIn) SkiaBlendMode.SRC_IN else SkiaBlendMode.SRC_OVER
             scope.drawIntoCanvas { it.nativeCanvas.drawRect(Rect.makeWH(width, height), paint) }
         } finally {
             paint.close()

@@ -4,6 +4,15 @@ All notable changes to Stipple are listed here. The format follows [Keep a Chang
 
 ## [Unreleased]
 
+### Added
+
+- The shader renderer draws `ditherFill` and `ditherMask`, and `DitherFields.noise` and `DitherFields.sweep` carry a shader. `ditherFill`, `ditherMask`, `DitherText` and `DitherImage` take a `renderer`, `DitherRenderer.Cells` by default.
+- `DitherFields.sweep` accepts a `() -> Float` progress that is read when the field is drawn, and its shader takes the progress as a uniform, so an animated reveal compiles one program.
+
+### Changed
+
+- The noise field uses a float-only hash so the cell renderer and the shader draw the same cells. Which cells light up for a given noise changes; the look does not.
+
 ## [1.0.0]
 
 ### Added

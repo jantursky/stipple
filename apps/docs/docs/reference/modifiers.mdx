@@ -63,8 +63,8 @@ fun Modifier.ditherImage(
 ## Modifier.ditherFill and ditherMask
 
 ```kotlin nocompile
-fun Modifier.ditherFill(field, pattern, theme, animated, speed, stillTime): Modifier
-fun Modifier.ditherMask(field, pattern, theme, animated, speed, stillTime): Modifier
+fun Modifier.ditherFill(field, pattern, theme, animated, speed, stillTime, renderer): Modifier
+fun Modifier.ditherMask(field, pattern, theme, animated, speed, stillTime, renderer): Modifier
 ```
 
-`ditherFill` keeps the shape of what the element draws and swaps its colours for the dither: text, icons, silhouettes. `ditherMask` shows the content only where the dither is lit, so a sweep reveals a picture through the pattern. Both always use the cell renderer.
+`ditherFill` keeps the shape of what the element draws and swaps its colours for the dither: text, icons, silhouettes. `ditherMask` shows the content only where the dither is lit, so a sweep reveals a picture through the pattern. Both take a `renderer` and use the cell renderer unless you pass `DitherRenderer.Shader` (see [Choosing a renderer](../guides/renderers)).

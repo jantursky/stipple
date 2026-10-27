@@ -1,6 +1,7 @@
 package com.jantursky.stipple
 
 import com.jantursky.stipple.internal.ShaderBacked
+import com.jantursky.stipple.internal.ShaderParams
 import com.jantursky.stipple.internal.glsl
 import kotlin.math.PI
 import kotlin.math.abs
@@ -84,10 +85,23 @@ public object DitherFields {
         level: Float = 0.5f,
         contrast: Float = 1f,
     ): DitherField =
-        DitherField { x, y, t, aspect ->
-            val n = valueNoise(x * aspect * scale + t * speed * 3f, y * scale - t * speed * 2f, t * speed)
-            level + (n - 0.5f) * contrast
-        }
+        ShaderBacked(
+            { x, y, t, aspect ->
+                val n = valueNoise(x * aspect * scale + t * speed * 3f, y * scale - t * speed * 2f, t * speed)
+                level + (n - 0.5f) * contrast
+            },
+            """
+            $NOISE_SHADER
+
+            float tone(float2 uv, float t, float aspect) {
+                float n = valueNoise(float3(
+                    uv.x * aspect * ${glsl(scale)} + t * ${glsl(speed)} * 3.0,
+                    uv.y * ${glsl(scale)} - t * ${glsl(speed)} * 2.0,
+                    t * ${glsl(speed)}));
+                return ${glsl(level)} + (n - 0.5) * ${glsl(contrast)};
+            }
+            """.trimIndent(),
+        )
 
     /** Diagonal bands that travel across the element: [count] of them per element height, moving at [speed] cycles per second. */
     public fun waves(
@@ -147,11 +161,17 @@ public object DitherFields {
     public fun sweep(
         progress: Float,
         softness: Float = 0.15f,
-    ): DitherField =
-        DitherField { x, _, _, _ ->
-            val edge = progress * (1f + softness) - softness
-            1f - ((x - edge) / softness).coerceIn(0f, 1f)
-        }
+    ): DitherField = SweepField({ progress }, softness)
+
+    /**
+     * The same sweep, with [progress] read every time the field is drawn: pass `{ animated.value }` and a change
+     * redraws the element without recomposing it. A shader draws it from one compiled program however the progress
+     * moves.
+     */
+    public fun sweep(
+        progress: () -> Float,
+        softness: Float = 0.15f,
+    ): DitherField = SweepField(progress, softness)
 }
 
 /** Smooth value noise in 0..1 with a time axis, made from a hash of the integer lattice. */
@@ -198,14 +218,80 @@ internal fun valueNoise(
 
 private fun smooth(k: Float): Float = k * k * (3f - 2f * k)
 
-/** A hash of three integers, in 0..1. */
+/**
+ * A hash of three integers, in 0..1, made of float arithmetic only so that the shader computes the same value (a
+ * shader has no reliable 32-bit integer overflow). After Dave Hoskins' "Hash without Sine".
+ */
 internal fun hash01(
     x: Int,
     y: Int,
     z: Int,
 ): Float {
-    var h = x * 374761393 + y * 668265263 + z * 1274126177
-    h = (h xor (h ushr 13)) * 1274126177
-    h = h xor (h ushr 16)
-    return (h and 0xFFFFFF) / 16777216f
+    var a = fract(x * 0.1031f)
+    var b = fract(y * 0.1031f)
+    var c = fract(z * 0.1031f)
+    val d = a * (c + 31.32f) + b * (b + 31.32f) + c * (a + 31.32f)
+    a += d
+    b += d
+    c += d
+    return fract((a + b) * c)
+}
+
+private fun fract(v: Float): Float = v - floor(v)
+
+/** The same value noise as [valueNoise], for a shader: `valueNoise(float3)` returns 0..1. */
+internal const val NOISE_SHADER: String = """
+float hash01(float3 p) {
+    float3 q = fract(p * 0.1031);
+    q += dot(q, q.zyx + 31.32);
+    return fract((q.x + q.y) * q.z);
+}
+
+float valueNoise(float3 p) {
+    float3 i = floor(p);
+    float3 f = p - i;
+    float3 w = f * f * (3.0 - 2.0 * f);
+    float front = mix(
+        mix(hash01(i), hash01(i + float3(1.0, 0.0, 0.0)), w.x),
+        mix(hash01(i + float3(0.0, 1.0, 0.0)), hash01(i + float3(1.0, 1.0, 0.0)), w.x),
+        w.y);
+    float back = mix(
+        mix(hash01(i + float3(0.0, 0.0, 1.0)), hash01(i + float3(1.0, 0.0, 1.0)), w.x),
+        mix(hash01(i + float3(0.0, 1.0, 1.0)), hash01(i + float3(1.0, 1.0, 1.0)), w.x),
+        w.y);
+    return mix(front, back, w.z);
+}
+"""
+
+/** A soft edge sweeping from the left; [progress] is read per draw and reaches the shader as a uniform. */
+internal class SweepField(
+    private val progress: () -> Float,
+    private val softness: Float,
+) : ShaderField,
+    ShaderParams {
+    private val params = FloatArray(2)
+
+    override fun tone(
+        x: Float,
+        y: Float,
+        t: Float,
+        aspect: Float,
+    ): Float {
+        val edge = progress().coerceIn(0f, 1f) * (1f + softness) - softness
+        return 1f - ((x - edge) / softness).coerceIn(0f, 1f)
+    }
+
+    override fun shaderParams(): FloatArray {
+        params[0] = progress().coerceIn(0f, 1f)
+        params[1] = softness
+        return params
+    }
+
+    override val shaderSource: String =
+        """
+        float tone(float2 uv, float t, float aspect) {
+            float edge = params[0] * (1.0 + params[1]) - params[1];
+            return 1.0 - clamp((uv.x - edge) / params[1], 0.0, 1.0);
+        }
+        """.trimIndent()
 }

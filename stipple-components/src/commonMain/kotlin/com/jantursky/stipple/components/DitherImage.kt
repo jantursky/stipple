@@ -17,9 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import com.jantursky.stipple.DitherAlgorithm
-import com.jantursky.stipple.DitherField
+import com.jantursky.stipple.DitherFields
 import com.jantursky.stipple.DitherPattern
 import com.jantursky.stipple.DitherPatterns
+import com.jantursky.stipple.DitherRenderer
 import com.jantursky.stipple.StippleTheme
 import com.jantursky.stipple.components.internal.resolveTheme
 import com.jantursky.stipple.ditherImage
@@ -38,6 +39,8 @@ import com.jantursky.stipple.isStippleMotionReduced
  *
  * @param contentDescription Read by screen readers. Pass null for a purely decorative image.
  * @param reveal How much of the original shows, from 0 to 1.
+ * @param renderer How the reveal is drawn; see [com.jantursky.stipple.DitherRenderer]. The dithered image itself is
+ *   always drawn from cells computed once.
  */
 @Composable
 public fun DitherImage(
@@ -50,6 +53,7 @@ public fun DitherImage(
     algorithm: DitherAlgorithm = DitherAlgorithm.FloydSteinberg,
     reveal: Float = 0f,
     animated: Boolean = false,
+    renderer: DitherRenderer = DitherRenderer.Cells,
 ) {
     val resolved = resolveTheme(theme)
     val level = reveal.coerceIn(0f, 1f)
@@ -73,11 +77,14 @@ public fun DitherImage(
             contentScale = contentScale,
         )
         if (moving || level > 0f) {
-            val sweep = remember(moving, level, phase) { RevealSweep { if (moving) phase.value else level } }
+            val sweep =
+                remember(moving, level, phase) {
+                    DitherFields.sweep({ if (moving) phase.value else level }, softness = REVEAL_SOFTNESS)
+                }
             Image(
                 painter,
                 null,
-                Modifier.matchParentSize().ditherMask(sweep, pattern, resolved),
+                Modifier.matchParentSize().ditherMask(sweep, pattern, resolved, renderer = renderer),
                 alignment = Alignment.Center,
                 contentScale = contentScale,
             )
@@ -85,21 +92,4 @@ public fun DitherImage(
     }
 }
 
-/** A soft edge sweeping from the left as [progress] grows; the value is read in the draw phase. */
-private class RevealSweep(
-    private val progress: () -> Float,
-) : DitherField {
-    override fun tone(
-        x: Float,
-        y: Float,
-        t: Float,
-        aspect: Float,
-    ): Float {
-        val edge = progress().coerceIn(0f, 1f) * (1f + SOFTNESS) - SOFTNESS
-        return 1f - ((x - edge) / SOFTNESS).coerceIn(0f, 1f)
-    }
-
-    private companion object {
-        const val SOFTNESS = 0.18f
-    }
-}
+private const val REVEAL_SOFTNESS = 0.18f
