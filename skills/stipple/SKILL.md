@@ -27,7 +27,8 @@ Artifacts: `io.github.jantursky:stipple` (engine and modifiers) and `io.github.j
 4. Dither what an element already draws: `Modifier.ditherImage()` (photos, ordered or error diffusion),
    `Modifier.ditherFill(field)` (keeps the shape, swaps the colours), `Modifier.ditherMask(field)` (shows the content
    where the dither is lit).
-5. A look that doesn't exist yet: write a `DitherField`. Do not write a new renderer or a new component first.
+5. A soft surface with several highlights: `DitherFields.mesh(tones, drift)`, a grid of 2 to 8 by 2 to 8 tones.
+6. A look that doesn't exist yet: write a `DitherField`. Do not write a new renderer or a new component first.
 
 ## Rules
 

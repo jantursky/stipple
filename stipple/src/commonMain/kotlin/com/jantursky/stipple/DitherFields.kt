@@ -155,6 +155,23 @@ public object DitherFields {
         )
 
     /**
+     * A mesh gradient: a grid of tones blended smoothly, for a soft, organic surface with several highlights. [tones]
+     * has one list per row, top to bottom, and each row has one tone per column, left to right; 2 to 8 rows and
+     * columns. The tone at a control point is exactly its value and nothing goes outside the range of [tones].
+     *
+     * A [drift] above 0 (a fraction of the element, 0.05 to 0.15 reads well) lets the interior points wander at
+     * [speed] cycles per second while the edges stay put; it needs `animated` on the modifier to move. The field is a
+     * shader field, and changing [tones] or [drift] does not compile a new program.
+     *
+     * @throws IllegalArgumentException when the grid is smaller than 2x2, larger than 8x8 or ragged.
+     */
+    public fun mesh(
+        tones: List<List<Float>>,
+        drift: Float = 0f,
+        speed: Float = 0.2f,
+    ): DitherField = MeshField(tones, drift, speed)
+
+    /**
      * A soft edge that sweeps from the left to the right as [progress] goes from 0 to 1: tone 1 behind the edge, 0
      * ahead of it. [softness] is the width of the edge as a fraction of the element's width.
      */

@@ -24,6 +24,8 @@ public final class com/jantursky/stipple/DitherFields {
 	public static final field INSTANCE Lcom/jantursky/stipple/DitherFields;
 	public final fun linear (FFF)Lcom/jantursky/stipple/DitherField;
 	public static synthetic fun linear$default (Lcom/jantursky/stipple/DitherFields;FFFILjava/lang/Object;)Lcom/jantursky/stipple/DitherField;
+	public final fun mesh (Ljava/util/List;FF)Lcom/jantursky/stipple/DitherField;
+	public static synthetic fun mesh$default (Lcom/jantursky/stipple/DitherFields;Ljava/util/List;FFILjava/lang/Object;)Lcom/jantursky/stipple/DitherField;
 	public final fun noise (FFFF)Lcom/jantursky/stipple/DitherField;
 	public static synthetic fun noise$default (Lcom/jantursky/stipple/DitherFields;FFFFILjava/lang/Object;)Lcom/jantursky/stipple/DitherField;
 	public final fun radial (FFFFF)Lcom/jantursky/stipple/DitherField;

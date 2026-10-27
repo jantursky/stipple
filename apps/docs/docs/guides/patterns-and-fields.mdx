@@ -30,8 +30,29 @@ A field is a `DitherField`: `tone(x, y, t, aspect)`. `x` and `y` run from 0 to 1
 | `noise(scale, speed, level, contrast)` | Soft, drifting value noise. |
 | `waves(count, speed, angleDegrees, low, high)` | Diagonal bands that travel. |
 | `ripples(rings, speed, centerX, centerY, radius)` | Rings that spread and fade. |
-| `sweep(progress, softness)` | A soft edge that moves from left to right. |
+| `sweep(progress, softness)` | A soft edge that moves from left to right. `progress` can be a `() -> Float` that is read when the field is drawn. |
+| `mesh(tones, drift, speed)` | A grid of tones blended smoothly, for a soft surface with several highlights. |
 
 <include example="fields">../_snippets/live-example.mdx</include>
 
 Static fields ignore `t`. Animated ones are frozen at the modifier's `stillTime` when animation is off or reduced.
+
+## Mesh gradients
+
+`DitherFields.mesh` takes a grid of tones, one list per row from top to bottom and one tone per column from left to right, with 2 to 8 rows and columns. The control points sit on a regular grid with the first and last at the edges, and each grid cell blends its four corners smoothly. A control point has exactly its tone, and no tone goes outside the range of the ones you gave.
+
+```kotlin
+val aurora = DitherFields.mesh(
+    tones = listOf(
+        listOf(0.1f, 0.5f, 0.9f, 0.4f),
+        listOf(0.6f, 1f, 0.3f, 0.8f),
+        listOf(0.2f, 0.4f, 0.7f, 0.1f),
+    ),
+    drift = 0.1f,
+)
+Box(Modifier.fillMaxWidth().height(280.dp).dither(aurora, animated = true, stillTime = 0.5f))
+```
+
+With a `drift` above 0 the interior points wander at `speed` cycles per second while the edge points stay put, so the surface moves and always covers the element. The drift needs `animated = true` on the modifier. A mesh has a shader, and changing its tones or drift does not compile a new program, so it is cheap to animate or to edit live.
+
+<include example="mesh">../_snippets/live-example.mdx</include>

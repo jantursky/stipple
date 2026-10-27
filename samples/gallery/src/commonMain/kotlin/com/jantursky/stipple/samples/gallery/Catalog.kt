@@ -41,6 +41,8 @@ import com.jantursky.stipple.samples.gallery.examples.ImageModifierExample
 import com.jantursky.stipple.samples.gallery.examples.InterfaceExample
 import com.jantursky.stipple.samples.gallery.examples.InterfaceKind
 import com.jantursky.stipple.samples.gallery.examples.MaskExample
+import com.jantursky.stipple.samples.gallery.examples.MeshExample
+import com.jantursky.stipple.samples.gallery.examples.MeshPreset
 import com.jantursky.stipple.samples.gallery.examples.PatternsExample
 import com.jantursky.stipple.samples.gallery.examples.ProgressBarExample
 import com.jantursky.stipple.samples.gallery.examples.ProgressModifierExample
@@ -101,6 +103,24 @@ val Catalog: List<Page> =
                     }
                 },
             ) { FieldsExample(kind, g.theme, g.pattern, g.animated, progress) }
+        },
+        Page(
+            "mesh",
+            Group.Engine,
+            "Mesh gradient",
+            "A grid of tones blended smoothly: a soft surface with several highlights. Every control point keeps its tone exactly, and drift lets the interior points wander while the edges stay put.",
+            listOf("MeshExample"),
+        ) { g ->
+            var preset by remember { mutableStateOf(MeshPreset.Aurora) }
+            var drift by remember { mutableFloatStateOf(0.1f) }
+            Demo(
+                g,
+                minHeight = 280,
+                controls = {
+                    Segmented(MeshPreset.entries, preset, { preset = it }, { it.name })
+                    SliderField("Drift", drift, { drift = it }, 0f..0.2f, format = ::percent)
+                },
+            ) { MeshExample(preset, drift, g.theme, g.pattern, g.animated) }
         },
         Page(
             "renderers",
