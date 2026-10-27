@@ -2,7 +2,7 @@ name: Docs
 
 # Deploys the docs site to Vercel after each change to it, to the design tokens it imports, to the agent skill it
 # publishes or to the changelog it shows. The project builds on Vercel with apps/docs/vercel.json; .vercelignore
-# keeps the upload small. Forks have no Vercel secrets, so the deploy step is skipped there.
+# keeps the upload small. Forks have no Vercel token, so the deploy step is skipped there.
 on:
   push:
     branches: [main]
@@ -30,7 +30,7 @@ jobs:
         if: steps.vercel.outputs.enabled == 'true'
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          # The stipple-docs project. Not a secret.
+          # The Apptiary team and its stipple-docs project. Neither is a secret.
+          VERCEL_ORG_ID: team_K9StkqZREJ9hVsKscavg7bgs
           VERCEL_PROJECT_ID: prj_ADfKVGvKtLipsOpyXpfjaVjKBD5H
         run: npx vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"
