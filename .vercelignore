@@ -1,0 +1,20 @@
+# The docs site needs apps/docs, design, skills, gradle.properties, CHANGELOG.md and the root package files.
+.claude
+.codegraph
+.git
+.gradle
+.idea
+.kotlin
+.run
+.env*
+/build
+**/build
+/kotlin-js-store
+node_modules
+**/node_modules
+/openspec
+/samples
+/scripts
+/stipple
+/stipple-components
+/test-results
