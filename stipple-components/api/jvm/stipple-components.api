@@ -34,6 +34,11 @@ public final class com/jantursky/stipple/components/DitherButtonKt {
 	public static final fun DitherButton-egy_3UM (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherPattern;ZFLandroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/jantursky/stipple/components/DitherEffectTextKt {
+	public static final field DEFAULT_SCRAMBLE_CHARSET Ljava/lang/String;
+	public static final fun DitherEffectText-kiIZU34 (Ljava/lang/String;Lcom/jantursky/stipple/components/DitherTextEffect;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherPattern;FFLkotlin/jvm/functions/Function0;Ljava/lang/Object;IIZLjava/lang/String;Lcom/jantursky/stipple/DitherRenderer;Landroidx/compose/runtime/Composer;III)V
+}
+
 public final class com/jantursky/stipple/components/DitherGaugeKt {
 	public static final fun DitherGauge (FLandroidx/compose/ui/Modifier;Lkotlin/ranges/ClosedFloatingPointRange;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherPattern;ZFFFLjava/lang/String;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
 }
@@ -52,6 +57,14 @@ public final class com/jantursky/stipple/components/DitherProgressBarKt {
 
 public final class com/jantursky/stipple/components/DitherStatCardKt {
 	public static final fun DitherStatCard-eKw1uXw (Ljava/lang/String;Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/util/List;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherPattern;ZFLandroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/jantursky/stipple/components/DitherTextEffect : java/lang/Enum {
+	public static final field Dissolve Lcom/jantursky/stipple/components/DitherTextEffect;
+	public static final field Scramble Lcom/jantursky/stipple/components/DitherTextEffect;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/jantursky/stipple/components/DitherTextEffect;
+	public static fun values ()[Lcom/jantursky/stipple/components/DitherTextEffect;
 }
 
 public final class com/jantursky/stipple/components/DitherTextKt {

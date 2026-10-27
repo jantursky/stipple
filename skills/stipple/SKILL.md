@@ -16,7 +16,7 @@ new work stays small.
 
 Artifacts: `io.github.jantursky:stipple` (engine and modifiers) and `io.github.jantursky:stipple-components`
 (`DitherButton`, `DitherBarChart`, `DitherGrid`, `DitherGauge`, `DitherStatCard`, `DitherProgressBar`, `DitherText`,
-`DitherAvatar`, `DitherImage`, `DitherBackground`). Package `com.jantursky.stipple`, components in
+`DitherEffectText`, `DitherAvatar`, `DitherImage`, `DitherBackground`). Package `com.jantursky.stipple`, components in
 `com.jantursky.stipple.components`. Targets: Android (minSdk 23), iOS, desktop, wasmJs.
 
 ## Choose the smallest tool
@@ -28,7 +28,8 @@ Artifacts: `io.github.jantursky:stipple` (engine and modifiers) and `io.github.j
    `Modifier.ditherFill(field)` (keeps the shape, swaps the colours), `Modifier.ditherMask(field)` (shows the content
    where the dither is lit).
 5. A soft surface with several highlights: `DitherFields.mesh(tones, drift)`, a grid of 2 to 8 by 2 to 8 tones.
-6. A look that doesn't exist yet: write a `DitherField`. Do not write a new renderer or a new component first.
+6. Text that scrambles or dissolves in: `DitherEffectText(text, DitherTextEffect.Scramble)`, or pass a `progress`.
+7. A look that doesn't exist yet: write a `DitherField`. Do not write a new renderer or a new component first.
 
 ## Rules
 

@@ -33,7 +33,7 @@ open `GalleryApp.xcodeproj` and run it on a simulator; its build phase builds th
 | `stipple/src/commonMain`             | The engine: patterns, fields, theme, the modifier nodes and both renderers.          |
 | `stipple/src/*Main/.../platform`     | Reduced-motion readers for Android, iOS, the browser and the JVM.                    |
 | `stipple/src/skikoMain`, `androidMain` | The shader painters: Skia runtime effects, and AGSL on Android 13+.               |
-| `stipple-components`                 | The ten components, built on the engine.                                             |
+| `stipple-components`                 | The eleven components, built on the engine.                                          |
 | `skills/stipple`                     | The agent skill, published with the docs. Its examples are compiled by a test.       |
 | `samples/gallery`                    | The gallery's examples, their controls and the catalog, shared by every host. |
 | `samples/web`                        | The gallery, compiled to Kotlin/Wasm. Each example's source is shown next to it. |

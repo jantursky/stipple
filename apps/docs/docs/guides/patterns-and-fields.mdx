@@ -31,6 +31,7 @@ A field is a `DitherField`: `tone(x, y, t, aspect)`. `x` and `y` run from 0 to 1
 | `waves(count, speed, angleDegrees, low, high)` | Diagonal bands that travel. |
 | `ripples(rings, speed, centerX, centerY, radius)` | Rings that spread and fade. |
 | `sweep(progress, softness)` | A soft edge that moves from left to right. `progress` can be a `() -> Float` that is read when the field is drawn. |
+| `dissolve(progress, scale, softness)` | A reveal in an irregular order: 0 everywhere at progress 0, 1 everywhere at 1. Use it with `ditherMask`. |
 | `mesh(tones, drift, speed)` | A grid of tones blended smoothly, for a soft surface with several highlights. |
 
 <include example="fields">../_snippets/live-example.mdx</include>

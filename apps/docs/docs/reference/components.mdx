@@ -1,6 +1,6 @@
 ---
 title: Components
-description: The ten components in stipple-components.
+description: The eleven components in stipple-components.
 ---
 
 All components live in `com.jantursky.stipple.components`. Each takes `theme`, `pattern` and `animated`, with the defaults `null` (the provided theme), `DitherPatterns.Bayer4` and `false`.
@@ -14,6 +14,7 @@ All components live in `com.jantursky.stipple.components`. Each takes `theme`, `
 | `DitherStatCard` | A KPI card with a headline number, a delta and a dithered trend. | `label`, `value`, `delta`, `trend`, `trendHeight` |
 | `DitherProgressBar` | A progress bar with a dithered leading edge. | `progress` (null for indeterminate), `height`, `track` |
 | `DitherText` | Text filled with a dither, with a minimum contrast. | `text`, `style`, `cell`, `fadeTo`, `field`, `minContrast` |
+| `DitherEffectText` | `DitherText` that plays a scramble or a dissolve as it appears. | `text`, `effect`, `progress`, `trigger`, `durationMillis`, `loop`, `charset` |
 | `DitherAvatar` | A mirrored dither face made from a name, or a dithered photo. | `name`, `size`, `painter`, `shape`, `algorithm` |
 | `DitherImage` | A dithered image that can be revealed coarse to fine. | `painter`, `contentDescription`, `contentScale`, `algorithm`, `reveal` |
 | `DitherBackground` | A dithered field behind your content. | `field`, `content` |
@@ -26,3 +27,22 @@ DitherBarChart(
     contentDescription = "Sign-ups this week",
 )
 ```
+
+## Text effects
+
+`DitherEffectText` brings text in with an `effect`: `Scramble` flickers random characters and settles them, first letter to last, into the text; `Dissolve` reveals it grain by grain through the dither pattern, in an irregular order. At progress 1 the text is exactly the one you gave, filled like `DitherText`.
+
+```kotlin
+DitherEffectText("Dither everything", DitherTextEffect.Scramble)
+
+// Follow a value you own, for example scroll or a transition. A dissolve reads it while drawing, so a change
+// redraws the text without recomposing it.
+val reveal = remember { Animatable(0f) }
+DitherEffectText("Dither everything", DitherTextEffect.Dissolve, progress = { reveal.value })
+```
+
+Without `progress` the component plays 0 to 1 over `durationMillis` after `delayMillis`, plays again whenever `trigger` changes, and repeats with `loop = true`. The component always measures as the final text, so nothing around it moves, and a scramble keeps the line breaks of the final text. Spaces and line breaks are never scrambled, and `charset` sets the characters a scramble draws from. Like `DitherText` it is for headings and labels.
+
+With reduced motion the finished text shows at once and `progress` is ignored. A screen reader reads the final text and never a scrambled frame.
+
+<include example="text-effects">../_snippets/live-example.mdx</include>

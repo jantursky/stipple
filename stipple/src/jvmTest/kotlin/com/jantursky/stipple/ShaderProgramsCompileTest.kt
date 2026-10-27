@@ -34,6 +34,8 @@ class ShaderProgramsCompileTest {
                 "ripples" to DitherFields.ripples(),
                 "sweep" to DitherFields.sweep(0.5f),
                 "live sweep" to DitherFields.sweep({ 0.5f }),
+                "dissolve" to DitherFields.dissolve({ 0.5f }),
+                "dissolve fine" to DitherFields.dissolve({ 0.5f }, scale = 60f, softness = 0.05f),
                 "mesh 2x2" to DitherFields.mesh(List(2) { List(2) { 0.5f } }),
                 "mesh 3x4 drifting" to DitherFields.mesh(List(3) { r -> List(4) { c -> (r + c) / 5f } }, 0.1f),
                 "mesh 8x8" to DitherFields.mesh(List(8) { r -> List(8) { c -> (r * c) / 49f } }, 0.1f),

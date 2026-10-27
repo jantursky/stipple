@@ -22,6 +22,8 @@ public abstract interface class com/jantursky/stipple/DitherField {
 public final class com/jantursky/stipple/DitherFields {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/jantursky/stipple/DitherFields;
+	public final fun dissolve (Lkotlin/jvm/functions/Function0;FF)Lcom/jantursky/stipple/DitherField;
+	public static synthetic fun dissolve$default (Lcom/jantursky/stipple/DitherFields;Lkotlin/jvm/functions/Function0;FFILjava/lang/Object;)Lcom/jantursky/stipple/DitherField;
 	public final fun linear (FFF)Lcom/jantursky/stipple/DitherField;
 	public static synthetic fun linear$default (Lcom/jantursky/stipple/DitherFields;FFFILjava/lang/Object;)Lcom/jantursky/stipple/DitherField;
 	public final fun mesh (Ljava/util/List;FF)Lcom/jantursky/stipple/DitherField;

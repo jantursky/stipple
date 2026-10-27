@@ -111,6 +111,7 @@ final class com.jantursky.stipple/StippleTheme { // com.jantursky.stipple/Stippl
 }
 
 final object com.jantursky.stipple/DitherFields { // com.jantursky.stipple/DitherFields|null[0]
+    final fun dissolve(kotlin/Function0<kotlin/Float>, kotlin/Float = ..., kotlin/Float = ...): com.jantursky.stipple/DitherField // com.jantursky.stipple/DitherFields.dissolve|dissolve(kotlin.Function0<kotlin.Float>;kotlin.Float;kotlin.Float){}[0]
     final fun linear(kotlin/Float = ..., kotlin/Float = ..., kotlin/Float = ...): com.jantursky.stipple/DitherField // com.jantursky.stipple/DitherFields.linear|linear(kotlin.Float;kotlin.Float;kotlin.Float){}[0]
     final fun mesh(kotlin.collections/List<kotlin.collections/List<kotlin/Float>>, kotlin/Float = ..., kotlin/Float = ...): com.jantursky.stipple/DitherField // com.jantursky.stipple/DitherFields.mesh|mesh(kotlin.collections.List<kotlin.collections.List<kotlin.Float>>;kotlin.Float;kotlin.Float){}[0]
     final fun noise(kotlin/Float = ..., kotlin/Float = ..., kotlin/Float = ..., kotlin/Float = ...): com.jantursky.stipple/DitherField // com.jantursky.stipple/DitherFields.noise|noise(kotlin.Float;kotlin.Float;kotlin.Float;kotlin.Float){}[0]

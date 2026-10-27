@@ -6,7 +6,7 @@
 
 [Docs](https://stipple-docs.vercel.app) · [Demo](https://stipple-demo.vercel.app) · [Maven Central](https://central.sonatype.com/artifact/io.github.jantursky/stipple) · [Changelog](CHANGELOG.md)
 
-Stipple: dithered UI for Compose Multiplatform. A small dither engine, modifiers that dither any element, and ten ready-made components: buttons, charts, gauges, text, avatars, images and backgrounds. Android, iOS, desktop and the browser, from one `commonMain`.
+Stipple: dithered UI for Compose Multiplatform. A small dither engine, modifiers that dither any element, and eleven ready-made components: buttons, charts, gauges, text, text effects, avatars, images and backgrounds. Android, iOS, desktop and the browser, from one `commonMain`.
 
 A dither turns a smooth tone into a pattern of ink and paper dots. Stipple splits that into three pieces you can swap on their own: a **field** that says how much ink each point wants, a **pattern** (Bayer 2, 4, 8, blue noise or your own) that decides which cells turn on, and a **theme** with the colours and the cell size. Everything else is built from those.
 
@@ -34,7 +34,7 @@ A dither turns a smooth tone into a pattern of ink and paper dots. Stipple split
 | folder               | what it is                                                                                           |
 | -------------------- | ---------------------------------------------------------------------------------------------------- |
 | `stipple`            | The engine and the modifiers, published as `io.github.jantursky:stipple`. No Material dependency.    |
-| `stipple-components` | The ten components, published as `io.github.jantursky:stipple-components`.                           |
+| `stipple-components` | The eleven components, published as `io.github.jantursky:stipple-components`.                           |
 | `skills/stipple`     | An agent skill that teaches a coding agent to build with Stipple.                                    |
 | `samples/gallery`    | The gallery's examples and their controls, shared by the web, desktop and mobile gallery.            |
 | `samples/web`        | The gallery in the browser: every page live, with its source next to it.                             |
@@ -122,7 +122,7 @@ Stipple adds a small engine of its own, modifiers for any element, a cell render
 
 ## Not covered yet
 
-- Globes, maps, and the scramble and dissolve text effects from dithercn.
+- Globes and maps from dithercn.
 - A shader for blue noise, for dot-shaped cells and for palettes of more than two colours: those use the cell renderer.
 - Frame times on low-end Android devices and on a physical iPhone are not measured.
 - The docs' code samples are plain snippets; only the agent skill's examples are compiled by a test.

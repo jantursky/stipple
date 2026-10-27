@@ -9,6 +9,8 @@ All notable changes to Stipple are listed here. The format follows [Keep a Chang
 - The shader renderer draws `ditherFill` and `ditherMask`, and `DitherFields.noise` and `DitherFields.sweep` carry a shader. `ditherFill`, `ditherMask`, `DitherText` and `DitherImage` take a `renderer`, `DitherRenderer.Cells` by default.
 - `DitherFields.sweep` accepts a `() -> Float` progress that is read when the field is drawn, and its shader takes the progress as a uniform, so an animated reveal compiles one program.
 - `DitherFields.mesh`: a grid of 2 to 8 by 2 to 8 tones blended smoothly, with an optional drift of the interior points. It has a shader that takes the tones as a uniform, so editing or animating a mesh compiles nothing.
+- `DitherEffectText` with `DitherTextEffect.Scramble` and `Dissolve`: text that settles out of random characters or appears grain by grain, from a timeline or a progress you own. It measures as the final text, shows it at once under reduced motion, and a screen reader reads only the final text.
+- `DitherFields.dissolve`: a reveal in an irregular order, for `ditherMask`, with a shader that takes the progress as a uniform.
 
 ### Changed
 

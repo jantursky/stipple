@@ -155,6 +155,25 @@ public object DitherFields {
         )
 
     /**
+     * A reveal in an irregular order instead of a straight edge: tone 0 everywhere at a [progress] of 0, tone 1
+     * everywhere at 1, and in between each part of the element turns on when the progress passes its own random
+     * threshold, so cells light up in patches that grow together. Use it with [ditherMask] to make content appear or
+     * vanish like grain, and run [progress] backwards to dissolve it away.
+     *
+     * [progress] is read every time the field is drawn: pass `{ animated.value }` and a change redraws the element
+     * without recomposing it. A shader draws it from one compiled program however the progress moves.
+     *
+     * @param scale How many patches of the noise fit across the element's height; more is finer grain.
+     * @param softness How wide the band is, in progress, over which a patch goes from paper to ink; the pattern
+     *   dithers inside it.
+     */
+    public fun dissolve(
+        progress: () -> Float,
+        scale: Float = 24f,
+        softness: Float = 0.25f,
+    ): DitherField = DissolveField(progress, scale, softness.coerceAtLeast(0.01f))
+
+    /**
      * A mesh gradient: a grid of tones blended smoothly, for a soft, organic surface with several highlights. [tones]
      * has one list per row, top to bottom, and each row has one tone per column, left to right; 2 to 8 rows and
      * columns. The tone at a control point is exactly its value and nothing goes outside the range of [tones].
@@ -309,6 +328,52 @@ internal class SweepField(
         float tone(float2 uv, float t, float aspect) {
             float edge = params[0] * (1.0 + params[1]) - params[1];
             return 1.0 - clamp((uv.x - edge) / params[1], 0.0, 1.0);
+        }
+        """.trimIndent()
+}
+
+/** The noise threshold of one point, stretched so that the thresholds reach both 0 and 1. */
+private fun dissolveThreshold(
+    x: Float,
+    y: Float,
+    aspect: Float,
+    scale: Float,
+): Float = (0.5f + (valueNoise(x * aspect * scale, y * scale, 0f) - 0.5f) * DISSOLVE_CONTRAST).coerceIn(0f, 1f)
+
+private const val DISSOLVE_CONTRAST = 1.6f
+
+/** A reveal through noise thresholds; [progress] is read per draw and reaches the shader as a uniform. */
+internal class DissolveField(
+    private val progress: () -> Float,
+    private val scale: Float,
+    private val softness: Float,
+) : ShaderField,
+    ShaderParams {
+    private val params = FloatArray(1)
+
+    override fun tone(
+        x: Float,
+        y: Float,
+        t: Float,
+        aspect: Float,
+    ): Float {
+        val p = progress().coerceIn(0f, 1f)
+        return ((p * (1f + softness) - dissolveThreshold(x, y, aspect, scale)) / softness).coerceIn(0f, 1f)
+    }
+
+    override fun shaderParams(): FloatArray {
+        params[0] = progress().coerceIn(0f, 1f)
+        return params
+    }
+
+    override val shaderSource: String =
+        """
+        $NOISE_SHADER
+
+        float tone(float2 uv, float t, float aspect) {
+            float n = valueNoise(float3(uv.x * aspect * ${glsl(scale)}, uv.y * ${glsl(scale)}, 0.0));
+            float k = clamp(0.5 + (n - 0.5) * ${glsl(DISSOLVE_CONTRAST)}, 0.0, 1.0);
+            return clamp((params[0] * (1.0 + ${glsl(softness)}) - k) / ${glsl(softness)}, 0.0, 1.0);
         }
         """.trimIndent()
 }

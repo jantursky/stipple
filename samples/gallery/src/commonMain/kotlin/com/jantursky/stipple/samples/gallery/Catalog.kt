@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 import com.jantursky.stipple.DitherAlgorithm
+import com.jantursky.stipple.components.DitherTextEffect
 import com.jantursky.stipple.samples.gallery.examples.AvatarExample
 import com.jantursky.stipple.samples.gallery.examples.BackgroundExample
 import com.jantursky.stipple.samples.gallery.examples.BarChartExample
@@ -50,6 +51,7 @@ import com.jantursky.stipple.samples.gallery.examples.RendererExample
 import com.jantursky.stipple.samples.gallery.examples.Scene
 import com.jantursky.stipple.samples.gallery.examples.ScenesExample
 import com.jantursky.stipple.samples.gallery.examples.StatCardExample
+import com.jantursky.stipple.samples.gallery.examples.TextEffectsExample
 import com.jantursky.stipple.samples.gallery.examples.TextExample
 import com.jantursky.stipple.samples.gallery.examples.ThemeExample
 import kotlin.math.roundToInt
@@ -336,6 +338,31 @@ val Catalog: List<Page> =
                     SliderField("Fade to", fadeTo, { fadeTo = it }, 0.2f..1f, format = ::percent)
                 },
             ) { TextExample(text.ifBlank { " " }, fadeTo, g.theme, g.pattern, g.animated) }
+        },
+        Page(
+            "text-effects",
+            Group.Components,
+            "Text effects",
+            "Scramble settles random characters into the text, first letter to last. Dissolve reveals it grain by grain. Both measure as the final text, show it at once under reduced motion, and play from a timeline or follow a value you own.",
+            listOf("TextEffectsExample"),
+        ) { g ->
+            var effect by remember { mutableStateOf(DitherTextEffect.Scramble) }
+            var manual by remember { mutableStateOf(false) }
+            var progress by remember { mutableFloatStateOf(0.5f) }
+            var trigger by remember { mutableStateOf(0) }
+            Demo(
+                g,
+                minHeight = 200,
+                controls = {
+                    Segmented(DitherTextEffect.entries, effect, { effect = it }, { it.name })
+                    SwitchField("Slider", manual, { manual = it })
+                    if (manual) {
+                        SliderField("Progress", progress, { progress = it }, 0f..1f, format = ::percent)
+                    } else {
+                        PillButton("Replay", { trigger++ })
+                    }
+                },
+            ) { TextEffectsExample(effect, if (manual) progress else null, trigger, g.theme, g.pattern) }
         },
         Page(
             "avatar",

@@ -73,4 +73,24 @@ class ShaderMeshTest {
         val b = DitherFields.mesh(List(2) { List(2) { 0.5f } }) as ShaderField
         assertNotEquals(a.shaderSource, b.shaderSource)
     }
+
+    @Test
+    fun aDissolveAgreesWithCells() {
+        for (progress in listOf(0.2f, 0.5f, 0.8f)) {
+            val (cells, shader) = both(DitherFields.dissolve({ progress }), 0f)
+            val different = cells.pixelsDifferentFrom(shader)
+            assertTrue(different < 100, "dissolve at $progress: $different of 40000 pixels differ")
+        }
+    }
+
+    @Test
+    fun aMovingDissolveKeepsOneProgram() {
+        var progress = 0.1f
+        val field = DitherFields.dissolve({ progress }) as ShaderField
+        val before = shaderProgram(field.shaderSource, (field as ShaderParams).shaderParams().size)
+        val first = field.shaderParams().copyOf()
+        progress = 0.9f
+        assertEquals(before, shaderProgram(field.shaderSource, field.shaderParams().size))
+        assertNotEquals(first.toList(), field.shaderParams().toList())
+    }
 }
