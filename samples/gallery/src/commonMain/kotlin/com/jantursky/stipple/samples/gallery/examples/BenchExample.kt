@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.jantursky.stipple.CellShape
 import com.jantursky.stipple.DitherFields
 import com.jantursky.stipple.DitherPattern
 import com.jantursky.stipple.DitherRenderer
@@ -21,8 +22,9 @@ fun BenchExample(
     theme: StippleTheme,
     pattern: DitherPattern,
     renderer: DitherRenderer,
+    dots: Boolean = false,
 ) {
-    val fine = theme.copy(cell = 1.dp)
+    val fine = theme.copy(cell = 1.dp, shape = if (dots) CellShape.Dot else theme.shape)
     val fields =
         listOf(
             DitherFields.ripples(rings = 9f, speed = 0.5f, radius = 0.9f),

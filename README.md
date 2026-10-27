@@ -123,7 +123,6 @@ Stipple adds a small engine of its own, modifiers for any element, a cell render
 ## Not covered yet
 
 - Globes and maps from dithercn.
-- A shader for blue noise, for dot-shaped cells and for palettes of more than two colours: those use the cell renderer.
 - Frame times on low-end Android devices and on a physical iPhone are not measured.
 - The docs' code samples are plain snippets; only the agent skill's examples are compiled by a test.
 

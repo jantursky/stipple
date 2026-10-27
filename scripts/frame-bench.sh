@@ -10,7 +10,7 @@
 #   --seconds <n>                    how long each run measures (default: 10)
 #   --repeat <n>                     runs per renderer; the summary reports the median run (default: 1)
 #   --entry <id>                     gallery page to measure (default: bench). Its renderer only follows --renderer
-#                                    on `bench`; other pages ignore it
+#                                    on `bench`, `bench-blue-noise` and `bench-dots`; other pages ignore it
 #   --no-build                       install what was built last instead of building first
 #   --out <dir>                      where results go (default: build/frame-bench/<platform>/<timestamp>)
 #

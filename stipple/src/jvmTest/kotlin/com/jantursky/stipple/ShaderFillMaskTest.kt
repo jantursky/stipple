@@ -81,11 +81,20 @@ class ShaderFillMaskTest {
         )
     }
 
+    private object WidePattern : DitherPattern {
+        override val size = 512
+
+        override fun threshold(
+            x: Int,
+            y: Int,
+        ) = 0.5f
+    }
+
     @Test
     fun anIneligiblePatternFallsBackToCellsWithoutThrowing() {
-        // Blue noise has no shader yet, so the shader renderer hands the fill to the cell renderer.
+        // A pattern wider than the shader's texture limit goes to the cell renderer.
         val fill = { r: DitherRenderer ->
-            Modifier.ditherFill(Probe(), DitherPatterns.BlueNoise, theme, renderer = r)
+            Modifier.ditherFill(Probe(), WidePattern, theme, renderer = r)
         }
         assertEquals(theme.paper, pixel(DitherRenderer.Shader, fill))
     }

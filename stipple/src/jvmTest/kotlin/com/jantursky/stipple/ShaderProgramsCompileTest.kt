@@ -16,10 +16,12 @@ class ShaderProgramsCompileTest {
     ) {
         val shaderField = field as? ShaderField ?: error("$name is not a shader field")
         val params = (field as? ShaderParams)?.shaderParams()?.size ?: 0
-        val program = shaderProgram(shaderField.shaderSource, params)
-        // Throws, with the compiler's message, when the program is rejected.
-        val effect = RuntimeEffect.makeForShader(program)
-        effect.close()
+        // Every combination of pattern source and cell shape. Throws, with the compiler's message, when rejected.
+        for (texture in listOf(false, true)) {
+            for (dots in listOf(false, true)) {
+                RuntimeEffect.makeForShader(shaderProgram(shaderField.shaderSource, params, texture, dots)).close()
+            }
+        }
     }
 
     @Test

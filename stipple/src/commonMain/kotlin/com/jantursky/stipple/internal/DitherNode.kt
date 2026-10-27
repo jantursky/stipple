@@ -257,23 +257,19 @@ internal class DitherNode(
         blendMode: BlendMode,
     ) {
         val params = (field as? ShaderParams)?.shaderParams()
-        val program = (field as? ShaderField)?.shaderSource?.let { shaderProgram(it, params?.size ?: 0) }
+        val texture = shaderBayerSide(pattern) == 0
+        val dots = theme.shape == CellShape.Dot
+        val program =
+            (field as? ShaderField)?.shaderSource?.let { shaderProgram(it, params?.size ?: 0, texture, dots) }
         val bayer = shaderBayerSide(pattern)
         val usable =
-            renderer != DitherRenderer.Cells &&
-                program != null &&
-                program != brokenProgram &&
-                bayer > 0 &&
-                theme.shape == CellShape.Square &&
-                ramp.size == 2 &&
-                (
-                    renderer == DitherRenderer.Shader ||
-                        cellGrid(
-                            size.width,
-                            size.height,
-                            theme.cell.toPx(),
-                        ).let { it.columns * it.rows > AUTO_SHADER_CELLS }
-                )
+            shaderEligibility(
+                renderer,
+                program != null,
+                program != null && program == brokenProgram,
+                pattern,
+                ramp.size,
+            ) { cellGrid(size.width, size.height, theme.cell.toPx()).let { it.columns * it.rows } }
         if (usable && program != null) {
             if (!shaderPainterCreated) {
                 shaderPainter = createShaderPainter()
@@ -290,7 +286,12 @@ internal class DitherNode(
                             .toFloat(),
                     )
                 try {
-                    painter.draw(this, program, ShaderUniforms(t, cell, bayer, ramp[1], ramp[0], params), blendMode)
+                    painter.draw(
+                        this,
+                        program,
+                        ShaderUniforms(t, cell, bayer, ramp, params, pattern.takeIf { texture }),
+                        blendMode,
+                    )
                     return
                 } catch (_: Exception) {
                     brokenProgram = program

@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 import com.jantursky.stipple.DitherAlgorithm
+import com.jantursky.stipple.DitherPatterns
 import com.jantursky.stipple.components.DitherTextEffect
 import com.jantursky.stipple.samples.gallery.examples.AvatarExample
 import com.jantursky.stipple.samples.gallery.examples.BackgroundExample
@@ -138,6 +139,20 @@ val Catalog: List<Page> =
             "Three large animated surfaces at a one-dp cell, drawn by the renderer chosen at launch (`renderer` extra on Android, `-renderer` on iOS). It is the load scripts/frame-bench.sh measures.",
             listOf("BenchExample"),
         ) { g -> Demo(g, minHeight = 600) { BenchExample(g.theme, g.pattern, g.renderer) } },
+        Page(
+            "bench-blue-noise",
+            Group.Engine,
+            "Frame benchmark, blue noise",
+            "The frame benchmark with the blue-noise pattern, which the shader reads from a texture. Measured by scripts/frame-bench.sh --entry bench-blue-noise.",
+            listOf("BenchExample"),
+        ) { g -> Demo(g, minHeight = 600) { BenchExample(g.theme, DitherPatterns.BlueNoise, g.renderer) } },
+        Page(
+            "bench-dots",
+            Group.Engine,
+            "Frame benchmark, dots",
+            "The frame benchmark with dot-shaped cells. Measured by scripts/frame-bench.sh --entry bench-dots.",
+            listOf("BenchExample"),
+        ) { g -> Demo(g, minHeight = 600) { BenchExample(g.theme, g.pattern, g.renderer, dots = true) } },
         Page(
             "theme",
             Group.Engine,

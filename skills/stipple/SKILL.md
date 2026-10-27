@@ -42,7 +42,7 @@ Artifacts: `io.github.jantursky:stipple` (engine and modifiers) and `io.github.j
   distance, or circles turn into ellipses. Return smooth tones and let the pattern make the dots.
 - **Cell size is the cost.** The cell renderer draws about one rectangle per cell run. Above roughly 20,000 cells
   (a large background at 1-2 dp) pass `renderer = DitherRenderer.Auto`, or `Shader`. The shader renderer only draws
-  `ShaderField`s (all the built-in fields) with Bayer patterns, square cells and a two-colour theme, behind the
+  `ShaderField`s (all the built-in fields) with any pattern up to 256 cells wide, square or dot cells and a theme of up to eight colours, behind the
   content or as `ditherFill` and `ditherMask`. Anything else, and Android below 13, uses cells automatically.
 - **Contrast.** A dither shows less than full ink, so keep tone below about 0.5 where text sits. `DitherText` swaps the
   ink for black or white when `minContrast` (4.5) isn't met. Check `theme.contrastRatio` for custom colours.

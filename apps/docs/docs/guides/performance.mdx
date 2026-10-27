@@ -36,7 +36,7 @@ Animated dithers redraw every frame. A static dither is drawn once and cached by
 
 ## Measuring on a device
 
-`scripts/frame-bench.sh` measures the gallery's `bench` page, three large animated dithers at a one-dp cell, with each renderer, and writes the frame times to `results.csv` and a `summary.md`.
+`scripts/frame-bench.sh` measures the gallery's `bench` page, three large animated dithers at a one-dp cell, with each renderer (`--entry bench-blue-noise` and `--entry bench-dots` measure the same load with the blue-noise pattern and with dot cells), and writes the frame times to `results.csv` and a `summary.md`.
 
 ```sh
 scripts/frame-bench.sh android --seconds 10 --repeat 3   # an attached phone or a running emulator
@@ -45,6 +45,21 @@ IOS_DEVICE_UDID=<udid> scripts/frame-bench.sh ios        # a physical iPhone
 
 On Android the frames come from `dumpsys gfxinfo framestats`: the time from the intended vsync to the frame being completed, for every frame drawn after a three second warm-up. The summary gives p50, p90, p95 and p99, the share of frames that took longer than one refresh interval, and the gap between the best and worst of the repeated runs, which is the noise to compare differences against. Compare renderers on one device in one session, and use `--repeat 3` or more. An emulator renders in software, so its numbers show the direction, not what a phone does.
 
+## Measured
+
+A Samsung SM-G991B (Galaxy S21) on Android 15 at 120 Hz, `--seconds 10 --repeat 3`, median run by p95, at commit `caeef48`. The refresh interval is 8.3 ms, so every row is over budget at 120 Hz. Against 60 Hz (16.7 ms) only the blue-noise shader run stays inside the budget at p95; the other shader runs have p95 near 21 ms.
+
+| Page | Renderer | p50 ms | p95 ms | p99 ms | p95 spread ms |
+|---|---|---|---|---|---|
+| `bench` (Bayer 4, squares) | cells | 175.0 | 184.4 | 189.6 | 6.8 |
+| `bench` | shader | 14.5 | 21.0 | 23.1 | 9.0 |
+| `bench-blue-noise` | cells | 221.9 | 235.0 | 237.8 | 2.6 |
+| `bench-blue-noise` | shader | 11.2 | 12.6 | 15.3 | 3.9 |
+| `bench-dots` | cells | 367.6 | 473.0 | 477.8 | 57.9 |
+| `bench-dots` | shader | 15.4 | 21.7 | 23.9 | 9.5 |
+
+At a one-dp cell the cell renderer is an order of magnitude slower than the shader, and dots cost it the most, since each dot is a separate circle. Blue noise costs the shader nothing measurable over Bayer: its texture lookup is within the run-to-run spread.
+
 ## What is not measured yet
 
-Frame times on low-end Android devices and on a physical iPhone have not been measured. The gallery's frame meter shows the time between frames, not the cost of rendering.
+Frame times on a low-end Android device and on a physical iPhone have not been measured; the phone above is a high-end one. The gallery's frame meter shows the time between frames, not the cost of rendering.

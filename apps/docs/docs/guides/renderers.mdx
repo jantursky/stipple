@@ -20,8 +20,8 @@ Both draw the same picture. In the tests, the shader output matches the cell out
 The shader renderer draws an element only if all of these hold. Otherwise the cell renderer draws it, with no error:
 
 - the field is a `ShaderField`, which all the built-in fields except `ditherProgress`'s progress field are: `solid`, `linear`, `radial`, `noise`, `waves`, `ripples` and `sweep`;
-- the pattern is Bayer 2, 4 or 8;
-- the cell shape is square and the theme has two colours (no palette);
+- the pattern is Bayer 2, 4 or 8, or any pattern up to 256 cells wide, blue noise included (the shader reads it from a texture);
+- the theme has two to eight colours, so a palette of up to eight works; cells can be squares or dots;
 - the platform has runtime shaders, and the platform's compiler accepts the program.
 
 For `ditherFill` and `ditherMask` the shader draws inside the offscreen layer those modifiers already use, so the content keeps its shape and transparency. The sweep's progress reaches the shader as a uniform, so an animated reveal compiles one program.

@@ -23,8 +23,8 @@ import com.jantursky.stipple.internal.ProgressField
  * @param shape Clips the dither. The element itself isn't clipped.
  * @param speed Multiplies the passing of time. 2 plays twice as fast.
  * @param stillTime The time, in seconds, the field is drawn at when it doesn't animate. Pick a moment that looks finished.
- * @param renderer [DitherRenderer.Cells] by default. The shader renderer only draws [ShaderField]s with a Bayer
- *   pattern, square cells and a two-color theme; anything else is drawn by the cell renderer.
+ * @param renderer [DitherRenderer.Cells] by default. The shader renderer only draws [ShaderField]s with a pattern
+ *   up to 256 cells wide, square or dot cells and a theme of up to eight colors; anything else is drawn by the cell renderer.
  */
 public fun Modifier.dither(
     field: DitherField,

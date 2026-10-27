@@ -12,6 +12,8 @@ All notable changes to Stipple are listed here. The format follows [Keep a Chang
 - `DitherEffectText` with `DitherTextEffect.Scramble` and `Dissolve`: text that settles out of random characters or appears grain by grain, from a timeline or a progress you own. It measures as the final text, shows it at once under reduced motion, and a screen reader reads only the final text.
 - `DitherFields.dissolve`: a reveal in an irregular order, for `ditherMask`, with a shader that takes the progress as a uniform.
 
+- The shader renderer draws blue noise and custom patterns up to 256 cells wide, dot-shaped cells and palettes of up to eight colours. Larger patterns and longer palettes still use the cell renderer.
+
 ### Changed
 
 - The noise field uses a float-only hash so the cell renderer and the shader draw the same cells. Which cells light up for a given noise changes; the look does not.
