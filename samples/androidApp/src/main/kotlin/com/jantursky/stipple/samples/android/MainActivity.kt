@@ -9,7 +9,8 @@ import androidx.activity.enableEdgeToEdge
 import com.jantursky.stipple.samples.app.GalleryApp
 
 /**
- * Hosts the gallery. Two optional intent extras open a page directly, for testing:
+ * Hosts the gallery. Optional intent extras open a page directly, for testing (`--es renderer shader` picks the
+ * renderer of the benchmark page, `bench`):
  * `adb shell am start -S -n com.jantursky.stipple.samples.gallery/com.jantursky.stipple.samples.android.MainActivity
  * --es entry gauge --ez dark false` opens the gauge in the light theme.
  */
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
         val entry = intent.getStringExtra(EXTRA_ENTRY)
         val dark = if (intent.hasExtra(EXTRA_DARK)) intent.getBooleanExtra(EXTRA_DARK, true) else null
         setContent {
-            GalleryApp(entry, dark, onDarkChange = ::matchSystemBars)
+            GalleryApp(entry, dark, intent.getStringExtra(EXTRA_RENDERER), onDarkChange = ::matchSystemBars)
         }
     }
 
@@ -33,5 +34,6 @@ class MainActivity : ComponentActivity() {
     private companion object {
         const val EXTRA_ENTRY = "entry"
         const val EXTRA_DARK = "dark"
+        const val EXTRA_RENDERER = "renderer"
     }
 }

@@ -15,6 +15,119 @@ plugins {
     alias(libs.plugins.roborazzi)
 }
 
+/**
+ * Turns the Kotlin code fences of the docs site into a Kotlin source file per page, so a docs sample that no longer
+ * compiles fails the build. A fence is the body of a composable by default, `kotlin top` puts it at file level and
+ * `kotlin nocompile` leaves it out (Gradle configuration, signatures without bodies).
+ */
+abstract class GenerateDocsSnippets : DefaultTask() {
+    @get:InputDirectory
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val docs: DirectoryProperty
+
+    @get:OutputDirectory
+    abstract val output: DirectoryProperty
+
+    @TaskAction
+    fun generate() {
+        val root = docs.get().asFile
+        val out = output.get().asFile
+        out.deleteRecursively()
+        val pkgDir = out.resolve("com/jantursky/stipple/docs").apply { mkdirs() }
+        val fence =
+            Regex("""^```kotlin([^\n]*)\n(.*?)\n```$""", setOf(RegexOption.MULTILINE, RegexOption.DOT_MATCHES_ALL))
+        var compiled = 0
+        var skipped = 0
+        val pages =
+            root
+                .walkTopDown()
+                .filter { it.isFile && it.extension == "mdx" }
+                .sortedBy { it.path }
+                .toList()
+        for (page in pages) {
+            val text = page.readText()
+            val rel = page.relativeTo(root).path
+            val body = StringBuilder()
+            val refs = mutableListOf<String>()
+            for ((index, match) in fence.findAll(text).withIndex()) {
+                val info =
+                    match.groupValues[1]
+                        .trim()
+                        .split(Regex("\\s+"))
+                        .filter { it.isNotEmpty() && '=' !in it }
+                if ("nocompile" in info) {
+                    skipped++
+                    continue
+                }
+                compiled++
+                val line = text.substring(0, match.range.first).count { it == '\n' } + 2
+                val name = "snippet$index"
+                body
+                    .append("\n// ")
+                    .append(rel)
+                    .append(':')
+                    .append(line)
+                    .append('\n')
+                if ("top" in info) {
+                    body.append(match.groupValues[2]).append('\n')
+                } else {
+                    body.append("@Composable\nprivate fun ").append(name).append("() {\n")
+                    match.groupValues[2].lines().forEach { body.append("    ").append(it).append('\n') }
+                    body.append("}\n")
+                    refs += "::$name"
+                }
+            }
+            if (body.isEmpty()) continue
+            val id = rel.removeSuffix(".mdx").replace(Regex("[^A-Za-z0-9]"), "_")
+            pkgDir.resolve("Docs_$id.kt").writeText(
+                """
+                |@file:Suppress("unused", "UNUSED_VARIABLE", "UNUSED_PARAMETER")
+                |
+                |package com.jantursky.stipple.docs
+                |
+                |import androidx.compose.animation.core.*
+                |import androidx.compose.foundation.*
+                |import androidx.compose.foundation.layout.*
+                |import androidx.compose.runtime.*
+                |import androidx.compose.ui.*
+                |import androidx.compose.ui.graphics.*
+                |import androidx.compose.ui.unit.*
+                |import com.jantursky.stipple.*
+                |import com.jantursky.stipple.components.*
+                |import kotlin.math.*
+                |
+                |// Generated from docs/$rel by :stipple-components:generateDocsSnippets. Do not edit.
+                |private val target = 0.6f
+                |
+                |@Composable
+                |private fun App() {}
+                |
+                |@Composable
+                |private fun Screen() {}
+                |$body
+                """.trimMargin(),
+            )
+        }
+        pkgDir.resolve("DocsSnippets.kt").writeText(
+            """
+            |package com.jantursky.stipple.docs
+            |
+            |/** How many docs fences were turned into code and how many were left out, for the test to check. */
+            |internal object DocsSnippets {
+            |    const val COMPILED = $compiled
+            |    const val SKIPPED = $skipped
+            |}
+            """.trimMargin(),
+        )
+    }
+}
+
+val generateDocsSnippets =
+    tasks.register<GenerateDocsSnippets>("generateDocsSnippets") {
+        docs.set(rootProject.layout.projectDirectory.dir("apps/docs/docs"))
+        output.set(layout.buildDirectory.dir("generated/docsSnippets"))
+    }
+
 kotlin {
     explicitApi()
 
@@ -55,6 +168,9 @@ kotlin {
             implementation(kotlin("test"))
             implementation(libs.junit)
             implementation(libs.robolectric)
+        }
+        jvmTest {
+            kotlin.srcDir(generateDocsSnippets)
         }
         jvmTest.dependencies {
             implementation(libs.compose.ui.test)

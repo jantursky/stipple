@@ -58,6 +58,23 @@ bun run test:web                           # browser tests of the gallery, after
 
 CI runs all of them on every pull request. `koverVerify` fails the build when coverage drops below the gate in the Gradle build.
 
+### Docs code samples
+
+Every ```` ```kotlin ```` fence in `apps/docs/docs` is compiled by `:stipple-components:jvmTest`, so a sample that no longer compiles fails the build. `:stipple-components:generateDocsSnippets` writes them to `stipple-components/build/generated/docsSnippets`, one file per page; a compile error points there, and the comment above each snippet names the docs file and line.
+
+- A plain fence is the body of a composable, with the library's packages imported and the names `target`, `App()` and `Screen()` available.
+- ```` ```kotlin top ```` is placed at file level, for declarations such as an `object`.
+- ```` ```kotlin nocompile ```` is left out. Use it only for what cannot be code: Gradle configuration and signatures without bodies.
+
+### Frame times on a device
+
+```sh
+scripts/frame-bench.sh android --seconds 10 --repeat 3   # an attached phone or a running emulator
+IOS_DEVICE_UDID=<udid> scripts/frame-bench.sh ios        # a physical iPhone, with the signed app installed
+```
+
+It opens the gallery's `bench` page once per renderer (`--renderer cells|shader|both`) and writes `results.csv` (one row per run: platform, device, OS, refresh rate, renderer, frames, p50, p90, p95, p99 and the share of frames over one refresh interval) and `summary.md` (the median run per renderer, with the device, the commit and the run-to-run spread) to `build/frame-bench`. Android frames come from `dumpsys gfxinfo framestats`; the iPhone path uses Instruments' "Animation Hitches" template through `xctrace` and has not been verified on a device yet. Run `scripts/frame-bench.sh` without arguments for every option.
+
 ## Conventions
 
 - Kotlin in the official style. Run `./gradlew spotlessApply` before you push.

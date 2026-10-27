@@ -6,7 +6,7 @@ description: Implement DitherField for any shape you can describe with maths, th
 Most new looks are a new field. A field is one function, so a new look costs a few lines.
 
 ```kotlin
-private val spiral = DitherField { x, y, t, aspect ->
+val spiral = DitherField { x, y, t, aspect ->
     val dx = (x - 0.5f) * aspect
     val dy = y - 0.5f
     0.5f + 0.5f * sin(hypot(dx, dy) * 14f - atan2(dy, dx) * 2f - t * 2f)
@@ -29,7 +29,7 @@ Box(Modifier.size(240.dp).dither(spiral, DitherPatterns.Bayer8, animated = true,
 
 For a large surface the cell renderer is slow. Implement `ShaderField` and the shader renderer can draw your field in one pass:
 
-```kotlin
+```kotlin top
 object Plasma : ShaderField {
     override val shaderSource = """
         float tone(float2 uv, float t, float aspect) {

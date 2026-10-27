@@ -34,6 +34,17 @@ Animated dithers redraw every frame. A static dither is drawn once and cached by
 
 `ditherImage` reads the content back once, dithers it on a background dispatcher and caches the result. The previous result stays on screen while a new one computes. Ordered dithering is cheapest. Floyd-Steinberg and Atkinson diffuse error and cost more per cell, which only shows on very large images.
 
+## Measuring on a device
+
+`scripts/frame-bench.sh` measures the gallery's `bench` page, three large animated dithers at a one-dp cell, with each renderer, and writes the frame times to `results.csv` and a `summary.md`.
+
+```sh
+scripts/frame-bench.sh android --seconds 10 --repeat 3   # an attached phone or a running emulator
+IOS_DEVICE_UDID=<udid> scripts/frame-bench.sh ios        # a physical iPhone
+```
+
+On Android the frames come from `dumpsys gfxinfo framestats`: the time from the intended vsync to the frame being completed, for every frame drawn after a three second warm-up. The summary gives p50, p90, p95 and p99, the share of frames that took longer than one refresh interval, and the gap between the best and worst of the repeated runs, which is the noise to compare differences against. Compare renderers on one device in one session, and use `--repeat 3` or more. An emulator renders in software, so its numbers show the direction, not what a phone does.
+
 ## What is not measured yet
 
 Frame times on low-end Android devices and on a physical iPhone have not been measured. The gallery's frame meter shows the time between frames, not the cost of rendering.

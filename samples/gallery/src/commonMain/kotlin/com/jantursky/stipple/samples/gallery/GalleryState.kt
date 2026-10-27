@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 import com.jantursky.stipple.CellShape
 import com.jantursky.stipple.DitherPattern
 import com.jantursky.stipple.DitherPatterns
+import com.jantursky.stipple.DitherRenderer
 import com.jantursky.stipple.StippleMotion
 import com.jantursky.stipple.StippleTheme
 
@@ -24,6 +25,9 @@ class GalleryState(
     var pattern by mutableStateOf<DitherPattern>(DitherPatterns.Bayer4)
     var animated by mutableStateOf(true)
     var motion by mutableStateOf(StippleMotion.System)
+
+    /** Which renderer the benchmark page draws with; no other page reads it. */
+    var renderer by mutableStateOf(DitherRenderer.Cells)
 
     /** The theme on the stage: the chosen colors over the light or dark base. */
     val theme: StippleTheme

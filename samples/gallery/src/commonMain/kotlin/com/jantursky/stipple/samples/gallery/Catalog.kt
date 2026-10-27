@@ -23,6 +23,7 @@ import com.jantursky.stipple.DitherAlgorithm
 import com.jantursky.stipple.samples.gallery.examples.AvatarExample
 import com.jantursky.stipple.samples.gallery.examples.BackgroundExample
 import com.jantursky.stipple.samples.gallery.examples.BarChartExample
+import com.jantursky.stipple.samples.gallery.examples.BenchExample
 import com.jantursky.stipple.samples.gallery.examples.ButtonExample
 import com.jantursky.stipple.samples.gallery.examples.ChartKind
 import com.jantursky.stipple.samples.gallery.examples.ChartsExample
@@ -108,6 +109,13 @@ val Catalog: List<Page> =
             "The cell renderer draws a rectangle per cell and works everywhere. The shader renderer draws the whole element with one fragment shader: the same picture at a fraction of the cost when cells get small. Left: cells. Right: shader.",
             listOf("RendererExample"),
         ) { g -> Demo(g, minHeight = 320) { RendererExample(g.theme, g.pattern, g.animated) } },
+        Page(
+            "bench",
+            Group.Engine,
+            "Frame benchmark",
+            "Three large animated surfaces at a one-dp cell, drawn by the renderer chosen at launch (`renderer` extra on Android, `-renderer` on iOS). It is the load scripts/frame-bench.sh measures.",
+            listOf("BenchExample"),
+        ) { g -> Demo(g, minHeight = 600) { BenchExample(g.theme, g.pattern, g.renderer) } },
         Page(
             "theme",
             Group.Engine,

@@ -4,6 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import com.jantursky.stipple.DitherRenderer
 import com.jantursky.stipple.samples.gallery.GalleryApp as Gallery
 
 /**
@@ -11,15 +12,23 @@ import com.jantursky.stipple.samples.gallery.GalleryApp as Gallery
  *
  * @param entry The id of the page to open, or null for the overview.
  * @param dark Starts in the dark theme when true, the light one when false and the system's when null.
+ * @param renderer `cells` or `shader`: what the benchmark page draws with. Null or anything else is cells.
  * @param onDarkChange Called with the theme in use, so the host can match its system bars.
  */
 @Composable
 fun GalleryApp(
     entry: String? = null,
     dark: Boolean? = null,
+    renderer: String? = null,
     onDarkChange: (Boolean) -> Unit = {},
 ) {
     val initialDark = dark ?: isSystemInDarkTheme()
     LaunchedEffect(initialDark) { onDarkChange(initialDark) }
-    Gallery(Modifier, entry, initialDark, onDarkModeChange = onDarkChange)
+    Gallery(
+        Modifier,
+        entry,
+        initialDark,
+        onDarkModeChange = onDarkChange,
+        initialRenderer = if (renderer == "shader") DitherRenderer.Shader else DitherRenderer.Cells,
+    )
 }

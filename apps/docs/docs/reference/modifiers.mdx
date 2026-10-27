@@ -9,7 +9,7 @@ All modifiers live in `com.jantursky.stipple`. `theme = null` means the theme fr
 
 Fills the element's shape with a field, behind its content.
 
-```kotlin
+```kotlin nocompile
 fun Modifier.dither(
     field: DitherField,
     pattern: DitherPattern = DitherPatterns.Bayer4,
@@ -26,7 +26,7 @@ fun Modifier.dither(
 
 A fill driven by a value: bars, gauge segments, chart columns. `progress` is a lambda read in the draw phase.
 
-```kotlin
+```kotlin nocompile
 fun Modifier.ditherProgress(
     progress: () -> Float,
     pattern: DitherPattern = DitherPatterns.Bayer4,
@@ -48,7 +48,7 @@ fun Modifier.ditherProgress(
 
 Dithers whatever the element draws. The content is read back once, dithered off the main thread and cached.
 
-```kotlin
+```kotlin nocompile
 fun Modifier.ditherImage(
     pattern: DitherPattern = DitherPatterns.Bayer4,
     theme: StippleTheme? = null,
@@ -62,7 +62,7 @@ fun Modifier.ditherImage(
 
 ## Modifier.ditherFill and ditherMask
 
-```kotlin
+```kotlin nocompile
 fun Modifier.ditherFill(field, pattern, theme, animated, speed, stillTime): Modifier
 fun Modifier.ditherMask(field, pattern, theme, animated, speed, stillTime): Modifier
 ```

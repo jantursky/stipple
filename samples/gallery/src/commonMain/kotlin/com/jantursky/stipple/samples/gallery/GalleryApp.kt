@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jantursky.stipple.CellShape
 import com.jantursky.stipple.DitherPatterns
+import com.jantursky.stipple.DitherRenderer
 import com.jantursky.stipple.LocalStippleMotion
 import com.jantursky.stipple.StippleMotion
 import com.jantursky.stipple.StippleTheme
@@ -72,8 +73,15 @@ fun GalleryApp(
     onDarkModeChange: (Boolean) -> Unit = {},
     initialAnimated: Boolean = true,
     embed: Boolean = false,
+    initialRenderer: DitherRenderer = DitherRenderer.Cells,
 ) {
-    val state = remember { GalleryState(initialDark).also { it.animated = initialAnimated } }
+    val state =
+        remember {
+            GalleryState(initialDark).also {
+                it.animated = initialAnimated
+                it.renderer = initialRenderer
+            }
+        }
     var pageId by remember { mutableStateOf(Catalog.firstOrNull { it.id == initialPage }?.id ?: "overview") }
     var menuOpen by remember { mutableStateOf(false) }
     LaunchedEffect(pageId) { onPageChange(pageId) }
