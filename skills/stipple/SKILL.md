@@ -26,8 +26,8 @@ Artifacts: `io.github.jantursky:stipple` (engine and modifiers) and `io.github.j
 3. A fill driven by a value: `Modifier.ditherProgress({ value })`.
 4. Dither what an element already draws: `Modifier.ditherImage()` (photos, ordered or error diffusion),
    `Modifier.ditherFill(field)` (keeps the shape, swaps the colours), `Modifier.ditherMask(field)` (shows the content
-   where the dither is lit).
-5. A soft surface with several highlights: `DitherFields.mesh(tones, drift)`, a grid of 2 to 8 by 2 to 8 tones.
+   where the dither is lit; pair it with `DitherFields.dissolve({ progress })` or `sweep({ progress })` for a reveal).
+5. A soft surface with several highlights: `DitherFields.mesh(tones, drift)`, a grid of 2 to 8 by 2 to 8 tones (Example 4).
 6. Text that scrambles or dissolves in: `DitherEffectText(text, DitherTextEffect.Scramble)`, or pass a `progress`.
 7. A look that doesn't exist yet: write a `DitherField`. Do not write a new renderer or a new component first.
 
@@ -117,6 +117,71 @@ fun Cover(photo: Painter) {
 `ditherImage` reads the content back once, dithers it off the main thread and caches the result. Pass a `key` that
 changes when the picture does. Atkinson and Floyd-Steinberg diffuse error and look better on photos; `Ordered` is
 cheaper and steadier when the content changes.
+
+## Example 4: a mesh gradient surface
+
+```kotlin
+@Composable
+fun SoftSurface() {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+            .dither(
+                DitherFields.mesh(
+                    tones = listOf(
+                        listOf(0.9f, 0.4f, 0.2f),
+                        listOf(0.3f, 0.7f, 0.3f),
+                        listOf(0.1f, 0.3f, 0.8f),
+                    ),
+                    drift = 0.3f,
+                ),
+                DitherPatterns.Bayer8,
+                animated = true,
+                stillTime = 1f,
+            ),
+    )
+}
+```
+
+`tones` has one list per row, top to bottom, and 2 to 8 rows and columns. Editing or animating the tones with the shader
+renderer compiles nothing new.
+
+## Example 5: reveal content with a dissolve
+
+```kotlin
+@Composable
+fun Reveal(reveal: () -> Float) {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .height(160.dp)
+            .background(Color(0xFF615FFF))
+            .ditherMask(DitherFields.dissolve(reveal), DitherPatterns.Bayer4),
+    )
+}
+```
+
+`reveal` goes from 0 (nothing shown) to 1 (everything shown) and is read while drawing, so moving it redraws the element
+without recomposing it. `DitherFields.sweep({ reveal() })` reveals from left to right instead.
+
+## Example 6: text that scrambles in
+
+```kotlin
+@Composable
+fun Headline() {
+    DitherEffectText("Stipple", DitherTextEffect.Scramble, charset = "01")
+}
+```
+
+The text measures as its final value, shows at once under reduced motion, and a screen reader reads only the final
+text. Pass `progress = { value }` to drive it yourself, or `DitherTextEffect.Dissolve` for grain-by-grain appearance.
+
+## Palettes
+
+Set `StippleTheme.palette` to a list of two to eight colours ordered from paper to ink (`Light.copy(palette = ...)`).
+The tone picks a position on the ramp and the pattern decides between the two colours around it. Longer lists fall back
+to the cell renderer.
 
 ## Writing a new dither: checklist
 

@@ -104,3 +104,5 @@ jobs:
       - run: bun install --frozen-lockfile
       - name: Build the docs site
         run: bun run build:docs
+      - name: Check the links in the docs site
+        run: node apps/docs/scripts/check-links.mjs

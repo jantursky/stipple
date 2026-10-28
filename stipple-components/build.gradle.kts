@@ -189,6 +189,8 @@ tasks.withType<Test>().matching { it.name == "testAndroidHostTest" }.configureEa
 tasks.named<Test>("jvmTest") {
     // Skiko loads its native library; recent JDKs warn unless native access is granted.
     jvmArgs("--enable-native-access=ALL-UNNAMED")
+    // SkillExamplesCompileTest compares the skill's examples with its own source, so a skill edit must rerun it.
+    inputs.file(rootProject.layout.projectDirectory.file("skills/stipple/SKILL.md"))
 }
 
 roborazzi {

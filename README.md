@@ -51,9 +51,9 @@ A dither turns a smooth tone into a pattern of ink and paper dots. Stipple split
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("io.github.jantursky:stipple:1.1.0")
+            implementation("io.github.jantursky:stipple:1.1.1")
             // Optional:
-            implementation("io.github.jantursky:stipple-components:1.1.0")
+            implementation("io.github.jantursky:stipple-components:1.1.1")
         }
     }
 }
@@ -109,7 +109,7 @@ The [gallery](https://stipple-demo.vercel.app) shows every pattern, field, modif
 1. A **field** (`stipple/src/commonMain/.../DitherField.kt`) returns a tone from 0 (paper) to 1 (ink) for a point `(x, y)` at time `t`. Fields are pure functions, so they work in common code and are easy to test.
 2. A **pattern** (`DitherPattern`) is a threshold map. The Bayer patterns are built recursively and blue noise is a 64 by 64 void-and-cluster texture made offline by `scripts/blue-noise.py`.
 3. A cell is ink when the tone is above the pattern's threshold for that cell. With a palette of three or more colours the tone picks a position on the ramp and the pattern decides between the two colours around it.
-4. The **cell renderer** samples the field once per cell and draws neighbouring cells of one colour as one rectangle. The optional **shader renderer** draws the whole element with one fragment shader (AGSL on Android 13 and later, a Skia runtime effect elsewhere) and falls back to cells wherever it can't.
+4. The **cell renderer** samples the field once per cell and draws neighbouring cells of one colour as one rectangle. The optional **shader renderer** draws the whole element with one fragment shader (AGSL on Android 13 and later, a Skia runtime effect elsewhere) and falls back to cells wherever it can't. Progress, mesh tones and sweep or dissolve reveals reach the shader as uniforms, so moving or editing them redraws without compiling a new program.
 5. Modifiers are `Modifier.Node`s. The animation clock is snapshot state that only the draw block reads, so a frame redraws the element and recomposes nothing. Tests count recompositions.
 6. Reduced motion is read from the platform and freezes every animation at the field's still frame. Progress and values keep updating, because they are information.
 7. `ditherImage` reads what an element draws back once, dithers it on a background dispatcher with ordered dithering, Floyd-Steinberg or Atkinson error diffusion, and caches the result.
@@ -126,7 +126,6 @@ Stipple adds a small engine of its own, modifiers for any element, a cell render
 
 - Globes and maps from dithercn.
 - Frame times on low-end Android devices and on a physical iPhone are not measured.
-- The docs' code samples are plain snippets; only the agent skill's examples are compiled by a test.
 
 ## Platform support
 

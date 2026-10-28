@@ -12,7 +12,8 @@
     "preview": "blume preview",
     "doctor": "blume doctor",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "sync": "node scripts/sync.mjs"
+    "sync": "node scripts/sync.mjs",
+    "check-links": "node scripts/check-links.mjs"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.3.0",

@@ -126,3 +126,32 @@ test('the page follows the system theme', async ({ page }) => {
   const light = await sharp(await page.screenshot()).stats()
   expect(light.channels[0].mean).toBeGreaterThan(dark.channels[0].mean + 100)
 })
+
+// The controls are drawn on the canvas, so they are reached by position. The viewport is fixed so the layout is the
+// same in every project.
+test('ditherMask dissolves and sweeps as the reveal moves', async ({ page }) => {
+  const errors = collectErrors(page)
+  await page.setViewportSize({ width: 1280, height: 1100 })
+  await page.goto('/?animated=0#dither-mask')
+  await ready(page)
+  await page.waitForTimeout(800)
+
+  const track = { left: 483, right: 683, y: 929 }
+  const reveal = async (fraction: number) => {
+    await page.mouse.click(track.left + (track.right - track.left) * fraction, track.y)
+    await page.waitForTimeout(300)
+    return page.screenshot()
+  }
+
+  const sweepLow = await reveal(0.1)
+  const sweepHigh = await reveal(0.9)
+  expect(await difference(sweepLow, sweepHigh)).toBeGreaterThan(1)
+
+  await page.mouse.click(420, 909)
+  await page.waitForTimeout(300)
+  const dissolveLow = await reveal(0.1)
+  const dissolveHigh = await reveal(0.9)
+  expect(await difference(dissolveLow, dissolveHigh)).toBeGreaterThan(1)
+  expect(await difference(sweepHigh, dissolveHigh)).toBeGreaterThan(0.2)
+  expect(errors).toEqual([])
+})

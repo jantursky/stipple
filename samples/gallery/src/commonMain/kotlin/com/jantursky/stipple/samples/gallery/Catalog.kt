@@ -43,6 +43,7 @@ import com.jantursky.stipple.samples.gallery.examples.ImageModifierExample
 import com.jantursky.stipple.samples.gallery.examples.InterfaceExample
 import com.jantursky.stipple.samples.gallery.examples.InterfaceKind
 import com.jantursky.stipple.samples.gallery.examples.MaskExample
+import com.jantursky.stipple.samples.gallery.examples.MaskReveal
 import com.jantursky.stipple.samples.gallery.examples.MeshExample
 import com.jantursky.stipple.samples.gallery.examples.MeshPreset
 import com.jantursky.stipple.samples.gallery.examples.PatternsExample
@@ -99,9 +100,7 @@ val Catalog: List<Page> =
                 g,
                 controls = {
                     Segmented(FieldKind.entries, kind, { kind = it }, { it.name })
-                    if (kind ==
-                        FieldKind.Sweep
-                    ) {
+                    if (kind == FieldKind.Sweep || kind == FieldKind.Dissolve) {
                         SliderField("Progress", progress, { progress = it }, 0f..1f, format = ::percent)
                     }
                 },
@@ -209,12 +208,16 @@ val Catalog: List<Page> =
             "dither-mask",
             Group.Modifiers,
             "Modifier.ditherMask",
-            "Shows the content only where the dither is lit. A sweep reveals a picture from the left through the pattern.",
+            "Shows the content only where the dither is lit. A sweep reveals a picture from the left through the pattern, a dissolve reveals it grain by grain. Dragging the reveal changes one number the shader reads, so nothing recompiles.",
             listOf("MaskExample"),
         ) { g ->
             var reveal by remember { mutableFloatStateOf(0.5f) }
-            Demo(g, controls = { SliderField("Reveal", reveal, { reveal = it }, 0f..1f, format = ::percent) }) {
-                MaskExample(reveal, g.theme, g.pattern)
+            var kind by remember { mutableStateOf(MaskReveal.Sweep) }
+            Demo(g, controls = {
+                Segmented(MaskReveal.entries, kind, { kind = it }, { it.name })
+                SliderField("Reveal", reveal, { reveal = it }, 0f..1f, format = ::percent)
+            }) {
+                MaskExample(reveal, kind, g.theme, g.pattern)
             }
         },
         Page(

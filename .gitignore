@@ -19,6 +19,7 @@ node_modules/
 apps/docs/dist/
 apps/docs/.blume/
 apps/docs/docs/_generated/
+apps/docs/public/.well-known/
 apps/docs/public/api/
 apps/docs/public/demo/
 apps/docs/public/screenshots/

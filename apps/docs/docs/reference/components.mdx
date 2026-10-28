@@ -41,7 +41,7 @@ val reveal = remember { Animatable(0f) }
 DitherEffectText("Dither everything", DitherTextEffect.Dissolve, progress = { reveal.value })
 ```
 
-Without `progress` the component plays 0 to 1 over `durationMillis` after `delayMillis`, plays again whenever `trigger` changes, and repeats with `loop = true`. The component always measures as the final text, so nothing around it moves, and a scramble keeps the line breaks of the final text. Spaces and line breaks are never scrambled, and `charset` sets the characters a scramble draws from. Like `DitherText` it is for headings and labels.
+Without `progress` the component plays 0 to 1 over `durationMillis` after `delayMillis`, plays again whenever `trigger` changes, and repeats with `loop = true`. The component always measures as the final text, so nothing around it moves, and a scramble keeps the line breaks of the final text. Spaces and line breaks are never scrambled, and `charset` sets the characters a scramble draws from (`DEFAULT_SCRAMBLE_CHARSET`: lower-case letters, digits and `#%&*`). Pass `charset = "01"` for a binary flicker. Like `DitherText` it is for headings and labels.
 
 With reduced motion the finished text shows at once and `progress` is ignored. A screen reader reads the final text and never a scrambled frame.
 

@@ -12,7 +12,7 @@ import com.jantursky.stipple.DitherPattern
 import com.jantursky.stipple.StippleTheme
 import com.jantursky.stipple.dither
 
-enum class FieldKind { Solid, Linear, Radial, Noise, Waves, Ripples, Sweep }
+enum class FieldKind { Solid, Linear, Radial, Noise, Waves, Ripples, Sweep, Dissolve }
 
 // A field says how dark each cell wants to be, from 0 (paper) to 1 (ink). The pattern turns that into dots.
 @Composable
@@ -32,6 +32,7 @@ fun FieldsExample(
             FieldKind.Waves -> DitherFields.waves(count = 4f)
             FieldKind.Ripples -> DitherFields.ripples(rings = 5f)
             FieldKind.Sweep -> DitherFields.sweep(progress)
+            FieldKind.Dissolve -> DitherFields.dissolve({ progress })
         }
     // stillTime is the frame shown when nothing moves: a moment that looks finished.
     Box(Modifier.fillMaxWidth().height(240.dp).dither(field, pattern, theme, animated = animated, stillTime = 1.5f))
