@@ -1,4 +1,6 @@
-<p align="center"><img src="apps/docs/public/icon.svg" alt="" width="72" height="72" /></p>
+<p align="center">
+  <img src=".github/assets/banner.svg" alt="Stipple: dithered UI for Compose Multiplatform" width="420">
+</p>
 
 # Stipple
 
