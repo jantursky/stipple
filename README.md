@@ -51,9 +51,9 @@ A dither turns a smooth tone into a pattern of ink and paper dots. Stipple split
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("io.github.jantursky:stipple:1.1.1")
+            implementation("io.github.jantursky:stipple:1.1.2")
             // Optional:
-            implementation("io.github.jantursky:stipple-components:1.1.1")
+            implementation("io.github.jantursky:stipple-components:1.1.2")
         }
     }
 }

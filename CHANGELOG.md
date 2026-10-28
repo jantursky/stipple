@@ -4,7 +4,7 @@ All notable changes to Stipple are listed here. The format follows [Keep a Chang
 
 ## [Unreleased]
 
-## [1.1.1] - 2026-10-28
+## [1.1.2] - 2026-10-28
 
 ### Changed
 
