@@ -157,6 +157,77 @@ bun run screenshots                                  # the GIFs above
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the layout and the conventions.
 
+<!-- PROJECTS:START -->
+## Other Projects & Products
+
+<table align="center">
+  <tr>
+    <td align="center" valign="top" width="33%">
+      <a href="https://github.com/jantursky/" target="_blank" rel="noopener noreferrer">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://apptiary.com/projects/icons/github-dark.svg">
+          <img src="https://apptiary.com/projects/icons/github-light.svg" alt="GitHub Profile" width="48" height="48">
+        </picture>
+        <br><b>GitHub Profile</b>
+      </a>
+      <br><sub>Open-source repositories &amp; code</sub>
+    </td>
+    <td align="center" valign="top" width="33%">
+      <a href="https://loupekit.com/?utm_source=stipple&amp;utm_medium=readme&amp;utm_campaign=other-projects&amp;utm_content=loupekit" target="_blank" rel="noopener noreferrer">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://apptiary.com/projects/icons/loupekit-light.svg">
+          <img src="https://apptiary.com/projects/icons/loupekit-light.svg" alt="LoupeKit" width="48" height="48">
+        </picture>
+        <br><b>LoupeKit</b>
+      </a>
+      <br><sub>Tech stack, design tokens, AI code checker</sub>
+    </td>
+    <td align="center" valign="top" width="33%">
+      <a href="https://textarray.com/?utm_source=stipple&amp;utm_medium=readme&amp;utm_campaign=other-projects&amp;utm_content=textarray" target="_blank" rel="noopener noreferrer">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://apptiary.com/projects/icons/textarray-light.svg">
+          <img src="https://apptiary.com/projects/icons/textarray-light.svg" alt="TextArray" width="48" height="48">
+        </picture>
+        <br><b>TextArray</b>
+      </a>
+      <br><sub>Online text transformation tool</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" valign="top" width="33%">
+      <a href="https://addonhive.com/?utm_source=stipple&amp;utm_medium=readme&amp;utm_campaign=other-projects&amp;utm_content=addonhive" target="_blank" rel="noopener noreferrer">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://apptiary.com/projects/icons/addonhive-dark-v3.svg">
+          <img src="https://apptiary.com/projects/icons/addonhive-light-v3.svg" alt="AddonHive" width="48" height="48">
+        </picture>
+        <br><b>AddonHive</b>
+      </a>
+      <br><sub>Addons &amp; integrations hub</sub>
+    </td>
+    <td align="center" valign="top" width="33%">
+      <a href="https://apptiary.com/mobile/?utm_source=stipple&amp;utm_medium=readme&amp;utm_campaign=other-projects&amp;utm_content=mobile-games-and-apps" target="_blank" rel="noopener noreferrer">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://apptiary.com/projects/icons/stores-dark-v2.svg">
+          <img src="https://apptiary.com/projects/icons/stores-light-v2.svg" alt="Mobile Games &amp; Apps" width="48" height="48">
+        </picture>
+        <br><b>Mobile Games &amp; Apps</b>
+      </a>
+      <br><sub>Android &amp; iOS Applications</sub>
+    </td>
+    <td align="center" valign="top" width="33%">
+      <a href="https://jantursky.com/?utm_source=stipple&amp;utm_medium=readme&amp;utm_campaign=other-projects&amp;utm_content=and-more" target="_blank" rel="noopener noreferrer">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://apptiary.com/projects/icons/more-dark.svg">
+          <img src="https://apptiary.com/projects/icons/more-light.svg" alt="And more" width="48" height="48">
+        </picture>
+        <br><b>And more</b>
+      </a>
+      <br><sub>More projects, writing &amp; contact</sub>
+    </td>
+  </tr>
+</table>
+<!-- PROJECTS:END -->
+
 ## License
 
 [MIT](LICENSE). Stipple was inspired by dithercn; see [NOTICE](NOTICE).
