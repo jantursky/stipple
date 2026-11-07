@@ -75,6 +75,10 @@ class ElementsAndShapesTest {
         )
         assertNotEquals(image, DitherImageElement(DitherPatterns.Bayer4, null, DitherAlgorithm.Atkinson, true, "k"))
         assertNotEquals<Any>(image, "image")
+        val withOptions =
+            DitherImageElement(DitherPatterns.Bayer4, null, DitherAlgorithm.Atkinson, false, "k", ImageDitherOptions(gamma = 2f))
+        assertNotEquals(image, withOptions)
+        assertNotEquals(image.hashCode(), withOptions.hashCode())
     }
 
     @Test

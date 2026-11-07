@@ -97,6 +97,19 @@ public fun Modifier.ditherImage(
 ): Modifier = this then DitherImageElement(pattern, theme, algorithm, invert, key)
 
 /**
+ * [ditherImage] with [options]: tone controls, serpentine scanning, linear-light luminance and the readback sampling.
+ * Equal options don't rebuild the dither; a change does.
+ */
+public fun Modifier.ditherImage(
+    pattern: DitherPattern = DitherPatterns.Bayer4,
+    theme: StippleTheme? = null,
+    algorithm: DitherAlgorithm = DitherAlgorithm.Ordered,
+    invert: Boolean = false,
+    key: Any? = null,
+    options: ImageDitherOptions,
+): Modifier = this then DitherImageElement(pattern, theme, algorithm, invert, key, options)
+
+/**
  * Paints what the element draws with a dither: the content keeps its shape and its transparency, and its colors come
  * from the cells. Use it on text, icons and silhouettes. Where the field's tone is low the content takes the paper
  * color, so on a paper-colored background it fades away; keep the tone high where it must stay readable.

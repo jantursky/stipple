@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 import com.jantursky.stipple.DitherAlgorithm
+import com.jantursky.stipple.ImageDitherOptions
 import com.jantursky.stipple.DitherPatterns
 import com.jantursky.stipple.components.DitherTextEffect
 import com.jantursky.stipple.samples.gallery.examples.AvatarExample
@@ -398,14 +399,16 @@ val Catalog: List<Page> =
         ) { g ->
             var algorithm by remember { mutableStateOf(DitherAlgorithm.FloydSteinberg) }
             var reveal by remember { mutableFloatStateOf(0f) }
+            var options by remember { mutableStateOf(ImageDitherOptions()) }
             Demo(
                 g,
                 minHeight = 280,
                 controls = {
                     Segmented(DitherAlgorithm.entries, algorithm, { algorithm = it }, { it.name })
+                    ImageDitherControls(options, { options = it })
                     SliderField("Reveal", reveal, { reveal = it }, 0f..1f, format = ::percent)
                 },
-            ) { ImageExample(algorithm, reveal, g.theme, g.pattern, g.animated) }
+            ) { ImageExample(algorithm, reveal, g.theme, g.pattern, g.animated, options) }
         },
         Page(
             "background",
@@ -462,8 +465,15 @@ val Catalog: List<Page> =
             listOf("ImageCompareExample"),
         ) { g ->
             var algorithm by remember { mutableStateOf(DitherAlgorithm.Atkinson) }
-            Demo(g, controls = { Segmented(DitherAlgorithm.entries, algorithm, { algorithm = it }, { it.name }) }) {
-                ImageCompareExample(g.theme, g.pattern, algorithm)
+            var options by remember { mutableStateOf(ImageDitherOptions()) }
+            Demo(
+                g,
+                controls = {
+                    Segmented(DitherAlgorithm.entries, algorithm, { algorithm = it }, { it.name })
+                    ImageDitherControls(options, { options = it })
+                },
+            ) {
+                ImageCompareExample(g.theme, g.pattern, algorithm, options)
             }
         },
     )

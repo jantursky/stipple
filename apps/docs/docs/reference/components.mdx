@@ -16,7 +16,7 @@ All components live in `com.jantursky.stipple.components`. Each takes `theme`, `
 | `DitherText` | Text filled with a dither, with a minimum contrast. | `text`, `style`, `cell`, `fadeTo`, `field`, `minContrast` |
 | `DitherEffectText` | `DitherText` that plays a scramble or a dissolve as it appears. | `text`, `effect`, `progress`, `trigger`, `durationMillis`, `loop`, `charset` |
 | `DitherAvatar` | A mirrored dither face made from a name, or a dithered photo. | `name`, `size`, `painter`, `shape`, `algorithm` |
-| `DitherImage` | A dithered image that can be revealed coarse to fine. | `painter`, `contentDescription`, `contentScale`, `algorithm`, `reveal` |
+| `DitherImage` | A dithered image that can be revealed coarse to fine. | `painter`, `contentDescription`, `contentScale`, `algorithm`, `reveal`; an overload adds `options: ImageDitherOptions` |
 | `DitherBackground` | A dithered field behind your content. | `field`, `content` |
 
 Every component is static unless `animated = true`, and respects reduced motion. Components that show a value (`DitherProgressBar`, `DitherGauge`, `DitherBarChart`, `DitherGrid`) take a `contentDescription`.

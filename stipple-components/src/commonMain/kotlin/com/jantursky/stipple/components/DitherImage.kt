@@ -21,6 +21,7 @@ import com.jantursky.stipple.DitherFields
 import com.jantursky.stipple.DitherPattern
 import com.jantursky.stipple.DitherPatterns
 import com.jantursky.stipple.DitherRenderer
+import com.jantursky.stipple.ImageDitherOptions
 import com.jantursky.stipple.StippleTheme
 import com.jantursky.stipple.components.internal.resolveTheme
 import com.jantursky.stipple.ditherImage
@@ -55,6 +56,39 @@ public fun DitherImage(
     animated: Boolean = false,
     renderer: DitherRenderer = DitherRenderer.Cells,
 ) {
+    DitherImage(
+        painter,
+        contentDescription,
+        ImageDitherOptions.Default,
+        modifier,
+        contentScale,
+        theme,
+        pattern,
+        algorithm,
+        reveal,
+        animated,
+        renderer,
+    )
+}
+
+/**
+ * [DitherImage] with [options]: tone controls, serpentine scanning, linear-light luminance and readback sampling for
+ * the dithered image. The reveal layer is the original and is not affected by them.
+ */
+@Composable
+public fun DitherImage(
+    painter: Painter,
+    contentDescription: String?,
+    options: ImageDitherOptions,
+    modifier: Modifier = Modifier,
+    contentScale: ContentScale = ContentScale.Crop,
+    theme: StippleTheme? = null,
+    pattern: DitherPattern = DitherPatterns.Bayer4,
+    algorithm: DitherAlgorithm = DitherAlgorithm.FloydSteinberg,
+    reveal: Float = 0f,
+    animated: Boolean = false,
+    renderer: DitherRenderer = DitherRenderer.Cells,
+) {
     val resolved = resolveTheme(theme)
     val level = reveal.coerceIn(0f, 1f)
     val moving = animated && !isStippleMotionReduced()
@@ -72,7 +106,7 @@ public fun DitherImage(
         Image(
             painter,
             contentDescription,
-            Modifier.matchParentSize().ditherImage(pattern, resolved, algorithm, key = painter),
+            Modifier.matchParentSize().ditherImage(pattern, resolved, algorithm, key = painter, options = options),
             alignment = Alignment.Center,
             contentScale = contentScale,
         )

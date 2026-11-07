@@ -58,7 +58,51 @@ fun Modifier.ditherImage(
 ): Modifier
 ```
 
-`DitherAlgorithm` is `Ordered`, `FloydSteinberg` or `Atkinson`. Pass a `key` that changes with the content. It is for content that holds still.
+`DitherAlgorithm` is `Ordered`, or an error-diffusion kernel: `FloydSteinberg`, `Atkinson`, `Sierra`, `SierraLite`, `Burkes`, `Stucki` or `JarvisJudiceNinke`. Pass a `key` that changes with the content. It is for content that holds still.
+
+An overload takes `options: ImageDitherOptions`, which is required there so a call without it keeps using the function above:
+
+```kotlin nocompile
+fun Modifier.ditherImage(
+    pattern: DitherPattern = DitherPatterns.Bayer4,
+    theme: StippleTheme? = null,
+    algorithm: DitherAlgorithm = DitherAlgorithm.Ordered,
+    invert: Boolean = false,
+    key: Any? = null,
+    options: ImageDitherOptions,
+): Modifier
+```
+
+`ImageDitherOptions` holds `brightness`, `contrast`, `gamma`, `threshold`, `strength`, `serpentine`, `linearLuminance` and `sampling`. The neutral values (0, 1, 1, 0, 1, off, off, 2) change nothing. Equal options do not rebuild the dither.
+
+### Image dithering
+
+```kotlin nocompile
+Modifier.ditherImage(
+    algorithm = DitherAlgorithm.Stucki,
+    options = ImageDitherOptions(serpentine = true, contrast = 1.2f),
+)
+```
+
+- **Tone.** Contrast applies first around the middle, then brightness, then gamma (above 1 brightens mid-tones). `threshold` shifts the point where a cell flips between two colors.
+- **Serpentine.** Odd rows are scanned right to left with a mirrored kernel, which hides the diagonal stripes of plain left-to-right diffusion.
+- **Linear light.** `linearLuminance` averages brightness in linear light. It is truer for mixed black-and-white cells and brightens mid-tones, so it is off by default.
+- **Strength.** How much rounding error diffusion pushes on. 0 rounds each cell on its own; ordered dithering ignores it.
+- **Sampling.** The content is scaled down to about the cell grid times `sampling` before it is read back, so the buffer follows the grid, not the screen density.
+
+### Dither to an `ImageBitmap`
+
+```kotlin nocompile
+suspend fun ImageBitmap.dithered(
+    cell: Float, theme: StippleTheme, pattern: DitherPattern,
+    algorithm: DitherAlgorithm, invert: Boolean, options: ImageDitherOptions,
+): ImageBitmap
+
+@Composable
+fun rememberDitheredImage(image: ImageBitmap, /* same parameters */): State<ImageBitmap?>
+```
+
+Returns the dithered picture at the size of the source, from the same cells `ditherImage` draws, so an app can save or share it. The work runs off the main thread and a cancelled caller gets a `CancellationException`. The library does not encode PNG or JPEG.
 
 ## Modifier.ditherFill and ditherMask
 

@@ -8,8 +8,13 @@ public final class com/jantursky/stipple/CellShape : java/lang/Enum {
 
 public final class com/jantursky/stipple/DitherAlgorithm : java/lang/Enum {
 	public static final field Atkinson Lcom/jantursky/stipple/DitherAlgorithm;
+	public static final field Burkes Lcom/jantursky/stipple/DitherAlgorithm;
 	public static final field FloydSteinberg Lcom/jantursky/stipple/DitherAlgorithm;
+	public static final field JarvisJudiceNinke Lcom/jantursky/stipple/DitherAlgorithm;
 	public static final field Ordered Lcom/jantursky/stipple/DitherAlgorithm;
+	public static final field Sierra Lcom/jantursky/stipple/DitherAlgorithm;
+	public static final field SierraLite Lcom/jantursky/stipple/DitherAlgorithm;
+	public static final field Stucki Lcom/jantursky/stipple/DitherAlgorithm;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/jantursky/stipple/DitherAlgorithm;
 	public static fun values ()[Lcom/jantursky/stipple/DitherAlgorithm;
@@ -50,7 +55,9 @@ public final class com/jantursky/stipple/DitherModifiersKt {
 	public static final fun ditherFill (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherField;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;ZFFLcom/jantursky/stipple/DitherRenderer;)Landroidx/compose/ui/Modifier;
 	public static synthetic fun ditherFill$default (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherField;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;ZFFLcom/jantursky/stipple/DitherRenderer;ILjava/lang/Object;)Landroidx/compose/ui/Modifier;
 	public static final fun ditherImage (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherAlgorithm;ZLjava/lang/Object;)Landroidx/compose/ui/Modifier;
+	public static final fun ditherImage (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherAlgorithm;ZLjava/lang/Object;Lcom/jantursky/stipple/ImageDitherOptions;)Landroidx/compose/ui/Modifier;
 	public static synthetic fun ditherImage$default (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherAlgorithm;ZLjava/lang/Object;ILjava/lang/Object;)Landroidx/compose/ui/Modifier;
+	public static synthetic fun ditherImage$default (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherAlgorithm;ZLjava/lang/Object;Lcom/jantursky/stipple/ImageDitherOptions;ILjava/lang/Object;)Landroidx/compose/ui/Modifier;
 	public static final fun ditherMask (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherField;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;ZFFLcom/jantursky/stipple/DitherRenderer;)Landroidx/compose/ui/Modifier;
 	public static synthetic fun ditherMask$default (Landroidx/compose/ui/Modifier;Lcom/jantursky/stipple/DitherField;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;ZFFLcom/jantursky/stipple/DitherRenderer;ILjava/lang/Object;)Landroidx/compose/ui/Modifier;
 	public static final fun ditherProgress (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/ProgressDirection;Landroidx/compose/ui/graphics/Shape;FFLcom/jantursky/stipple/DitherField;ZFF)Landroidx/compose/ui/Modifier;
@@ -80,6 +87,37 @@ public final class com/jantursky/stipple/DitherRenderer : java/lang/Enum {
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/jantursky/stipple/DitherRenderer;
 	public static fun values ()[Lcom/jantursky/stipple/DitherRenderer;
+}
+
+public final class com/jantursky/stipple/DitheredImageKt {
+	public static final fun dithered (Landroidx/compose/ui/graphics/ImageBitmap;FLcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/DitherAlgorithm;ZLcom/jantursky/stipple/ImageDitherOptions;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun dithered$default (Landroidx/compose/ui/graphics/ImageBitmap;FLcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/DitherAlgorithm;ZLcom/jantursky/stipple/ImageDitherOptions;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun rememberDitheredImage (Landroidx/compose/ui/graphics/ImageBitmap;FLcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/DitherAlgorithm;ZLcom/jantursky/stipple/ImageDitherOptions;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/State;
+}
+
+public final class com/jantursky/stipple/ImageDitherOptions {
+	public static final field $stable I
+	public static final field Companion Lcom/jantursky/stipple/ImageDitherOptions$Companion;
+	public fun <init> ()V
+	public fun <init> (FFFFFZZI)V
+	public synthetic fun <init> (FFFFFZZIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun copy (FFFFFZZI)Lcom/jantursky/stipple/ImageDitherOptions;
+	public static synthetic fun copy$default (Lcom/jantursky/stipple/ImageDitherOptions;FFFFFZZIILjava/lang/Object;)Lcom/jantursky/stipple/ImageDitherOptions;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBrightness ()F
+	public final fun getContrast ()F
+	public final fun getGamma ()F
+	public final fun getLinearLuminance ()Z
+	public final fun getSampling ()I
+	public final fun getSerpentine ()Z
+	public final fun getStrength ()F
+	public final fun getThreshold ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/jantursky/stipple/ImageDitherOptions$Companion {
+	public final fun getDefault ()Lcom/jantursky/stipple/ImageDitherOptions;
 }
 
 public final class com/jantursky/stipple/ProgressDirection : java/lang/Enum {

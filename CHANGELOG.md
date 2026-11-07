@@ -4,6 +4,18 @@ All notable changes to Stipple are listed here. The format follows [Keep a Chang
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-11-07
+
+### Added
+
+- Five more error-diffusion algorithms for images: `DitherAlgorithm.Sierra`, `SierraLite`, `Burkes`, `Stucki` and `JarvisJudiceNinke`. They are appended after the existing entries, and `FloydSteinberg` and `Atkinson` give the same cells as before.
+- `ImageDitherOptions` with brightness, contrast, gamma, threshold bias, diffusion strength, serpentine scanning, opt-in linear-light luminance and a readback `sampling` factor, taken by a new `Modifier.ditherImage` overload and a new `DitherImage` overload.
+- `ImageBitmap.dithered(...)` and `rememberDitheredImage(...)` return the dithered picture as an `ImageBitmap`, drawn from the same cells as `ditherImage`.
+
+### Changed
+
+- `ditherImage` scales the content down to about the cell grid times `sampling` before reading it back, so the buffer no longer grows with the screen density. Quick size changes are debounced by 50 ms once a first result exists, and stale diffusion work stops between rows. Default output stays within a small tolerance of 1.1.2 because of the resampling.
+
 ## [1.1.2] - 2026-10-28
 
 ### Changed

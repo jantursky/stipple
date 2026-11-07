@@ -368,6 +368,22 @@ class ComponentsTest {
         }
 
     @Test
+    fun anImageTakesDitherOptions() =
+        runComponentTest {
+            setComponent {
+                DitherImage(
+                    ColorPainter(Color.Black),
+                    "Black",
+                    com.jantursky.stipple.ImageDitherOptions(brightness = 1f),
+                    Modifier.size(100.dp),
+                    theme = light.copy(cell = 1.dp),
+                )
+            }
+            // Full brightness lifts black to white, which is paper on light paper.
+            waitUntil(timeoutMillis = 5_000) { capture().shareOf(light.paper) > 0.9f }
+        }
+
+    @Test
     fun anImageHasADescription() =
         runComponentTest {
             setComponent { DitherImage(ColorPainter(Color.Gray), "Gray square", Modifier.size(50.dp)) }

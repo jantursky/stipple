@@ -32,7 +32,9 @@ Animated dithers redraw every frame. A static dither is drawn once and cached by
 
 ## Images
 
-`ditherImage` reads the content back once, dithers it on a background dispatcher and caches the result. The previous result stays on screen while a new one computes. Ordered dithering is cheapest. Floyd-Steinberg and Atkinson diffuse error and cost more per cell, which only shows on very large images.
+`ditherImage` reads the content back once, dithers it on a background dispatcher and caches the result. The previous result stays on screen while a new one computes. Ordered dithering is cheapest. The error-diffusion algorithms (Floyd-Steinberg, Atkinson, Sierra, Burkes, Stucki, Jarvis-Judice-Ninke) cost more per cell, wider kernels more than narrow ones, which only shows on very large images.
+
+Error diffusion is sequential: each cell needs the result of its neighbours, so it cannot run per pixel on the GPU and stays on the CPU. The shader renderer does not change that. The content is scaled down to the cell grid times `ImageDitherOptions.sampling` before it is read back, so the pixel buffer follows the grid and not the screen density. Quick size changes are debounced by about 50 ms once a first result exists, and a stale job stops between rows.
 
 ## Measuring on a device
 

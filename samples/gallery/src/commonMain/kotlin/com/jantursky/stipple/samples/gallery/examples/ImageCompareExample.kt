@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.jantursky.stipple.DitherAlgorithm
 import com.jantursky.stipple.DitherPattern
+import com.jantursky.stipple.ImageDitherOptions
 import com.jantursky.stipple.StippleTheme
 import com.jantursky.stipple.ditherImage
 import com.jantursky.stipple.samples.gallery.Landscape
@@ -36,6 +37,7 @@ fun ImageCompareExample(
     theme: StippleTheme,
     pattern: DitherPattern,
     algorithm: DitherAlgorithm,
+    options: ImageDitherOptions = ImageDitherOptions(),
 ) {
     var split by remember { mutableFloatStateOf(0.5f) }
     var width by remember { mutableFloatStateOf(1f) }
@@ -66,7 +68,7 @@ fun ImageCompareExample(
                 .fillMaxWidth()
                 .fillMaxHeight()
                 .clip(left)
-                .ditherImage(pattern, theme, algorithm, key = "compare"),
+                .ditherImage(pattern, theme, algorithm, key = "compare", options = options),
         )
         Box(
             Modifier

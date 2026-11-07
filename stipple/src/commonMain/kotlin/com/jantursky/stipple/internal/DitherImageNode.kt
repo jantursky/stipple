@@ -4,7 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.compose.ui.graphics.layer.drawLayer
@@ -21,10 +20,13 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.toIntSize
 import com.jantursky.stipple.DitherAlgorithm
 import com.jantursky.stipple.DitherPattern
+import com.jantursky.stipple.ImageDitherOptions
 import com.jantursky.stipple.LocalStippleTheme
 import com.jantursky.stipple.StippleTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -34,10 +36,11 @@ internal class DitherImageElement(
     val algorithm: DitherAlgorithm,
     val invert: Boolean,
     val key: Any?,
+    val options: ImageDitherOptions = ImageDitherOptions.Default,
 ) : ModifierNodeElement<DitherImageNode>() {
-    override fun create(): DitherImageNode = DitherImageNode(pattern, theme, algorithm, invert, key)
+    override fun create(): DitherImageNode = DitherImageNode(pattern, theme, algorithm, invert, key, options)
 
-    override fun update(node: DitherImageNode) = node.update(pattern, theme, algorithm, invert, key)
+    override fun update(node: DitherImageNode) = node.update(pattern, theme, algorithm, invert, key, options)
 
     override fun equals(other: Any?): Boolean =
         other is DitherImageElement &&
@@ -45,7 +48,8 @@ internal class DitherImageElement(
             theme == other.theme &&
             algorithm == other.algorithm &&
             invert == other.invert &&
-            key == other.key
+            key == other.key &&
+            options == other.options
 
     override fun hashCode(): Int {
         var result = pattern.hashCode()
@@ -53,6 +57,7 @@ internal class DitherImageElement(
         result = 31 * result + algorithm.hashCode()
         result = 31 * result + invert.hashCode()
         result = 31 * result + (key?.hashCode() ?: 0)
+        result = 31 * result + options.hashCode()
         return result
     }
 
@@ -71,6 +76,7 @@ private data class Source(
     val algorithm: DitherAlgorithm,
     val invert: Boolean,
     val key: Any?,
+    val options: ImageDitherOptions,
 )
 
 private class Result(
@@ -90,6 +96,7 @@ internal class DitherImageNode(
     private var algorithm: DitherAlgorithm,
     private var invert: Boolean,
     private var key: Any?,
+    private var options: ImageDitherOptions = ImageDitherOptions.Default,
 ) : Modifier.Node(),
     DrawModifierNode,
     CompositionLocalConsumerModifierNode,
@@ -108,7 +115,9 @@ internal class DitherImageNode(
         algorithm: DitherAlgorithm,
         invert: Boolean,
         key: Any?,
+        options: ImageDitherOptions = ImageDitherOptions.Default,
     ) {
+        this.options = options
         this.pattern = pattern
         this.themeOverride = theme
         this.algorithm = algorithm
@@ -147,7 +156,7 @@ internal class DitherImageNode(
         if (size.width <= 0f || size.height <= 0f) return
         val theme = themeOverride ?: inheritedTheme
         val cell = cellGrid(size.width, size.height, theme.cell.toPx()).cell
-        val source = Source(size.toIntSize(), cell, pattern, theme, algorithm, invert, key)
+        val source = Source(size.toIntSize(), cell, pattern, theme, algorithm, invert, key, options)
         val done = result
         if ((done == null || done.source != source) && pending != source) {
             pending = source
@@ -185,40 +194,41 @@ internal class DitherImageNode(
         source: Source,
     ) {
         job?.cancel()
+        val debounce = result != null
         job =
             coroutineScope.launch {
-                val bitmap = layer.toImageBitmap()
-                val width = bitmap.width
-                val height = bitmap.height
-                val pixels = IntArray(width * height)
-                bitmap.readPixels(pixels, 0, 0, width, height)
+                // Only the last of several quick changes is worth reading back; the first image shows at once.
+                if (debounce) delay(DEBOUNCE_MILLIS)
+                val grid = cellGrid(source.size.width.toFloat(), source.size.height.toFloat(), source.cell)
+                val full = layer.toImageBitmap()
+                val (width, height) = readbackSize(full.width, full.height, grid, source.options.sampling)
+                val pixels = full.readPixelsScaled(width, height)
                 val made =
                     withContext(Dispatchers.Default) {
-                        val grid = cellGrid(source.size.width.toFloat(), source.size.height.toFloat(), source.cell)
-                        val samples = sampleCells(pixels, width, height, grid)
-                        val ramp = source.theme.ramp
-                        val inkIsLight = ramp.last().luminance() > ramp.first().luminance()
-                        val flip = inkIsLight == source.invert
-                        val tones =
-                            FloatArray(
-                                samples.luminance.size,
-                            ) { if (flip) 1f - samples.luminance[it] else samples.luminance[it] }
                         val levels =
-                            ditherCells(
-                                tones,
-                                samples.alpha,
-                                grid.columns,
-                                grid.rows,
-                                source.algorithm,
+                            ditherPixels(
+                                pixels,
+                                width,
+                                height,
+                                grid,
+                                source.theme,
                                 source.pattern,
-                                ramp.size,
-                            )
+                                source.algorithm,
+                                source.invert,
+                                source.options,
+                            ) { ensureActive() }
                         Result(source, grid, levels)
                     }
                 result = made
                 pending = null
+                ImageDitherStats.completed++
             }
     }
 }
 
-private fun Color.luminance(): Float = 0.2126f * red + 0.7152f * green + 0.0722f * blue
+private const val DEBOUNCE_MILLIS = 50L
+
+/** How many image dithers have finished, so tests can tell that stale work was dropped. */
+internal object ImageDitherStats {
+    var completed: Int = 0
+}

@@ -1,5 +1,6 @@
 package com.jantursky.stipple.samples.gallery
 
+import com.jantursky.stipple.ImageDitherOptions
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -301,3 +302,17 @@ fun PillButton(
 
 @Composable
 fun Gap(size: Int) = Spacer(Modifier.height(size.dp))
+
+/** Serpentine, linear light and the tone sliders of [ImageDitherOptions]. */
+@Composable
+fun ImageDitherControls(
+    options: ImageDitherOptions,
+    onChange: (ImageDitherOptions) -> Unit,
+) {
+    SwitchField("Serpentine", options.serpentine, { onChange(options.copy(serpentine = it)) })
+    SwitchField("Linear light", options.linearLuminance, { onChange(options.copy(linearLuminance = it)) })
+    SliderField("Brightness", options.brightness, { onChange(options.copy(brightness = it)) }, -0.5f..0.5f)
+    SliderField("Contrast", options.contrast, { onChange(options.copy(contrast = it)) }, 0.25f..2f)
+    SliderField("Gamma", options.gamma, { onChange(options.copy(gamma = it)) }, 0.4f..2.5f)
+    SliderField("Strength", options.strength, { onChange(options.copy(strength = it)) }, 0f..1f)
+}

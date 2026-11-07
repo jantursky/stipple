@@ -24,7 +24,7 @@ Artifacts: `io.github.jantursky:stipple` (engine and modifiers) and `io.github.j
 1. A ready component fits: use it. Every component takes `theme`, `pattern` and `animated` (false by default).
 2. Any element should get a dither behind it: `Modifier.dither(field, pattern, theme)`.
 3. A fill driven by a value: `Modifier.ditherProgress({ value })`.
-4. Dither what an element already draws: `Modifier.ditherImage()` (photos, ordered or error diffusion),
+4. Dither what an element already draws: `Modifier.ditherImage()` (photos, ordered or error diffusion, with `ImageDitherOptions` for tone controls),
    `Modifier.ditherFill(field)` (keeps the shape, swaps the colours), `Modifier.ditherMask(field)` (shows the content
    where the dither is lit; pair it with `DitherFields.dissolve({ progress })` or `sweep({ progress })` for a reveal).
 5. A soft surface with several highlights: `DitherFields.mesh(tones, drift)`, a grid of 2 to 8 by 2 to 8 tones (Example 4).
@@ -115,8 +115,17 @@ fun Cover(photo: Painter) {
 ```
 
 `ditherImage` reads the content back once, dithers it off the main thread and caches the result. Pass a `key` that
-changes when the picture does. Atkinson and Floyd-Steinberg diffuse error and look better on photos; `Ordered` is
-cheaper and steadier when the content changes.
+changes when the picture does. The error-diffusion algorithms (`FloydSteinberg`, `Atkinson`, `Sierra`, `SierraLite`,
+`Burkes`, `Stucki`, `JarvisJudiceNinke`) look better on photos; `Ordered` is cheaper and steadier when the content
+changes.
+
+Tune a photo with `ImageDitherOptions`, passed as `options =` to `ditherImage` or to the `DitherImage` overload that
+takes it: `brightness`, `contrast`, `gamma`, `threshold`, `strength` (how much error is pushed on),
+`serpentine = true` (scan odd rows backwards, fewer diagonal stripes), `linearLuminance = true` (average in linear
+light) and `sampling` (readback pixels per cell side, 2 by default). The neutral values change nothing, and equal
+options don't rebuild the dither. To get the result as a picture instead of drawing it, call the suspend function
+`ImageBitmap.dithered(...)` or the composable `rememberDitheredImage(image, ...)`, which returns `State<ImageBitmap?>`;
+the library doesn't encode files.
 
 ## Example 4: a mesh gradient surface
 

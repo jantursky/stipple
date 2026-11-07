@@ -49,6 +49,7 @@ public final class com/jantursky/stipple/components/DitherGridKt {
 
 public final class com/jantursky/stipple/components/DitherImageKt {
 	public static final fun DitherImage (Landroidx/compose/ui/graphics/painter/Painter;Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/layout/ContentScale;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/DitherAlgorithm;FZLcom/jantursky/stipple/DitherRenderer;Landroidx/compose/runtime/Composer;II)V
+	public static final fun DitherImage (Landroidx/compose/ui/graphics/painter/Painter;Ljava/lang/String;Lcom/jantursky/stipple/ImageDitherOptions;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/layout/ContentScale;Lcom/jantursky/stipple/StippleTheme;Lcom/jantursky/stipple/DitherPattern;Lcom/jantursky/stipple/DitherAlgorithm;FZLcom/jantursky/stipple/DitherRenderer;Landroidx/compose/runtime/Composer;III)V
 }
 
 public final class com/jantursky/stipple/components/DitherProgressBarKt {
