@@ -136,7 +136,7 @@ test('ditherMask dissolves and sweeps as the reveal moves', async ({ page }) => 
   await ready(page)
   await page.waitForTimeout(800)
 
-  const track = { left: 483, right: 683, y: 929 }
+  const track = { left: 483, right: 683, y: 983 }
   const reveal = async (fraction: number) => {
     await page.mouse.click(track.left + (track.right - track.left) * fraction, track.y)
     await page.waitForTimeout(300)
@@ -147,11 +147,41 @@ test('ditherMask dissolves and sweeps as the reveal moves', async ({ page }) => 
   const sweepHigh = await reveal(0.9)
   expect(await difference(sweepLow, sweepHigh)).toBeGreaterThan(1)
 
-  await page.mouse.click(420, 909)
+  await page.mouse.click(420, 963)
   await page.waitForTimeout(300)
   const dissolveLow = await reveal(0.1)
   const dissolveHigh = await reveal(0.9)
   expect(await difference(dissolveLow, dissolveHigh)).toBeGreaterThan(1)
   expect(await difference(sweepHigh, dissolveHigh)).toBeGreaterThan(0.2)
+  expect(errors).toEqual([])
+})
+
+// The pattern chips and the theme presets are drawn on the canvas too. Pick the last pattern and a preset by position
+// (fixed viewport), and check the page still draws something and logs no errors.
+test('the last pattern and a theme preset can be picked', async ({ page }) => {
+  const errors = collectErrors(page)
+  await page.setViewportSize({ width: 1280, height: 1100 })
+
+  await page.goto('/?animated=0#patterns')
+  await ready(page)
+  await page.waitForTimeout(800)
+  const before = await page.screenshot()
+  await page.mouse.click(942, 301)
+  await page.waitForTimeout(500)
+  const after = await page.screenshot()
+  expect(await variation(after)).toBeGreaterThan(5)
+  expect(await difference(before, after)).toBeGreaterThan(0.05)
+
+  await page.goto('/?animated=0#theme')
+  await page.reload()
+  await ready(page)
+  await page.waitForTimeout(800)
+  const plain = await page.screenshot()
+  expect(await variation(plain)).toBeGreaterThan(5)
+  await page.mouse.click(452, 509)
+  await page.waitForTimeout(500)
+  const preset = await page.screenshot()
+  expect(await variation(preset)).toBeGreaterThan(5)
+  expect(await difference(plain, preset)).toBeGreaterThan(0.05)
   expect(errors).toEqual([])
 })

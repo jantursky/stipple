@@ -1,6 +1,5 @@
 package com.jantursky.stipple.samples.gallery
 
-import com.jantursky.stipple.ImageDitherOptions
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -11,6 +10,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -46,6 +46,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.setProgress
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
+import com.jantursky.stipple.ImageDitherOptions
 import kotlin.math.roundToInt
 
 /** A label above a control. */
@@ -68,23 +69,22 @@ fun Labeled(
 
 /** One choice out of a few, as a row of pills. */
 @Composable
+@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 fun <T> Segmented(
     options: List<T>,
     selected: T,
     onSelect: (T) -> Unit,
     label: (T) -> String,
     modifier: Modifier = Modifier,
+    wrap: Boolean = false,
 ) {
     val colors = Gallery.colors
-    Row(
+    val frame =
         modifier
             .clip(RoundedCornerShape(8.dp))
             .border(1.dp, colors.hairline, RoundedCornerShape(8.dp))
             .background(colors.panel)
-            .horizontalScroll(rememberScrollState())
-            .padding(2.dp),
-        horizontalArrangement = Arrangement.spacedBy(2.dp),
-    ) {
+    val items: @Composable () -> Unit = {
         options.forEach { option ->
             val on = option == selected
             Box(
@@ -107,6 +107,18 @@ fun <T> Segmented(
                 )
             }
         }
+    }
+    if (wrap) {
+        FlowRow(
+            frame.padding(2.dp),
+            horizontalArrangement = Arrangement.spacedBy(2.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+        ) { items() }
+    } else {
+        Row(
+            frame.horizontalScroll(rememberScrollState()).padding(2.dp),
+            horizontalArrangement = Arrangement.spacedBy(2.dp),
+        ) { items() }
     }
 }
 

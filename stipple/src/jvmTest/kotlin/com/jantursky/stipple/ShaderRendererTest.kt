@@ -147,6 +147,20 @@ class ShaderRendererTest {
     }
 
     @Test
+    fun everyNewPresetIsDrawnByTheShaderAndMatchesTheCellRenderer() {
+        val field = DitherFields.linear(0.1f, 0.9f, 30f)
+        val presets = DitherPatterns.All.drop(4)
+        for (pattern in presets) {
+            val name = DitherPatterns.nameOf(pattern)
+            assertEquals("shader", drawnBy(DitherRenderer.Shader, pattern = pattern), name)
+            val cells = picture(DitherRenderer.Cells, field, pattern, cell2)
+            val shader = picture(DitherRenderer.Shader, field, pattern, cell2)
+            val different = cells.pixelsDifferentFrom(shader)
+            assertTrue(different < 100, "$name: $different of 40000 pixels differ")
+        }
+    }
+
+    @Test
     fun aCustomPatternUpTo256IsDrawnByTheShader() {
         assertEquals("shader", drawnBy(DitherRenderer.Shader, pattern = FlatPattern(16)))
         assertEquals("shader", drawnBy(DitherRenderer.Shader, pattern = FlatPattern(256)))
@@ -202,6 +216,16 @@ class ShaderRendererTest {
             val different = cells.pixelsDifferentFrom(shader)
             assertTrue(different < 100, "$different of 40000 pixels differ")
         }
+    }
+
+    @Test
+    fun aGradientThemeIsDrawnByTheShaderLikeCells() {
+        val theme = StippleTheme.gradient(paper, ink, steps = 2).copy(cell = cell2.cell)
+        val field = DitherFields.linear(0f, 1f, 20f)
+        assertEquals("shader", drawnBy(DitherRenderer.Shader, theme = theme))
+        val cells = picture(DitherRenderer.Cells, field, DitherPatterns.Halftone, theme)
+        val shader = picture(DitherRenderer.Shader, field, DitherPatterns.Halftone, theme)
+        assertTrue(cells.pixelsDifferentFrom(shader) < 100)
     }
 
     @Test

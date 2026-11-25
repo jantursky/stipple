@@ -5,8 +5,10 @@ import androidx.compose.ui.unit.dp
 import com.jantursky.stipple.internal.ProgressField
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
+import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 class ThemeAndMotionTest {
@@ -45,6 +47,58 @@ class ThemeAndMotionTest {
         assertTrue(StippleTheme.Dark.contrastRatio > 15f)
         assertEquals(21f, contrastRatio(Color.Black, Color.White), 0.01f)
         assertEquals(1f, contrastRatio(Color.Gray, Color.Gray), 0.001f)
+    }
+
+    @Test
+    fun presetsRunFromPaperToInkWithAtMostEightColours() {
+        assertEquals(listOf("Game Boy", "CGA", "Newsprint", "Macintosh", "Amber"), StippleTheme.presets.keys.toList())
+        assertEquals(
+            listOf(
+                StippleTheme.GameBoy,
+                StippleTheme.Cga,
+                StippleTheme.Newsprint,
+                StippleTheme.Macintosh,
+                StippleTheme.Amber,
+            ),
+            StippleTheme.presets.values.toList(),
+        )
+        for ((name, theme) in StippleTheme.presets) {
+            assertTrue(theme.ramp.size <= 8, name)
+            assertEquals(theme.paper, theme.ramp.first(), name)
+            assertEquals(theme.ink, theme.ramp.last(), name)
+        }
+        assertEquals(4, StippleTheme.GameBoy.palette?.size)
+        assertEquals(4, StippleTheme.Cga.palette?.size)
+    }
+
+    @Test
+    fun gameBoyPaperIsLightestAndInkDarkest() {
+        val luminance = StippleTheme.GameBoy.ramp.map { contrastRatio(it, Color.Black) }
+        assertEquals(luminance.sortedDescending(), luminance)
+    }
+
+    @Test
+    fun gradientBlendsEvenlyFromPaperToInk() {
+        assertEquals(listOf(Color.White, Color.Black), StippleTheme.gradient(Color.White, Color.Black, steps = 2).ramp)
+        val three = StippleTheme.gradient(Color.White, Color.Black, steps = 3)
+        assertEquals(Color(0.5f, 0.5f, 0.5f), three.palette?.get(1))
+        assertEquals(Color.White, three.paper)
+        assertEquals(Color.Black, three.ink)
+        assertEquals(8, StippleTheme.gradient(Color.White, Color.Black, steps = 8).ramp.size)
+        assertFailsWith<IllegalArgumentException> { StippleTheme.gradient(Color.White, Color.Black, steps = 1) }
+        assertFailsWith<IllegalArgumentException> { StippleTheme.gradient(Color.White, Color.Black, steps = 9) }
+    }
+
+    @Test
+    fun ensureContrastKeepsAReadableThemeAndFixesAWeakOne() {
+        assertSame(StippleTheme.Light, StippleTheme.Light.ensureContrast(4.5f))
+        val weak = StippleTheme(ink = Color(0xFFDDDDDD), paper = Color.White, palette = listOf(Color.White, Color.Gray))
+        val fixed = weak.ensureContrast()
+        assertEquals(Color.Black, fixed.ink)
+        assertEquals(Color.White, fixed.paper)
+        assertEquals(null, fixed.palette)
+        assertTrue(fixed.contrastRatio >= 4.5f)
+        assertEquals(Color.White, StippleTheme(Color(0xFF222222), Color(0xFF111111)).ensureContrast().ink)
     }
 
     @Test

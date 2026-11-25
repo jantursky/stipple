@@ -11,8 +11,8 @@ new work stays small.
 | Part | Type | Job |
 | --- | --- | --- |
 | Field | `DitherField` | Says how much ink each point wants: `tone(x, y, t, aspect)` returns 0 (paper) to 1 (ink). |
-| Pattern | `DitherPattern` | A threshold map. A cell is ink when the tone is above its threshold. `DitherPatterns.Bayer2/4/8`, `BlueNoise`. |
-| Theme | `StippleTheme` | `ink`, `paper`, optional `palette`, `cell` size in dp, `shape` (Square or Dot). |
+| Pattern | `DitherPattern` | A threshold map. A cell is ink when the tone is above its threshold. `DitherPatterns.Bayer2/4/8/16`, `BlueNoise`, `WhiteNoise`, `Halftone`, `HexGrid`, `Lines`, `Crosshatch`; `halftone(size, diagonal)` and `lines(size, diagonal)` for other tiles (2 to 256, 0 or 45 degrees). |
+| Theme | `StippleTheme` | `ink`, `paper`, optional `palette`, `cell` size in dp, `shape` (Square or Dot). Presets `StippleTheme.GameBoy/Cga/Newsprint/Macintosh/Amber` (all in `StippleTheme.presets`), `StippleTheme.gradient(paper, ink, steps = 2..8)`, and `theme.ensureContrast(4.5f)` for a readable copy. |
 
 Artifacts: `io.github.jantursky:stipple` (engine and modifiers) and `io.github.jantursky:stipple-components`
 (`DitherButton`, `DitherBarChart`, `DitherGrid`, `DitherGauge`, `DitherStatCard`, `DitherProgressBar`, `DitherText`,
@@ -196,7 +196,7 @@ to the cell renderer.
 
 1. Write the field as a `DitherField` in common code and look at it with `Modifier.dither(field)`.
 2. Check tones: the extremes must reach 0 and 1, and nothing outside 0..1 matters (values are clamped).
-3. Try Bayer2, Bayer4, Bayer8 and BlueNoise, and a cell size of 2 to 6 dp, in the light and dark theme.
+3. Try Bayer2, Bayer4, Bayer8, BlueNoise, Halftone and Lines, and a cell size of 2 to 6 dp, in the light and dark theme.
 4. If it will cover a large area, give it a shader: implement `ShaderField` with a `shaderSource` that defines
    `float tone(float2 uv, float t, float aspect)` in the shading language AGSL and SkSL share, and test that it matches
    the Kotlin version.

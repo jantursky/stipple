@@ -4,6 +4,15 @@ All notable changes to Stipple are listed here. The format follows [Keep a Chang
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-11-25
+
+### Added
+
+- Patterns `DitherPatterns.Bayer16`, `Halftone`, `HexGrid`, `Lines`, `Crosshatch` and `WhiteNoise`, and factories `halftone(size, diagonal)` and `lines(size, diagonal)` for other tile sizes. All draw identically in the cell and shader renderers.
+- `DitherPatterns.All` is longer: the first four entries are unchanged and the new presets follow, so a list built from `All` shows more items. `nameOf` names the new presets; factory patterns are `"Custom"`.
+- Preset themes `StippleTheme.GameBoy`, `Cga`, `Newsprint`, `Macintosh` and `Amber`, and `StippleTheme.presets` to list them.
+- `StippleTheme.gradient(paper, ink, steps)` for a duotone ramp theme, and `StippleTheme.ensureContrast(minContrast)`, the public form of the contrast rule `DitherText` uses.
+
 ## [1.2.0] - 2026-11-07
 
 ### Added

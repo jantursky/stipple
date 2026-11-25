@@ -15,6 +15,16 @@ A dither is two functions meeting at every cell. The **field** answers "how much
 | `DitherPatterns.Bayer4` | The default. Sixteen steps, a crosshatch feel. |
 | `DitherPatterns.Bayer8` | Sixty-four steps and the smoothest ramps. |
 | `DitherPatterns.BlueNoise` | Irregular and grain-like, with no repeating texture. A 64 by 64 texture made offline. |
+| `DitherPatterns.Bayer16` | Two hundred and fifty-six steps, the finest ordered grid. |
+| `DitherPatterns.Halftone` | A clustered-dot screen at 45 degrees, like newsprint: dots grow from the centre until they touch. |
+| `DitherPatterns.HexGrid` | Dots on a staggered, hexagon-like lattice. |
+| `DitherPatterns.Lines` | A diagonal line screen whose lines widen as the tone rises. |
+| `DitherPatterns.Crosshatch` | One set of diagonal lines first, then the cross lines. |
+| `DitherPatterns.WhiteNoise` | Uncorrelated grain from a fixed seed, identical on every platform. |
+
+`DitherPatterns.All` lists them all, ordered patterns first, and `nameOf` gives each a readable name. `halftone(size, diagonal)` and `lines(size, diagonal)` build the same screens on a tile of 2 to 256 cells, at 45 degrees or axis aligned. Other angles are not offered, because a square tile only repeats cleanly at angles with a rational tangent. Patterns from the factories are named `"Custom"` by `nameOf`.
+
+All of them are generated threshold maps, so the shader renderer draws them from the pattern texture with the same cells as the cell renderer.
 
 A pattern implements `DitherPattern.threshold(x, y)`, returning a value between 0 and 1 for any integer cell coordinates. You can write your own.
 

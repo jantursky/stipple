@@ -20,8 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 import com.jantursky.stipple.DitherAlgorithm
-import com.jantursky.stipple.ImageDitherOptions
 import com.jantursky.stipple.DitherPatterns
+import com.jantursky.stipple.ImageDitherOptions
 import com.jantursky.stipple.components.DitherTextEffect
 import com.jantursky.stipple.samples.gallery.examples.AvatarExample
 import com.jantursky.stipple.samples.gallery.examples.BackgroundExample
@@ -157,9 +157,9 @@ val Catalog: List<Page> =
             "theme",
             Group.Engine,
             "Theme",
-            "StippleTheme holds ink, paper, an optional palette, the cell size and the cell shape. Provide it once and every dither below follows, with no argument at the call site.",
+            "StippleTheme holds ink, paper, an optional palette, the cell size and the cell shape. Provide it once and every dither below follows, with no argument at the call site. Pick a preset from StippleTheme.presets, or build a ramp with gradient.",
             listOf("ThemeExample"),
-        ) { g -> Demo(g, minHeight = 200) { ThemeExample(g.theme, g.pattern) } },
+        ) { g -> Demo(g, minHeight = 360) { ThemeExample(g.theme, g.pattern) } },
         Page(
             "custom-fields",
             Group.Engine,

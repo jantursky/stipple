@@ -20,7 +20,7 @@ A frozen field is drawn at the modifier's `stillTime`. Progress and value change
 
 ## Contrast
 
-`DitherText` keeps text readable. If the contrast between ink and paper falls below `minContrast` (4.5 by default), it swaps the ink for black or white. `theme.contrastRatio` gives the ratio for any theme.
+`DitherText` keeps text readable. If the contrast between ink and paper falls below `minContrast` (4.5 by default), it swaps the ink for black or white. `theme.contrastRatio` gives the ratio for any theme, and `theme.ensureContrast(minContrast)` applies the same rule to a theme of your own: it keeps a readable theme as it is and otherwise returns a copy with black or white ink and no palette.
 
 `DitherEffectText` shows its finished text at once under reduced motion, and a screen reader always reads the final text, never a scrambled frame.
 

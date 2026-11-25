@@ -284,7 +284,7 @@ private fun Settings(
                     val name = { pattern: com.jantursky.stipple.DitherPattern ->
                         DitherPatterns.nameOf(pattern).removePrefix("Bayer ")
                     }
-                    Segmented(DitherPatterns.All, state.pattern, { state.pattern = it }, name)
+                    Segmented(DitherPatterns.All, state.pattern, { state.pattern = it }, name, wrap = true)
                 }
                 SliderField("Cell size", state.cell, { state.cell = it }, 1f..10f, step = 0.5f, format = { "${it}dp" })
                 Labeled("Shape") { Segmented(CellShape.entries, state.shape, { state.shape = it }, { it.name }) }

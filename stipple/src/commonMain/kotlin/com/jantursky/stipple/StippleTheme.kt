@@ -59,6 +59,23 @@ public class StippleTheme(
         shape: CellShape = this.shape,
     ): StippleTheme = StippleTheme(ink, paper, palette, cell, shape)
 
+    /**
+     * This theme when [contrastRatio] already reaches [minContrast] (4.5 is the WCAG level for text), otherwise a
+     * copy with the same paper, black or white ink, whichever contrasts more, and no palette.
+     */
+    public fun ensureContrast(minContrast: Float = 4.5f): StippleTheme {
+        if (contrastRatio >= minContrast) return this
+        val ink =
+            if (contrastRatio(Color.Black, paper) >=
+                contrastRatio(Color.White, paper)
+            ) {
+                Color.Black
+            } else {
+                Color.White
+            }
+        return copy(ink = ink, palette = null)
+    }
+
     override fun equals(other: Any?): Boolean =
         other is StippleTheme &&
             ink == other.ink &&
@@ -82,6 +99,62 @@ public class StippleTheme(
 
         /** Off-white ink on near-black paper. */
         public val Dark: StippleTheme = StippleTheme(ink = Color(0xFFFAFAFA), paper = Color(0xFF09090B))
+
+        /** Four greens in the spirit of a handheld LCD, on a fine 2dp grain. */
+        public val GameBoy: StippleTheme =
+            StippleTheme(
+                ink = Color(0xFF0F380F),
+                paper = Color(0xFF9BBC0F),
+                palette = listOf(Color(0xFF9BBC0F), Color(0xFF8BAC0F), Color(0xFF306230), Color(0xFF0F380F)),
+                cell = 2.dp,
+            )
+
+        /** White, cyan, magenta and black, the look of a 1980s PC graphics card. */
+        public val Cga: StippleTheme =
+            StippleTheme(
+                ink = Color(0xFF000000),
+                paper = Color(0xFFFFFFFF),
+                palette = listOf(Color(0xFFFFFFFF), Color(0xFF55FFFF), Color(0xFFFF55FF), Color(0xFF000000)),
+                cell = 2.dp,
+            )
+
+        /** Near-black ink on warm off-white paper, with round dots like a printed page. */
+        public val Newsprint: StippleTheme =
+            StippleTheme(ink = Color(0xFF1C1B18), paper = Color(0xFFE8E2D0), cell = 2.dp, shape = CellShape.Dot)
+
+        /** Pure black on white with a coarse 2dp grain, like early desktop bitmaps. */
+        public val Macintosh: StippleTheme =
+            StippleTheme(ink = Color(0xFF000000), paper = Color(0xFFFFFFFF), cell = 2.dp)
+
+        /** Amber phosphor ink on a near-black screen. */
+        public val Amber: StippleTheme = StippleTheme(ink = Color(0xFFFFB000), paper = Color(0xFF1A0F00), cell = 2.dp)
+
+        /** The preset themes by readable name, in a stable order, for lists and galleries. */
+        public val presets: Map<String, StippleTheme> =
+            linkedMapOf(
+                "Game Boy" to GameBoy,
+                "CGA" to Cga,
+                "Newsprint" to Newsprint,
+                "Macintosh" to Macintosh,
+                "Amber" to Amber,
+            )
+
+        /**
+         * A theme whose palette blends evenly from [paper] to [ink] in [steps] colours.
+         *
+         * @throws IllegalArgumentException when [steps] is outside 2..8, the most the shader draws.
+         */
+        public fun gradient(
+            paper: Color,
+            ink: Color,
+            steps: Int = 4,
+            cell: Dp = 3.dp,
+            shape: CellShape = CellShape.Square,
+        ): StippleTheme {
+            require(steps in 2..8) { "A gradient needs 2 to 8 steps, was $steps" }
+            val palette = List(steps) { blend(paper, ink, it / (steps - 1f)) }
+            return StippleTheme(ink, paper, palette, cell, shape)
+        }
     }
 }
 
@@ -100,6 +173,19 @@ public fun ProvideStippleTheme(
 ) {
     CompositionLocalProvider(LocalStippleTheme provides theme, content = content)
 }
+
+/** [from] to [to] by [fraction], channel by channel in sRGB, the space the renderers quantise in. */
+private fun blend(
+    from: Color,
+    to: Color,
+    fraction: Float,
+): Color =
+    Color(
+        red = from.red + (to.red - from.red) * fraction,
+        green = from.green + (to.green - from.green) * fraction,
+        blue = from.blue + (to.blue - from.blue) * fraction,
+        alpha = from.alpha + (to.alpha - from.alpha) * fraction,
+    )
 
 /** The WCAG contrast ratio between two colors, from 1 to 21. */
 public fun contrastRatio(

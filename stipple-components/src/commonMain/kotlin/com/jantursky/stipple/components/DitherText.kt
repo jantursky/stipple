@@ -18,7 +18,6 @@ import com.jantursky.stipple.DitherPatterns
 import com.jantursky.stipple.DitherRenderer
 import com.jantursky.stipple.StippleTheme
 import com.jantursky.stipple.components.internal.resolveTheme
-import com.jantursky.stipple.contrastRatio
 import com.jantursky.stipple.ditherFill
 
 /**
@@ -76,10 +75,4 @@ public fun DitherText(
 internal fun readable(
     theme: StippleTheme,
     minContrast: Float,
-): StippleTheme {
-    if (theme.contrastRatio >= minContrast) return theme
-    val black = Color.Black
-    val white = Color.White
-    val ink = if (contrastRatio(black, theme.paper) >= contrastRatio(white, theme.paper)) black else white
-    return theme.copy(ink = ink, palette = null)
-}
+): StippleTheme = theme.ensureContrast(minContrast)

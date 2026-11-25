@@ -135,14 +135,29 @@ final class com.jantursky.stipple/StippleTheme { // com.jantursky.stipple/Stippl
         final fun <get-shape>(): com.jantursky.stipple/CellShape // com.jantursky.stipple/StippleTheme.shape.<get-shape>|<get-shape>(){}[0]
 
     final fun copy(androidx.compose.ui.graphics/Color = ..., androidx.compose.ui.graphics/Color = ..., kotlin.collections/List<androidx.compose.ui.graphics/Color>? = ..., androidx.compose.ui.unit/Dp = ..., com.jantursky.stipple/CellShape = ...): com.jantursky.stipple/StippleTheme // com.jantursky.stipple/StippleTheme.copy|copy(androidx.compose.ui.graphics.Color;androidx.compose.ui.graphics.Color;kotlin.collections.List<androidx.compose.ui.graphics.Color>?;androidx.compose.ui.unit.Dp;com.jantursky.stipple.CellShape){}[0]
+    final fun ensureContrast(kotlin/Float = ...): com.jantursky.stipple/StippleTheme // com.jantursky.stipple/StippleTheme.ensureContrast|ensureContrast(kotlin.Float){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // com.jantursky.stipple/StippleTheme.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // com.jantursky.stipple/StippleTheme.hashCode|hashCode(){}[0]
 
     final object Companion { // com.jantursky.stipple/StippleTheme.Companion|null[0]
+        final val Amber // com.jantursky.stipple/StippleTheme.Companion.Amber|{}Amber[0]
+            final fun <get-Amber>(): com.jantursky.stipple/StippleTheme // com.jantursky.stipple/StippleTheme.Companion.Amber.<get-Amber>|<get-Amber>(){}[0]
+        final val Cga // com.jantursky.stipple/StippleTheme.Companion.Cga|{}Cga[0]
+            final fun <get-Cga>(): com.jantursky.stipple/StippleTheme // com.jantursky.stipple/StippleTheme.Companion.Cga.<get-Cga>|<get-Cga>(){}[0]
         final val Dark // com.jantursky.stipple/StippleTheme.Companion.Dark|{}Dark[0]
             final fun <get-Dark>(): com.jantursky.stipple/StippleTheme // com.jantursky.stipple/StippleTheme.Companion.Dark.<get-Dark>|<get-Dark>(){}[0]
+        final val GameBoy // com.jantursky.stipple/StippleTheme.Companion.GameBoy|{}GameBoy[0]
+            final fun <get-GameBoy>(): com.jantursky.stipple/StippleTheme // com.jantursky.stipple/StippleTheme.Companion.GameBoy.<get-GameBoy>|<get-GameBoy>(){}[0]
         final val Light // com.jantursky.stipple/StippleTheme.Companion.Light|{}Light[0]
             final fun <get-Light>(): com.jantursky.stipple/StippleTheme // com.jantursky.stipple/StippleTheme.Companion.Light.<get-Light>|<get-Light>(){}[0]
+        final val Macintosh // com.jantursky.stipple/StippleTheme.Companion.Macintosh|{}Macintosh[0]
+            final fun <get-Macintosh>(): com.jantursky.stipple/StippleTheme // com.jantursky.stipple/StippleTheme.Companion.Macintosh.<get-Macintosh>|<get-Macintosh>(){}[0]
+        final val Newsprint // com.jantursky.stipple/StippleTheme.Companion.Newsprint|{}Newsprint[0]
+            final fun <get-Newsprint>(): com.jantursky.stipple/StippleTheme // com.jantursky.stipple/StippleTheme.Companion.Newsprint.<get-Newsprint>|<get-Newsprint>(){}[0]
+        final val presets // com.jantursky.stipple/StippleTheme.Companion.presets|{}presets[0]
+            final fun <get-presets>(): kotlin.collections/Map<kotlin/String, com.jantursky.stipple/StippleTheme> // com.jantursky.stipple/StippleTheme.Companion.presets.<get-presets>|<get-presets>(){}[0]
+
+        final fun gradient(androidx.compose.ui.graphics/Color, androidx.compose.ui.graphics/Color, kotlin/Int = ..., androidx.compose.ui.unit/Dp = ..., com.jantursky.stipple/CellShape = ...): com.jantursky.stipple/StippleTheme // com.jantursky.stipple/StippleTheme.Companion.gradient|gradient(androidx.compose.ui.graphics.Color;androidx.compose.ui.graphics.Color;kotlin.Int;androidx.compose.ui.unit.Dp;com.jantursky.stipple.CellShape){}[0]
     }
 }
 
@@ -162,6 +177,8 @@ final object com.jantursky.stipple/DitherFields { // com.jantursky.stipple/Dithe
 final object com.jantursky.stipple/DitherPatterns { // com.jantursky.stipple/DitherPatterns|null[0]
     final val All // com.jantursky.stipple/DitherPatterns.All|{}All[0]
         final fun <get-All>(): kotlin.collections/List<com.jantursky.stipple/DitherPattern> // com.jantursky.stipple/DitherPatterns.All.<get-All>|<get-All>(){}[0]
+    final val Bayer16 // com.jantursky.stipple/DitherPatterns.Bayer16|{}Bayer16[0]
+        final fun <get-Bayer16>(): com.jantursky.stipple/DitherPattern // com.jantursky.stipple/DitherPatterns.Bayer16.<get-Bayer16>|<get-Bayer16>(){}[0]
     final val Bayer2 // com.jantursky.stipple/DitherPatterns.Bayer2|{}Bayer2[0]
         final fun <get-Bayer2>(): com.jantursky.stipple/DitherPattern // com.jantursky.stipple/DitherPatterns.Bayer2.<get-Bayer2>|<get-Bayer2>(){}[0]
     final val Bayer4 // com.jantursky.stipple/DitherPatterns.Bayer4|{}Bayer4[0]
@@ -170,7 +187,19 @@ final object com.jantursky.stipple/DitherPatterns { // com.jantursky.stipple/Dit
         final fun <get-Bayer8>(): com.jantursky.stipple/DitherPattern // com.jantursky.stipple/DitherPatterns.Bayer8.<get-Bayer8>|<get-Bayer8>(){}[0]
     final val BlueNoise // com.jantursky.stipple/DitherPatterns.BlueNoise|{}BlueNoise[0]
         final fun <get-BlueNoise>(): com.jantursky.stipple/DitherPattern // com.jantursky.stipple/DitherPatterns.BlueNoise.<get-BlueNoise>|<get-BlueNoise>(){}[0]
+    final val Crosshatch // com.jantursky.stipple/DitherPatterns.Crosshatch|{}Crosshatch[0]
+        final fun <get-Crosshatch>(): com.jantursky.stipple/DitherPattern // com.jantursky.stipple/DitherPatterns.Crosshatch.<get-Crosshatch>|<get-Crosshatch>(){}[0]
+    final val Halftone // com.jantursky.stipple/DitherPatterns.Halftone|{}Halftone[0]
+        final fun <get-Halftone>(): com.jantursky.stipple/DitherPattern // com.jantursky.stipple/DitherPatterns.Halftone.<get-Halftone>|<get-Halftone>(){}[0]
+    final val HexGrid // com.jantursky.stipple/DitherPatterns.HexGrid|{}HexGrid[0]
+        final fun <get-HexGrid>(): com.jantursky.stipple/DitherPattern // com.jantursky.stipple/DitherPatterns.HexGrid.<get-HexGrid>|<get-HexGrid>(){}[0]
+    final val Lines // com.jantursky.stipple/DitherPatterns.Lines|{}Lines[0]
+        final fun <get-Lines>(): com.jantursky.stipple/DitherPattern // com.jantursky.stipple/DitherPatterns.Lines.<get-Lines>|<get-Lines>(){}[0]
+    final val WhiteNoise // com.jantursky.stipple/DitherPatterns.WhiteNoise|{}WhiteNoise[0]
+        final fun <get-WhiteNoise>(): com.jantursky.stipple/DitherPattern // com.jantursky.stipple/DitherPatterns.WhiteNoise.<get-WhiteNoise>|<get-WhiteNoise>(){}[0]
 
+    final fun halftone(kotlin/Int, kotlin/Boolean = ...): com.jantursky.stipple/DitherPattern // com.jantursky.stipple/DitherPatterns.halftone|halftone(kotlin.Int;kotlin.Boolean){}[0]
+    final fun lines(kotlin/Int, kotlin/Boolean = ...): com.jantursky.stipple/DitherPattern // com.jantursky.stipple/DitherPatterns.lines|lines(kotlin.Int;kotlin.Boolean){}[0]
     final fun nameOf(com.jantursky.stipple/DitherPattern): kotlin/String // com.jantursky.stipple/DitherPatterns.nameOf|nameOf(com.jantursky.stipple.DitherPattern){}[0]
 }
 

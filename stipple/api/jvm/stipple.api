@@ -73,10 +73,20 @@ public final class com/jantursky/stipple/DitherPatterns {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/jantursky/stipple/DitherPatterns;
 	public final fun getAll ()Ljava/util/List;
+	public final fun getBayer16 ()Lcom/jantursky/stipple/DitherPattern;
 	public final fun getBayer2 ()Lcom/jantursky/stipple/DitherPattern;
 	public final fun getBayer4 ()Lcom/jantursky/stipple/DitherPattern;
 	public final fun getBayer8 ()Lcom/jantursky/stipple/DitherPattern;
 	public final fun getBlueNoise ()Lcom/jantursky/stipple/DitherPattern;
+	public final fun getCrosshatch ()Lcom/jantursky/stipple/DitherPattern;
+	public final fun getHalftone ()Lcom/jantursky/stipple/DitherPattern;
+	public final fun getHexGrid ()Lcom/jantursky/stipple/DitherPattern;
+	public final fun getLines ()Lcom/jantursky/stipple/DitherPattern;
+	public final fun getWhiteNoise ()Lcom/jantursky/stipple/DitherPattern;
+	public final fun halftone (IZ)Lcom/jantursky/stipple/DitherPattern;
+	public static synthetic fun halftone$default (Lcom/jantursky/stipple/DitherPatterns;IZILjava/lang/Object;)Lcom/jantursky/stipple/DitherPattern;
+	public final fun lines (IZ)Lcom/jantursky/stipple/DitherPattern;
+	public static synthetic fun lines$default (Lcom/jantursky/stipple/DitherPatterns;IZILjava/lang/Object;)Lcom/jantursky/stipple/DitherPattern;
 	public final fun nameOf (Lcom/jantursky/stipple/DitherPattern;)Ljava/lang/String;
 }
 
@@ -155,6 +165,8 @@ public final class com/jantursky/stipple/StippleTheme {
 	public synthetic fun <init> (JJLjava/util/List;FLcom/jantursky/stipple/CellShape;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun copy-gx2NUHE (JJLjava/util/List;FLcom/jantursky/stipple/CellShape;)Lcom/jantursky/stipple/StippleTheme;
 	public static synthetic fun copy-gx2NUHE$default (Lcom/jantursky/stipple/StippleTheme;JJLjava/util/List;FLcom/jantursky/stipple/CellShape;ILjava/lang/Object;)Lcom/jantursky/stipple/StippleTheme;
+	public final fun ensureContrast (F)Lcom/jantursky/stipple/StippleTheme;
+	public static synthetic fun ensureContrast$default (Lcom/jantursky/stipple/StippleTheme;FILjava/lang/Object;)Lcom/jantursky/stipple/StippleTheme;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getCell-D9Ej5fM ()F
 	public final fun getContrastRatio ()F
@@ -166,8 +178,16 @@ public final class com/jantursky/stipple/StippleTheme {
 }
 
 public final class com/jantursky/stipple/StippleTheme$Companion {
+	public final fun getAmber ()Lcom/jantursky/stipple/StippleTheme;
+	public final fun getCga ()Lcom/jantursky/stipple/StippleTheme;
 	public final fun getDark ()Lcom/jantursky/stipple/StippleTheme;
+	public final fun getGameBoy ()Lcom/jantursky/stipple/StippleTheme;
 	public final fun getLight ()Lcom/jantursky/stipple/StippleTheme;
+	public final fun getMacintosh ()Lcom/jantursky/stipple/StippleTheme;
+	public final fun getNewsprint ()Lcom/jantursky/stipple/StippleTheme;
+	public final fun getPresets ()Ljava/util/Map;
+	public final fun gradient-gx2NUHE (JJIFLcom/jantursky/stipple/CellShape;)Lcom/jantursky/stipple/StippleTheme;
+	public static synthetic fun gradient-gx2NUHE$default (Lcom/jantursky/stipple/StippleTheme$Companion;JJIFLcom/jantursky/stipple/CellShape;ILjava/lang/Object;)Lcom/jantursky/stipple/StippleTheme;
 }
 
 public final class com/jantursky/stipple/StippleThemeKt {

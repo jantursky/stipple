@@ -1,6 +1,11 @@
 package com.jantursky.stipple
 
 import com.jantursky.stipple.internal.bayerRanks
+import com.jantursky.stipple.internal.crosshatchRanks
+import com.jantursky.stipple.internal.halftoneRanks
+import com.jantursky.stipple.internal.hexGridRanks
+import com.jantursky.stipple.internal.lineRanks
+import com.jantursky.stipple.internal.shuffledRanks
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
@@ -102,6 +107,126 @@ class PatternsTest {
         assertEquals("Custom", DitherPatterns.nameOf(CustomPattern))
     }
 
+    private val newPresets =
+        listOf(
+            DitherPatterns.Bayer16 to "Bayer 16x16",
+            DitherPatterns.Halftone to "Halftone",
+            DitherPatterns.HexGrid to "Hex grid",
+            DitherPatterns.Lines to "Lines",
+            DitherPatterns.Crosshatch to "Crosshatch",
+            DitherPatterns.WhiteNoise to "White noise",
+        )
+
+    @Test
+    fun everyGeneratedMapIsAPermutationOfItsRanks() {
+        val maps =
+            listOf(
+                8 to halftoneRanks(8, true),
+                8 to halftoneRanks(8, false),
+                12 to halftoneRanks(12, false),
+                8 to hexGridRanks(8),
+                8 to lineRanks(8, true),
+                8 to lineRanks(8, false),
+                8 to crosshatchRanks(8),
+                32 to shuffledRanks(32, 7L),
+            )
+        for ((size, ranks) in maps) {
+            assertContentEquals((0 until size * size).toList().toIntArray(), ranks.sortedArray())
+        }
+    }
+
+    @Test
+    fun newPatternsRepeatEverySize() {
+        for ((pattern, name) in newPresets) {
+            val n = pattern.size
+            for (y in 0 until n) {
+                for (x in 0 until n) {
+                    assertEquals(pattern.threshold(x, y), pattern.threshold(x + n, y + n), "$name at $x,$y")
+                }
+            }
+        }
+    }
+
+    @Test
+    fun whiteNoiseIsFixed() {
+        val first = (0 until 8).map { (DitherPatterns.WhiteNoise.threshold(it, 0) * 1024f - 0.5f).toInt() }
+        assertEquals(PINNED_NOISE, first)
+    }
+
+    @Test
+    fun coverageFollowsTheToneWithinOneCell() {
+        val patterns = newPresets.map { it.first } + DitherPatterns.halftone(12, false) + DitherPatterns.lines(6, false)
+        for (pattern in patterns) {
+            val cells = pattern.size * pattern.size
+            for (tone in listOf(0.25f, 0.5f, 0.75f)) {
+                var lit = 0
+                for (y in 0 until pattern.size) {
+                    for (x in 0 until pattern.size) {
+                        if (pattern.threshold(x, y) <
+                            tone
+                        ) {
+                            lit++
+                        }
+                    }
+                }
+                assertTrue(kotlin.math.abs(lit - tone * cells) <= 1f, "${pattern.size} at $tone lit $lit of $cells")
+            }
+        }
+    }
+
+    @Test
+    fun halftoneStartsAsOneDotAtTheTileCentre() {
+        val p = DitherPatterns.halftone(8, diagonal = false)
+        val lit = (0 until 64).filter { p.threshold(it % 8, it / 8) < 0.1f }.toSet()
+        assertTrue(lit.isNotEmpty())
+        assertTrue((4 * 8 + 4) in lit, "centre cell is lit first")
+        // Flood fill from the centre reaches every lit cell: one cluster, not scatter.
+        val reached = mutableSetOf(4 * 8 + 4)
+        val queue = ArrayDeque(listOf(4 * 8 + 4))
+        while (queue.isNotEmpty()) {
+            val c = queue.removeFirst()
+            for ((dx, dy) in listOf(1 to 0, -1 to 0, 0 to 1, 0 to -1)) {
+                val n = (c / 8 + dy).mod(8) * 8 + (c % 8 + dx).mod(8)
+                if (n in lit && reached.add(n)) queue.addLast(n)
+            }
+        }
+        assertEquals(lit, reached)
+    }
+
+    @Test
+    fun theDiagonalHalftoneGrowsTwoDotsPerTile() {
+        val p = DitherPatterns.Halftone
+        val lit = (0 until 64).filter { p.threshold(it % 8, it / 8) < 0.1f }
+        assertTrue((4 * 8 + 4) in lit)
+        assertTrue(0 in lit, "second dot sits on the tile corner")
+    }
+
+    @Test
+    fun allListsTheOldFourFirstThenTheNewPresets() {
+        assertEquals(
+            listOf(DitherPatterns.Bayer2, DitherPatterns.Bayer4, DitherPatterns.Bayer8, DitherPatterns.BlueNoise),
+            DitherPatterns.All.take(4),
+        )
+        assertEquals(newPresets.map { it.first }, DitherPatterns.All.drop(4))
+    }
+
+    @Test
+    fun everyPresetHasANameAndFactoriesAreCustom() {
+        for ((pattern, name) in newPresets) assertEquals(name, DitherPatterns.nameOf(pattern))
+        assertEquals("Custom", DitherPatterns.nameOf(DitherPatterns.halftone(8)))
+        assertEquals("Custom", DitherPatterns.nameOf(DitherPatterns.lines(8)))
+    }
+
+    @Test
+    fun factoriesRejectBadSizes() {
+        assertFailsWith<IllegalArgumentException> { DitherPatterns.halftone(1) }
+        assertFailsWith<IllegalArgumentException> { DitherPatterns.halftone(257) }
+        assertFailsWith<IllegalArgumentException> { DitherPatterns.lines(1) }
+        assertFailsWith<IllegalArgumentException> { DitherPatterns.lines(257) }
+        assertEquals(256, DitherPatterns.lines(256).size)
+        assertEquals(12, DitherPatterns.halftone(size = 12, diagonal = false).size)
+    }
+
     private object CustomPattern : DitherPattern {
         override val size = 1
 
@@ -109,5 +234,9 @@ class PatternsTest {
             x: Int,
             y: Int,
         ) = 0.5f
+    }
+
+    private companion object {
+        val PINNED_NOISE = listOf(262, 923, 50, 233, 97, 976, 277, 1019)
     }
 }
